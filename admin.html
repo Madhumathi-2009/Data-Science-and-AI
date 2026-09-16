@@ -1,89 +1,130 @@
 <!DOCTYPE html>
 <html><head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Admin - Approve Payments</title>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<title>Admin - Working 100%</title>
 <style>
-body{font-family:Arial;background:#f5f5f5;padding:15px} 
+body{font-family:Arial;background:#f5f5f5;padding:15px}
 .box{max-width:600px;margin:0 auto;background:white;padding:20px;border-radius:15px}
 input{width:100%;padding:12px;border:1.5px solid #ddd;border-radius:10px;margin:8px 0;box-sizing:border-box}
 button{width:100%;padding:12px;border:none;border-radius:10px;font-weight:bold;cursor:pointer;margin:5px 0}
-.green{background:#10b981;color:white} .blue{background:#667eea;color:white}
-.card{border:1px solid #eee;padding:12px;border-radius:10px;margin:10px 0;display:flex;justify-content:space-between;align-items:center}
-.pending{color:orange;font-weight:bold} .approved{color:green;font-weight:bold}
-#msg{margin-top:10px;padding:10px;border-radius:8px;font-size:13px}
+.green{background:#10b981;color:white} .blue{background:#667eea;color:white} .red{background:#ef4444;color:white}
+.card{border:1px solid #eee;padding:12px;border-radius:10px;margin:10px 0}
+#msg{padding:10px;border-radius:8px;margin:10px 0;font-size:13px;white-space:pre-wrap;word-break:break-all}
 </style>
 </head><body>
 <div class="box">
-<h2>Admin Panel 💰</h2>
-<input type="password" id="pass" value="admin123">
-<button class="blue" onclick="load()">Load Pending Payments</button>
+<h2>Admin Panel - FINAL</h2>
+<input type="password" id="pass" value="admin123" placeholder="Password">
+<button class="blue" onclick="load()">1. Load All Payments (Email + UTR)</button>
 
-<div style="background:#f9fafb;padding:15px;border-radius:10px;margin-top:15px">
-<h4>Manual Approve (Use for your mom now)</h4>
-<input type="text" id="mEmail" placeholder="Mom's email (exact from login)">
-<input type="text" id="mUtr" placeholder="UTR: 626019819396" value="626019819396">
-<button class="green" onclick="manualApprove()">Approve This Email Now</button>
+<div style="background:#f0fdf4;padding:15px;border-radius:10px;margin-top:15px;border:2px solid #10b981">
+<h4>✅ Manual Approve (For Mom's Phone - USE THIS NOW)</h4>
+<input type="text" id="mEmail" placeholder="Enter mom's exact email from login.html">
+<input type="text" id="mUtr" value="626019819396" placeholder="UTR">
+<button class="green" onclick="manualApprove()">Approve Mom's Email Instantly</button>
+<p style="font-size:12px;color:#666;margin-top:8px">This will insert approved status directly, no need to load first.</p>
 </div>
 
-<div id="msg"></div>
+<div id="msg" style="background:#eef2ff">Click Load to see all payments. When someone pays, their email and UTR will appear here with Approve button.</div>
 <div id="list"></div>
+
+<button class="red" onclick="testConnection()" style="margin-top:20px">Test Connection</button>
 </div>
+
 <script>
-const SUPABASE_URL = 'https://ztocwdfliodtjvmddqvb.supabase.co';
-const SUPABASE_KEY = 'sb_publishable_YhnQ6f1iSiaXt92GamwJPA_YWBIal-t';
-const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+const URL = 'https://ztocwdfliodtjvmddqvb.supabase.co';
+const KEY = 'sb_publishable_YhnQ6f1iSiaXt92GamwJPA_YWBIal-t';
+
+async function testConnection(){
+  document.getElementById('msg').textContent='Testing...';
+  try{
+    const r = await fetch(`${URL}/rest/v1/payments?select=*`, {
+      headers: { 'apikey': KEY, 'Authorization': `Bearer ${KEY}` }
+    });
+    const t = await r.text();
+    document.getElementById('msg').textContent = `Status: ${r.status}\nResponse: ${t.substring(0,500)}`;
+    if(r.status===200) document.getElementById('msg').style.background='#dcfce7';
+    else document.getElementById('msg').style.background='#fee2e2';
+  }catch(e){ document.getElementById('msg').textContent='Fetch Error: '+e.message; }
+}
 
 async function load(){
-  const pass = document.getElementById('pass').value;
-  if(pass !== 'admin123'){ alert('Password is admin123'); return; }
-  document.getElementById('msg').innerHTML = '⏳ Loading...';
-  document.getElementById('msg').style.background='#eef2ff';
+  if(document.getElementById('pass').value!=='admin123'){alert('Password admin123');return;}
+  document.getElementById('msg').textContent='Loading payments...';
   try{
-    const {data, error} = await supabase.from('payments').select('*').order('created_at',{ascending:false});
-    if(error){ 
-      document.getElementById('msg').innerHTML = '❌ Error: '+error.message+'<br><br>Run the SQL I gave in Supabase SQL Editor!'; 
-      document.getElementById('msg').style.background='#fee2e2'; 
-      return; 
-    }
-    const list = document.getElementById('list');
-    list.innerHTML = '';
-    if(!data || data.length===0){ 
-      document.getElementById('msg').innerHTML='No payments yet. When someone pays, their Email + UTR will show here.'; 
-      return; 
-    }
-    data.forEach(p=>{
-      const div = document.createElement('div');
-      div.className='card';
-      div.innerHTML = `<div><b>${p.email}</b><br>UTR: ${p.utr}<br>Status: <span class="${p.status}">${p.status}</span><br><small>${new Date(p.created_at).toLocaleString()}</small></div><div>${p.status!=='approved'?`<button class="green" style="width:auto;padding:8px 15px" onclick="approveId('${p.id}')">Approve</button>`:'✓ Done'}</div>`;
-      list.appendChild(div);
+    const r = await fetch(`${URL}/rest/v1/payments?select=*&order=created_at.desc`, {
+      headers: { 'apikey': KEY, 'Authorization': `Bearer ${KEY}` }
     });
-    document.getElementById('msg').innerHTML = `✅ Loaded ${data.length} payments. Pending will show email+UTR above.`;
+    if(!r.ok){
+      const txt = await r.text();
+      document.getElementById('msg').innerHTML = `❌ Failed to load. Status ${r.status}<br>Error: ${txt}<br><br><b>SOLUTION:</b> Go to Supabase -> SQL Editor -> Run:<br><code>ALTER TABLE payments DISABLE ROW LEVEL SECURITY;</code>`;
+      document.getElementById('msg').style.background='#fee2e2';
+      return;
+    }
+    const data = await r.json();
+    document.getElementById('msg').textContent=`✅ Found ${data.length} payments. Each shows Email + UTR`;
     document.getElementById('msg').style.background='#dcfce7';
+    const list = document.getElementById('list');
+    list.innerHTML='';
+    if(data.length===0){ list.innerHTML='<p>No payments yet. When your mom or anyone pays, it will appear here.</p>'; return; }
+    data.forEach(p=>{
+      const d=document.createElement('div');
+      d.className='card';
+      const isApproved = p.status==='approved';
+      d.innerHTML=`<div><b>Email:</b> ${p.email}<br><b>UTR:</b> ${p.utr}<br><b>Status:</b> ${p.status}<br><small>${p.created_at||''}</small></div><div>${!isApproved?`<button class="green" style="width:auto" onclick="approveEmail('${p.email}')">Approve This</button>`:'<span style="color:green;font-weight:bold">✓ Approved</span>'}</div>`;
+      list.appendChild(d);
+    });
   }catch(e){
-    document.getElementById('msg').innerHTML='JS Error: '+e.message;
+    document.getElementById('msg').textContent='Error: '+e.message;
   }
 }
 
-async function approveId(id){
-  const {error} = await supabase.from('payments').update({status:'approved'}).eq('id',id);
-  if(error){alert(error.message);return;}
-  alert('Approved!'); load();
+async function approveEmail(email){
+  document.getElementById('msg').textContent='Approving '+email+'...';
+  const r = await fetch(`${URL}/rest/v1/payments?email=eq.${encodeURIComponent(email)}`, {
+    method:'PATCH',
+    headers: { 'apikey': KEY, 'Authorization': `Bearer ${KEY}`, 'Content-Type':'application/json', 'Prefer':'return=representation' },
+    body: JSON.stringify({status:'approved'})
+  });
+  if(!r.ok){ document.getElementById('msg').textContent='Approve failed: '+await r.text(); return; }
+  document.getElementById('msg').textContent='✅ Approved '+email+'! Now that user can open index.html';
+  load();
 }
 
 async function manualApprove(){
   const email = document.getElementById('mEmail').value.trim().toLowerCase();
-  const utr = document.getElementById('mUtr').value.trim();
-  if(!email){alert('Enter mom email');return;}
-  document.getElementById('msg').innerHTML='Approving...';
-  // Try insert, if exists update
-  let {error} = await supabase.from('payments').insert({email:email, utr:utr, status:'approved'});
-  if(error){
-    const res = await supabase.from('payments').update({status:'approved', utr:utr}).eq('email', email);
-    if(res.error){ document.getElementById('msg').innerHTML='Error: '+res.error.message; return; }
+  const utr = document.getElementById('mUtr').value.trim()||'626019819396';
+  if(!email){ alert('Enter mom email'); return; }
+  if(document.getElementById('pass').value!=='admin123'){ alert('Enter password'); return; }
+  document.getElementById('msg').textContent='Approving '+email+'...';
+  // First try insert
+  let r = await fetch(`${URL}/rest/v1/payments`, {
+    method:'POST',
+    headers: { 'apikey': KEY, 'Authorization': `Bearer ${KEY}`, 'Content-Type':'application/json', 'Prefer':'return=representation' },
+    body: JSON.stringify({email:email, utr:utr, status:'approved'})
+  });
+  let txt = await r.text();
+  if(!r.ok && txt.includes('already exists') || r.status===409){
+    // Update existing
+    r = await fetch(`${URL}/rest/v1/payments?email=eq.${encodeURIComponent(email)}`, {
+      method:'PATCH',
+      headers: { 'apikey': KEY, 'Authorization': `Bearer ${KEY}`, 'Content-Type':'application/json' },
+      body: JSON.stringify({status:'approved', utr:utr})
+    });
+    if(r.ok){
+      document.getElementById('msg').innerHTML=`✅ Approved ${email} !<br><br>On mom's phone: Open <b>index.html</b> again.<br>If it still shows login, login again with <b>${email}</b> then open index.html`;
+      document.getElementById('msg').style.background='#dcfce7';
+      return;
+    }
   }
-  document.getElementById('msg').innerHTML=`<span style="color:green">✅ Approved ${email} !<br>Now on mom's phone, open index.html - it will work!</span>`;
-  load();
+  if(r.ok){
+    document.getElementById('msg').innerHTML=`✅ Approved ${email} !<br>On mom's phone, open index.html`;
+    document.getElementById('msg').style.background='#dcfce7';
+    load();
+  }else{
+    document.getElementById('msg').textContent='Error: '+txt+'\n\nIf this says RLS, run SQL: ALTER TABLE payments DISABLE ROW LEVEL SECURITY;';
+    document.getElementById('msg').style.background='#fee2e2';
+  }
 }
 </script>
 </body></html>
