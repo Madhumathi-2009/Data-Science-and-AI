@@ -29,7 +29,7 @@ button:active{transform:scale(0.98)} button:disabled{opacity:0.6}
 <div class="upi">UPI ID: <b>madhu12lakshmi@oksbi</b></div>
 <div class="scan">Scan to pay with any UPI app</div>
 </div>
-<input type="text" id="utr" placeholder="626019819396" inputmode="numeric">
+<input type="text" id="utr" placeholder="Enter your transaction ID" inputmode="numeric">
 <button id="submitBtn">Submit Payment Proof</button>
 <div id="msg"></div>
 <a href="login.html" class="link">← Change email</a>
@@ -52,7 +52,7 @@ document.getElementById('submitBtn').onclick = function(){
   const msg = document.getElementById('msg');
   const btn = document.getElementById('submitBtn');
   
-  if(utr.length < 5){
+  if(utr.length < 10){
     msg.style.color='red'; msg.textContent='Please enter valid UTR: '+utr;
     return;
   }
@@ -69,7 +69,7 @@ document.getElementById('submitBtn').onclick = function(){
   // Show success after 800ms
   setTimeout(()=>{
     msg.style.color='green';
-    msg.innerHTML = `✅ Payment proof saved!<br>UTR: <b>${utr}</b><br><br>WhatsApp me on 12lakshmi number to approve fast<br>Then go to <a href="index.html" style="color:#6d5af7;font-weight:600">index.html</a> to access notes`;
+    msg.innerHTML = `✅ Payment proof saved!<br>UTR: <b>${utr}</b><br><br>Share your payment screenshot on WhatsApp-7695998405 to approve fast<br>Then go to <a href="index.html" style="color:#6d5af7;font-weight:600">index.html</a> to access notes`;
     btn.textContent = 'Submitted ✓ - Wait for Approval';
     btn.style.background = '#10b981';
     
