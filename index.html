@@ -1,26 +1,140 @@
 <!DOCTYPE html>
-<html lang="en"><head><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script>
-// LOCK - Check if user is approved
-(async()=>{
-  const email = localStorage.getItem('student_email');
-  if(!email){ window.location.href='login.html'; return; }
-  try{
-    const supa = window.supabase.createClient('https://ztocwdfliodtjvmddqvb.supabase.co','sb_publishable_YhnQ6f1iSiaXt92GamwJPA_YWBIal-t');
-    const {data} = await supa.from('payments').select('*').eq('email', email).eq('status','approved').maybeSingle();
-    if(!data){
-      // Not approved yet -> go to payment
-      window.location.href='payment.html';
+<html lang="en"><head><script>
+(function(){
+
+    const email =
+        (localStorage.getItem("student_email") || "")
+        .trim()
+        .toLowerCase();
+
+
+    /* No email = no access */
+
+    if(!email){
+
+        window.location.replace(
+            "login.html"
+        );
+
+        return;
     }
-    // If approved -> stay on page and show notes
-  }catch(e){
-    console.log('Supabase check failed, checking local fallback');
-    const status = localStorage.getItem('payment_status');
-    if(status !== 'approved'){
-      // For testing, if localStorage says pending, still allow after manual approval
-      // Comment this out later
+
+
+    /*
+       Hide the page while verification
+       is happening.
+    */
+
+    document.documentElement.style.visibility =
+        "hidden";
+
+
+    const SUPABASE_URL =
+        "https://ztocwdfliodtjvmddqvb.supabase.co";
+
+    const SUPABASE_KEY =
+        "sb_publishable_YhnQ6f1iSiaXt92GamwJPA_YWBIal-t";
+
+
+    async function verifyAccess(){
+
+        try{
+
+            const url =
+                SUPABASE_URL +
+                "/rest/v1/payments" +
+                "?select=id,status" +
+                "&email=eq." +
+                encodeURIComponent(email) +
+                "&status=eq.approved" +
+                "&limit=1";
+
+
+            const response =
+                await fetch(
+                    url,
+                    {
+                        method:"GET",
+
+                        headers:{
+                            "apikey":SUPABASE_KEY,
+                            "Authorization":
+                                "Bearer " + SUPABASE_KEY
+                        }
+                    }
+                );
+
+
+            if(!response.ok){
+
+                throw new Error(
+                    "HTTP " +
+                    response.status
+                );
+
+            }
+
+
+            const rows =
+                await response.json();
+
+
+            if(
+                Array.isArray(rows) &&
+                rows.length > 0
+            ){
+
+                /*
+                   APPROVED
+                   Keep notes visible.
+                */
+
+                localStorage.setItem(
+                    "payment_status",
+                    "approved"
+                );
+
+                document.documentElement.style.visibility =
+                    "visible";
+
+                return;
+
+            }
+
+
+            /*
+               NOT APPROVED
+            */
+
+            window.location.replace(
+                "payment.html"
+            );
+
+        }catch(error){
+
+            console.error(
+                "Access verification failed:",
+                error
+            );
+
+
+            /*
+               IMPORTANT:
+               NEVER unlock notes when the
+               database verification fails.
+            */
+
+            window.location.replace(
+                "payment.html"
+            );
+
+        }
+
     }
-  }
+
+
+    verifyAccess();
+
 })();
 </script><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
