@@ -1,56 +1,461 @@
 <!DOCTYPE html>
-<html><head>
-<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<html lang="en">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>BSc Data Science Notes - Login</title>
-<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600&display=swap" rel="stylesheet">
+
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&display=swap" rel="stylesheet">
+
 <style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:'Outfit',sans-serif}
-body{min-height:100vh;background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);display:flex;justify-content:center;align-items:center;padding:20px}
-.card{background:white;width:100%;max-width:400px;padding:35px 30px;border-radius:20px;box-shadow:0 20px 40px rgba(0,0,0,0.2);text-align:center;animation:pop 0.4s ease}
-@keyframes pop{from{transform:scale(0.9);opacity:0}to{transform:scale(1);opacity:1}}
-.logo{width:60px;height:60px;background:linear-gradient(135deg,#667eea,#764ba2);border-radius:15px;display:flex;align-items:center;justify-content:center;margin:0 auto 15px;color:white;font-size:28px;font-weight:600}
-h2{font-size:22px;margin-bottom:6px;color:#1a1a1a}
-.sub{color:#666;font-size:14px;margin-bottom:25px}
-.input-box{position:relative;margin-bottom:20px}
-input{width:100%;padding:14px 15px;border:2px solid #e5e7eb;border-radius:12px;font-size:15px;outline:none;transition:0.2s}
-input:focus{border-color:#667eea}
-button{width:100%;padding:14px;background:linear-gradient(135deg,#667eea,#764ba2);color:white;border:none;border-radius:12px;font-size:16px;font-weight:600;cursor:pointer;transition:0.2s;box-shadow:0 4px 15px rgba(102,126,234,0.4)}
-button:active{transform:scale(0.98)}
-button:disabled{opacity:0.6}
-#msg{margin-top:15px;font-size:13px;min-height:18px}
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Outfit',sans-serif;
+}
+
+body{
+    min-height:100vh;
+    background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    padding:20px;
+}
+
+.card{
+    background:white;
+    width:100%;
+    max-width:400px;
+    padding:35px 30px;
+    border-radius:20px;
+    box-shadow:0 20px 40px rgba(0,0,0,.2);
+    text-align:center;
+    animation:pop .4s ease;
+}
+
+@keyframes pop{
+    from{
+        transform:scale(.9);
+        opacity:0;
+    }
+
+    to{
+        transform:scale(1);
+        opacity:1;
+    }
+}
+
+.logo{
+    width:60px;
+    height:60px;
+    background:linear-gradient(135deg,#667eea,#764ba2);
+    border-radius:15px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    margin:0 auto 15px;
+    color:white;
+    font-size:28px;
+    font-weight:600;
+}
+
+h2{
+    font-size:22px;
+    margin-bottom:6px;
+    color:#1a1a1a;
+}
+
+.sub{
+    color:#666;
+    font-size:14px;
+    margin-bottom:25px;
+}
+
+.input-box{
+    position:relative;
+    margin-bottom:20px;
+}
+
+input{
+    width:100%;
+    padding:14px 15px;
+    border:2px solid #e5e7eb;
+    border-radius:12px;
+    font-size:15px;
+    outline:none;
+    transition:.2s;
+}
+
+input:focus{
+    border-color:#667eea;
+}
+
+button{
+    width:100%;
+    padding:14px;
+    background:linear-gradient(135deg,#667eea,#764ba2);
+    color:white;
+    border:none;
+    border-radius:12px;
+    font-size:16px;
+    font-weight:600;
+    cursor:pointer;
+    transition:.2s;
+    box-shadow:0 4px 15px rgba(102,126,234,.4);
+}
+
+button:active{
+    transform:scale(.98);
+}
+
+button:disabled{
+    opacity:.6;
+    cursor:not-allowed;
+}
+
+#msg{
+    margin-top:15px;
+    font-size:13px;
+    min-height:20px;
+    line-height:1.5;
+}
+
+.error{
+    color:#dc2626;
+}
+
+.info{
+    color:#667eea;
+}
+
+.success{
+    color:#059669;
+}
+
 </style>
-</head><body>
+
+</head>
+
+<body>
+
 <div class="card">
-<div class="logo">BSc</div>
-<h2>Data Science Notes</h2>
-<p class="sub">Enter your email to unlock notes</p>
-<div class="input-box">
-<input type="email" id="email" placeholder="you@gmail.com" autocomplete="email">
+
+    <div class="logo">
+        BSc
+    </div>
+
+    <h2>
+        Data Science Notes
+    </h2>
+
+    <p class="sub">
+        Enter your email to unlock notes
+    </p>
+
+    <div class="input-box">
+
+        <input
+            type="email"
+            id="email"
+            placeholder="you@gmail.com"
+            autocomplete="email"
+        >
+
+    </div>
+
+    <button id="loginBtn">
+        Continue →
+    </button>
+
+    <div id="msg"></div>
+
 </div>
-<button id="loginBtn">Continue →</button>
-<div id="msg"></div>
-</div>
+
+
 <script>
-const btn=document.getElementById('loginBtn');
-const emailEl=document.getElementById('email');
-const msg=document.getElementById('msg');
 
-btn.onclick = () => {
-  const email = emailEl.value.trim().toLowerCase();
-  if(!email || !email.includes('@')){
-    msg.style.color='red'; msg.textContent='Please enter valid email';
-    emailEl.style.borderColor='red'; return;
-  }
-  // Save instantly - NO supabase blocking!
-  localStorage.setItem('student_email', email);
-  msg.style.color='#667eea'; msg.textContent='Opening...';
-  btn.textContent='Opening...'; btn.disabled=true;
-  
-  // Small delay for animation then redirect
-  setTimeout(()=>{ window.location.href='payment.html'; }, 500);
-};
+/* =========================================
+   SUPABASE CONFIG
+========================================= */
 
-// Enter key also works
-emailEl.addEventListener('keypress', (e)=>{ if(e.key==='Enter') btn.click(); });
+const SUPABASE_URL =
+    "https://ztocwdfliodtjvmddqvb.supabase.co";
+
+const SUPABASE_KEY =
+    "sb_publishable_YhnQ6f1iSiaXt92GamwJPA_YWBIal-t";
+
+
+/* =========================================
+   ELEMENTS
+========================================= */
+
+const btn =
+    document.getElementById("loginBtn");
+
+const emailEl =
+    document.getElementById("email");
+
+const msg =
+    document.getElementById("msg");
+
+
+/* =========================================
+   MESSAGE
+========================================= */
+
+function showMessage(text,type){
+
+    msg.textContent = text;
+
+    msg.className = type || "";
+
+}
+
+
+/* =========================================
+   LOGIN
+========================================= */
+
+async function login(){
+
+    const email =
+        emailEl.value
+        .trim()
+        .toLowerCase();
+
+
+    /* Check email */
+
+    if(!email){
+
+        showMessage(
+            "Please enter your email address.",
+            "error"
+        );
+
+        emailEl.focus();
+
+        return;
+    }
+
+
+    /* Validate email */
+
+    if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){
+
+        showMessage(
+            "Please enter a valid email address.",
+            "error"
+        );
+
+        emailEl.focus();
+
+        return;
+    }
+
+
+    /* Disable button */
+
+    btn.disabled = true;
+
+    btn.textContent =
+        "Checking...";
+
+
+    showMessage(
+        "Checking your payment approval...",
+        "info"
+    );
+
+
+    try{
+
+        /* =====================================
+           CHECK APPROVED PAYMENT
+        ===================================== */
+
+        const url =
+            SUPABASE_URL +
+            "/rest/v1/payments" +
+            "?select=id,status,email" +
+            "&email=eq." +
+            encodeURIComponent(email) +
+            "&status=eq.approved" +
+            "&limit=1";
+
+
+        const response =
+            await fetch(
+                url,
+                {
+                    method:"GET",
+
+                    headers:{
+                        "apikey":SUPABASE_KEY,
+
+                        "Authorization":
+                            "Bearer " +
+                            SUPABASE_KEY
+                    }
+                }
+            );
+
+
+        const text =
+            await response.text();
+
+
+        /* Supabase error */
+
+        if(!response.ok){
+
+            throw new Error(
+                "HTTP " +
+                response.status +
+                ": " +
+                text
+            );
+
+        }
+
+
+        const data =
+            JSON.parse(text);
+
+
+        /* =====================================
+           SAVE EMAIL
+        ===================================== */
+
+        localStorage.setItem(
+            "student_email",
+            email
+        );
+
+
+        /* =====================================
+           APPROVED
+        ===================================== */
+
+        if(
+            Array.isArray(data) &&
+            data.length > 0
+        ){
+
+            localStorage.setItem(
+                "payment_status",
+                "approved"
+            );
+
+
+            showMessage(
+                "✓ Payment approved! Opening your notes...",
+                "success"
+            );
+
+
+            btn.textContent =
+                "Access Granted ✓";
+
+
+            setTimeout(function(){
+
+                window.location.href =
+                    "index.html";
+
+            },600);
+
+
+            return;
+        }
+
+
+        /* =====================================
+           NOT APPROVED
+        ===================================== */
+
+        localStorage.setItem(
+            "payment_status",
+            "pending"
+        );
+
+
+        showMessage(
+            "Payment is required. Opening payment page...",
+            "info"
+        );
+
+
+        btn.textContent =
+            "Opening Payment...";
+
+
+        setTimeout(function(){
+
+            window.location.href =
+                "payment.html";
+
+        },600);
+
+
+    }catch(error){
+
+        console.error(
+            "Login verification error:",
+            error
+        );
+
+
+        btn.disabled = false;
+
+        btn.textContent =
+            "Continue →";
+
+
+        showMessage(
+            "Unable to check your approval.\n" +
+            error.message,
+            "error"
+        );
+
+    }
+
+}
+
+
+/* =========================================
+   BUTTON
+========================================= */
+
+btn.addEventListener(
+    "click",
+    login
+);
+
+
+/* =========================================
+   ENTER KEY
+========================================= */
+
+emailEl.addEventListener(
+    "keydown",
+    function(event){
+
+        if(event.key === "Enter"){
+
+            login();
+
+        }
+
+    }
+);
+
 </script>
-</body></html>
+
+</body>
+</html>
