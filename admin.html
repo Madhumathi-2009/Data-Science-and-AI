@@ -1,13 +1,16 @@
 <!DOCTYPE html>
 
 <html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Admin Payment Panel</title>
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+
+<title>Admin - Payment Approval</title>
 
 <style>
+
 *{
     box-sizing:border-box;
 }
@@ -15,64 +18,50 @@
 body{
     margin:0;
     padding:20px;
-    font-family:Arial,Helvetica,sans-serif;
-    background:#f5f7fb;
+    font-family:Arial,sans-serif;
+    background:#f4f6fb;
     color:#111827;
 }
 
-.box{
-    max-width:650px;
-    margin:30px auto;
+.container{
+    width:100%;
+    max-width:700px;
+    margin:20px auto;
+}
+
+.panel{
     background:white;
-    padding:25px;
+    padding:24px;
     border-radius:18px;
-    box-shadow:0 10px 30px rgba(0,0,0,.08);
+    box-shadow:0 10px 35px rgba(0,0,0,.08);
 }
 
 h2{
     margin-top:0;
-    color:#111827;
-}
-
-h3{
-    margin-bottom:10px;
 }
 
 input{
     width:100%;
     padding:13px;
     margin:7px 0;
-    border:1.5px solid #d1d5db;
+    border:1px solid #d1d5db;
     border-radius:10px;
     font-size:15px;
-    outline:none;
-}
-
-input:focus{
-    border-color:#667eea;
 }
 
 button{
     width:100%;
+    border:0;
     padding:13px;
     margin:6px 0;
-    border:0;
     border-radius:10px;
     font-weight:bold;
-    font-size:14px;
     cursor:pointer;
-    transition:.2s;
-}
-
-button:hover{
-    transform:translateY(-1px);
-    opacity:.92;
 }
 
 button:disabled{
     opacity:.6;
     cursor:not-allowed;
-    transform:none;
 }
 
 .blue{
@@ -90,22 +79,17 @@ button:disabled{
     color:white;
 }
 
-.gray{
-    background:#6b7280;
-    color:white;
-}
-
 .manual{
     margin-top:20px;
     padding:18px;
-    background:#f0fdf4;
-    border:2px solid #10b981;
     border-radius:14px;
+    border:2px solid #10b981;
+    background:#f0fdf4;
 }
 
 .message{
     margin-top:18px;
-    padding:13px;
+    padding:14px;
     border-radius:10px;
     background:#eef2ff;
     white-space:pre-wrap;
@@ -128,19 +112,14 @@ button:disabled{
     padding:16px;
     border:1px solid #e5e7eb;
     border-radius:13px;
-    background:#fff;
+    background:white;
 }
 
-.card.email{
-    font-weight:bold;
-    font-size:15px;
-}
-
-.status{
+.badge{
     display:inline-block;
     padding:5px 9px;
     border-radius:20px;
-    font-size:12px;
+    font-size:11px;
     font-weight:bold;
 }
 
@@ -154,90 +133,100 @@ button:disabled{
     color:#166534;
 }
 
-.rejected{
-    background:#fee2e2;
-    color:#991b1b;
-}
-
 .small{
-    color:#6b7280;
+    margin-top:7px;
     font-size:12px;
-    margin-top:8px;
+    color:#6b7280;
 }
 
-hr{
-    border:0;
-    border-top:1px solid #eee;
-    margin:22px 0;
+.approve{
+    margin-top:12px;
 }
+
 </style>
 
 </head>
 
 <body>
 
-<div class="box">
+<div class="container">
 
-```
+<div class="panel">
+
 <h2>🔐 Admin Payment Panel</h2>
 
 <input
-    type="password"
-    id="pass"
-    value="admin123"
-    placeholder="Admin password"
+type="password"
+id="password"
+value="admin123"
+placeholder="Admin password"
+
 >
 
-<button class="blue" onclick="loadPayments()">
-    📋 Load All Payments
-</button>
+<button
+class="blue"
+id="loadBtn"
+
+>
+
+📋 Load All Payments </button>
 
 <div class="manual">
 
-    <h3>✅ Manual Approval</h3>
+<h3>✅ Manual Approval</h3>
 
-    <p style="font-size:13px;color:#555;">
-        Use this if a payment exists but you want to approve the user manually.
-    </p>
+<p style="font-size:13px;color:#555;">
+Use this when you want to approve a student directly.
+</p>
 
-    <input
-        type="email"
-        id="mEmail"
-        placeholder="User's exact email"
-    >
+<input
+type="email"
+id="manualEmail"
+placeholder="Student email"
 
-    <input
-        type="text"
-        id="mUtr"
-        placeholder="UTR number"
-    >
+>
 
-    <button class="green" onclick="manualApprove()">
-        ✅ Approve User
-    </button>
+<input
+type="text"
+id="manualUtr"
+placeholder="UTR / Transaction ID"
+
+>
+
+<button
+class="green"
+id="manualBtn"
+
+>
+
+Approve Student </button>
 
 </div>
 
-<div id="msg" class="message">
-    Enter the admin password and click "Load All Payments".
+<div
+    id="message"
+    class="message"
+>
+Ready.
 </div>
 
-<div id="list"></div>
+<div id="payments"></div>
 
-<hr>
+<hr style="border:0;border-top:1px solid #eee;margin:25px 0;">
 
-<button class="red" onclick="testConnection()">
-    🔧 Test Supabase Connection
-</button>
-```
+<button
+class="red"
+id="testBtn"
+
+>
+
+🔧 Test Supabase Connection </button>
+
+</div>
 
 </div>
 
 <script>
-
-/* =====================================================
-   SUPABASE CONFIG
-===================================================== */
 
 const SUPABASE_URL =
     "https://ztocwdfliodtjvmddqvb.supabase.co";
@@ -246,25 +235,28 @@ const SUPABASE_KEY =
     "sb_publishable_YhnQ6f1iSiaXt92GamwJPA_YWBIal-t";
 
 
-/* =====================================================
-   HELPERS
-===================================================== */
+const ADMIN_PASSWORD =
+    "admin123";
 
-function headers(extra = {}) {
+
+function getHeaders(extra={}){
 
     return {
-        "apikey": SUPABASE_KEY,
-        "Authorization": "Bearer " + SUPABASE_KEY,
-        "Content-Type": "application/json",
+        "apikey":SUPABASE_KEY,
+        "Authorization":
+            "Bearer " + SUPABASE_KEY,
+        "Content-Type":
+            "application/json",
         ...extra
     };
 
 }
 
 
-function message(text, type = "") {
+function setMessage(text,type=""){
 
-    const box = document.getElementById("msg");
+    const box =
+        document.getElementById("message");
 
     box.textContent = text;
 
@@ -280,11 +272,12 @@ function message(text, type = "") {
 function checkPassword(){
 
     const password =
-        document.getElementById("pass").value;
+        document.getElementById("password")
+        .value;
 
-    if(password !== "admin123"){
+    if(password !== ADMIN_PASSWORD){
 
-        alert("Wrong admin password.");
+        alert("Incorrect admin password.");
 
         return false;
     }
@@ -293,43 +286,50 @@ function checkPassword(){
 }
 
 
-/* =====================================================
-   TEST CONNECTION
-===================================================== */
+/* ==========================================
+   TEST
+========================================== */
 
-async function testConnection(){
+document.getElementById("testBtn")
+.addEventListener("click",async()=>{
 
-    message("Testing Supabase connection...");
+    setMessage(
+        "Testing Supabase..."
+    );
 
     try{
 
-        const response = await fetch(
-            SUPABASE_URL +
-            "/rest/v1/payments?select=*",
-            {
-                method:"GET",
-                headers:headers()
-            }
-        );
+        const response =
+            await fetch(
+                SUPABASE_URL +
+                "/rest/v1/payments?select=id&limit=1",
+                {
+                    method:"GET",
+                    headers:getHeaders()
+                }
+            );
 
-        const text = await response.text();
+
+        const text =
+            await response.text();
+
 
         if(response.ok){
 
-            message(
-                "✅ Supabase connection successful!\n\n" +
-                "HTTP Status: " +
+            setMessage(
+                "✅ Supabase connection works!\n\n" +
+                "HTTP " +
                 response.status +
-                "\n\nResponse:\n" +
-                text.substring(0,1000),
+                "\n\n" +
+                text,
                 "success"
             );
 
         }else{
 
-            message(
-                "❌ Supabase returned an error.\n\n" +
-                "HTTP Status: " +
+            setMessage(
+                "❌ Supabase connection failed.\n\n" +
+                "HTTP " +
                 response.status +
                 "\n\n" +
                 text,
@@ -340,55 +340,65 @@ async function testConnection(){
 
     }catch(error){
 
-        message(
-            "❌ Browser connection error:\n\n" +
+        setMessage(
+            "❌ Browser/network error:\n\n" +
             error.message,
             "error"
         );
 
     }
 
-}
+});
 
 
-/* =====================================================
-   LOAD PAYMENTS
-===================================================== */
+/* ==========================================
+   LOAD
+========================================== */
+
+document.getElementById("loadBtn")
+.addEventListener("click",loadPayments);
+
 
 async function loadPayments(){
 
     if(!checkPassword()) return;
 
-    message("⏳ Loading payments...");
 
     const list =
-        document.getElementById("list");
+        document.getElementById("payments");
 
     list.innerHTML = "";
 
+
+    setMessage(
+        "Loading payments..."
+    );
+
+
     try{
 
-        const url =
-            SUPABASE_URL +
-            "/rest/v1/payments" +
-            "?select=*" +
-            "&order=created_at.desc";
+        const response =
+            await fetch(
+                SUPABASE_URL +
+                "/rest/v1/payments" +
+                "?select=*" +
+                "&order=created_at.desc",
+                {
+                    method:"GET",
+                    headers:getHeaders()
+                }
+            );
 
-        const response = await fetch(
-            url,
-            {
-                method:"GET",
-                headers:headers()
-            }
-        );
 
-        const text = await response.text();
+        const text =
+            await response.text();
+
 
         if(!response.ok){
 
-            message(
+            setMessage(
                 "❌ Could not load payments.\n\n" +
-                "HTTP Status: " +
+                "HTTP " +
                 response.status +
                 "\n\n" +
                 text,
@@ -398,54 +408,41 @@ async function loadPayments(){
             return;
         }
 
-        let data;
 
-        try{
-
-            data = JSON.parse(text);
-
-        }catch{
-
-            message(
-                "❌ Supabase returned invalid JSON:\n\n" +
-                text,
-                "error"
-            );
-
-            return;
-        }
+        const rows =
+            JSON.parse(text);
 
 
-        message(
+        setMessage(
             "✅ Loaded " +
-            data.length +
+            rows.length +
             " payment(s).",
             "success"
         );
 
 
-        if(data.length === 0){
+        if(rows.length === 0){
 
             list.innerHTML =
-                "<p style='text-align:center;color:#666;margin-top:20px'>" +
-                "No payments found." +
+                "<p style='text-align:center;color:#777'>" +
+                "No payments yet." +
                 "</p>";
 
             return;
         }
 
 
-        data.forEach(payment => {
+        rows.forEach(row=>{
 
-            createPaymentCard(payment);
+            renderPayment(row);
 
         });
 
 
     }catch(error){
 
-        message(
-            "❌ Error loading payments:\n\n" +
+        setMessage(
+            "❌ Error:\n\n" +
             error.message,
             "error"
         );
@@ -455,11 +452,11 @@ async function loadPayments(){
 }
 
 
-/* =====================================================
-   CREATE PAYMENT CARD
-===================================================== */
+/* ==========================================
+   RENDER PAYMENT
+========================================== */
 
-function createPaymentCard(payment){
+function renderPayment(row){
 
     const card =
         document.createElement("div");
@@ -468,144 +465,147 @@ function createPaymentCard(payment){
 
 
     const email =
-        payment.email || "No email";
+        row.email || "Unknown";
 
     const utr =
-        payment.utr || "No UTR";
+        row.utr || "No UTR";
 
     const status =
-        payment.status || "pending";
+        row.status || "pending";
 
-    const created =
-        payment.created_at || "";
-
-
-    let statusClass = "pending";
-
-    if(status === "approved"){
-        statusClass = "approved";
-    }
-
-    if(status === "rejected"){
-        statusClass = "rejected";
-    }
+    const date =
+        row.created_at || "";
 
 
-    const emailDiv =
+    const emailEl =
         document.createElement("div");
 
-    emailDiv.className = "email";
+    emailEl.innerHTML =
+        "<b>📧 Email</b><br>";
 
-    emailDiv.textContent =
-        "📧 " + email;
+    const emailText =
+        document.createElement("span");
+
+    emailText.textContent =
+        email;
+
+    emailEl.appendChild(emailText);
 
 
-    const utrDiv =
+    const utrEl =
         document.createElement("div");
 
-    utrDiv.style.marginTop = "7px";
+    utrEl.style.marginTop = "9px";
 
-    utrDiv.textContent =
-        "🔢 UTR: " + utr;
+    utrEl.innerHTML =
+        "<b>🔢 UTR</b><br>";
+
+    const utrText =
+        document.createElement("span");
+
+    utrText.textContent =
+        utr;
+
+    utrEl.appendChild(utrText);
 
 
-    const statusDiv =
+    const statusEl =
         document.createElement("div");
 
-    statusDiv.style.marginTop = "8px";
+    statusEl.style.marginTop = "9px";
 
     const badge =
         document.createElement("span");
 
     badge.className =
-        "status " + statusClass;
+        "badge " +
+        (status === "approved"
+            ? "approved"
+            : "pending");
 
     badge.textContent =
         status.toUpperCase();
 
-    statusDiv.appendChild(badge);
+    statusEl.appendChild(badge);
 
 
-    const dateDiv =
+    const dateEl =
         document.createElement("div");
 
-    dateDiv.className = "small";
+    dateEl.className = "small";
 
-    dateDiv.textContent =
-        created;
+    dateEl.textContent =
+        date;
 
 
-    card.appendChild(emailDiv);
-
-    card.appendChild(utrDiv);
-
-    card.appendChild(statusDiv);
-
-    card.appendChild(dateDiv);
+    card.appendChild(emailEl);
+    card.appendChild(utrEl);
+    card.appendChild(statusEl);
+    card.appendChild(dateEl);
 
 
     if(status !== "approved"){
 
-        const approveButton =
+        const button =
             document.createElement("button");
 
-        approveButton.className = "green";
+        button.className =
+            "green approve";
 
-        approveButton.textContent =
-            "✅ Approve This User";
+        button.textContent =
+            "✅ Approve This Student";
 
-        approveButton.style.marginTop = "12px";
+        button.onclick =
+            ()=>approveEmail(email);
 
-        approveButton.onclick = function(){
-
-            approveEmail(email);
-
-        };
-
-        card.appendChild(approveButton);
+        card.appendChild(button);
 
     }else{
 
         const approved =
             document.createElement("div");
 
-        approved.style.marginTop = "12px";
+        approved.style.marginTop =
+            "12px";
 
-        approved.style.color = "#059669";
+        approved.style.color =
+            "#059669";
 
-        approved.style.fontWeight = "bold";
+        approved.style.fontWeight =
+            "bold";
 
         approved.textContent =
-            "✓ Already Approved";
+            "✓ Approved";
 
         card.appendChild(approved);
 
     }
 
 
-    document.getElementById("list")
+    document.getElementById("payments")
         .appendChild(card);
 
 }
 
 
-/* =====================================================
-   APPROVE EXISTING EMAIL
-===================================================== */
+/* ==========================================
+   APPROVE EMAIL
+========================================== */
 
 async function approveEmail(email){
 
     if(!checkPassword()) return;
 
+
     if(!confirm(
-        "Approve this user?\n\n" + email
+        "Approve:\n\n" + email + "?"
     )){
         return;
     }
 
 
-    message(
-        "⏳ Approving " + email + "..."
+    setMessage(
+        "Approving " + email + "..."
     );
 
 
@@ -623,9 +623,12 @@ async function approveEmail(email){
                 url,
                 {
                     method:"PATCH",
-                    headers:headers({
-                        "Prefer":"return=representation"
+
+                    headers:getHeaders({
+                        "Prefer":
+                            "return=representation"
                     }),
+
                     body:JSON.stringify({
                         status:"approved"
                     })
@@ -639,9 +642,9 @@ async function approveEmail(email){
 
         if(!response.ok){
 
-            message(
+            setMessage(
                 "❌ Approval failed.\n\n" +
-                "HTTP Status: " +
+                "HTTP " +
                 response.status +
                 "\n\n" +
                 text,
@@ -652,19 +655,20 @@ async function approveEmail(email){
         }
 
 
-        message(
+        setMessage(
             "✅ " +
             email +
-            " has been approved!",
+            " is now APPROVED.",
             "success"
         );
 
 
         await loadPayments();
 
+
     }catch(error){
 
-        message(
+        setMessage(
             "❌ Approval error:\n\n" +
             error.message,
             "error"
@@ -675,9 +679,16 @@ async function approveEmail(email){
 }
 
 
-/* =====================================================
-   MANUAL APPROVAL
-===================================================== */
+/* ==========================================
+   MANUAL APPROVE
+========================================== */
+
+document.getElementById("manualBtn")
+.addEventListener(
+    "click",
+    manualApprove
+);
+
 
 async function manualApprove(){
 
@@ -685,21 +696,21 @@ async function manualApprove(){
 
 
     const email =
-        document.getElementById("mEmail")
+        document.getElementById("manualEmail")
         .value
         .trim()
         .toLowerCase();
 
 
     const utr =
-        document.getElementById("mUtr")
+        document.getElementById("manualUtr")
         .value
         .trim();
 
 
     if(!email){
 
-        alert("Enter the user's email.");
+        alert("Enter student email.");
 
         return;
     }
@@ -707,46 +718,32 @@ async function manualApprove(){
 
     if(!utr){
 
-        alert("Enter the UTR number.");
+        alert("Enter UTR.");
 
         return;
     }
 
 
-    if(!confirm(
-        "Approve this user?\n\n" +
-        "Email: " + email +
-        "\nUTR: " + utr
-    )){
-        return;
-    }
-
-
-    message(
-        "⏳ Checking existing payment..."
+    setMessage(
+        "Checking " + email + "..."
     );
 
 
     try{
 
-        /* ---------------------------------------------
-           STEP 1: CHECK WHETHER EMAIL EXISTS
-        --------------------------------------------- */
-
-        const findURL =
-            SUPABASE_URL +
-            "/rest/v1/payments" +
-            "?select=*" +
-            "&email=eq." +
-            encodeURIComponent(email);
-
+        /* First see whether a row exists */
 
         const findResponse =
             await fetch(
-                findURL,
+                SUPABASE_URL +
+                "/rest/v1/payments" +
+                "?select=id" +
+                "&email=eq." +
+                encodeURIComponent(email) +
+                "&limit=1",
                 {
                     method:"GET",
-                    headers:headers()
+                    headers:getHeaders()
                 }
             );
 
@@ -757,8 +754,11 @@ async function manualApprove(){
 
         if(!findResponse.ok){
 
-            message(
-                "❌ Could not check payment.\n\n" +
+            setMessage(
+                "❌ Could not check email.\n\n" +
+                "HTTP " +
+                findResponse.status +
+                "\n\n" +
                 findText,
                 "error"
             );
@@ -767,36 +767,28 @@ async function manualApprove(){
         }
 
 
-        const existing =
+        const rows =
             JSON.parse(findText);
 
 
-        /* ---------------------------------------------
-           STEP 2: UPDATE EXISTING PAYMENT
-        --------------------------------------------- */
+        /* Existing row */
 
-        if(existing.length > 0){
-
-            message(
-                "⏳ Existing payment found. Approving..."
-            );
-
-
-            const updateURL =
-                SUPABASE_URL +
-                "/rest/v1/payments" +
-                "?email=eq." +
-                encodeURIComponent(email);
-
+        if(rows.length > 0){
 
             const updateResponse =
                 await fetch(
-                    updateURL,
+                    SUPABASE_URL +
+                    "/rest/v1/payments" +
+                    "?email=eq." +
+                    encodeURIComponent(email),
                     {
                         method:"PATCH",
-                        headers:headers({
-                            "Prefer":"return=representation"
+
+                        headers:getHeaders({
+                            "Prefer":
+                                "return=representation"
                         }),
+
                         body:JSON.stringify({
                             status:"approved",
                             utr:utr
@@ -811,8 +803,11 @@ async function manualApprove(){
 
             if(!updateResponse.ok){
 
-                message(
-                    "❌ Update failed.\n\n" +
+                setMessage(
+                    "❌ Could not approve.\n\n" +
+                    "HTTP " +
+                    updateResponse.status +
+                    "\n\n" +
                     updateText,
                     "error"
                 );
@@ -820,77 +815,70 @@ async function manualApprove(){
                 return;
             }
 
+        }else{
 
-            message(
-                "✅ USER APPROVED!\n\n" +
-                "Email: " + email +
-                "\nUTR: " + utr +
-                "\n\n" +
-                "The user can now log in again.",
-                "success"
-            );
+            /* No row — create approved one */
+
+            const insertResponse =
+                await fetch(
+                    SUPABASE_URL +
+                    "/rest/v1/payments",
+                    {
+                        method:"POST",
+
+                        headers:getHeaders({
+                            "Prefer":
+                                "return=representation"
+                        }),
+
+                        body:JSON.stringify({
+                            email:email,
+                            utr:utr,
+                            status:"approved"
+                        })
+                    }
+                );
 
 
-            await loadPayments();
+            const insertText =
+                await insertResponse.text();
 
-            return;
+
+            if(!insertResponse.ok){
+
+                setMessage(
+                    "❌ Could not create approval.\n\n" +
+                    "HTTP " +
+                    insertResponse.status +
+                    "\n\n" +
+                    insertText,
+                    "error"
+                );
+
+                return;
+            }
+
         }
 
 
-        /* ---------------------------------------------
-           STEP 3: INSERT NEW APPROVED PAYMENT
-        --------------------------------------------- */
-
-        message(
-            "⏳ User not found. Creating approved payment..."
-        );
-
-
-        const insertResponse =
-            await fetch(
-                SUPABASE_URL +
-                "/rest/v1/payments",
-                {
-                    method:"POST",
-                    headers:headers({
-                        "Prefer":"return=representation"
-                    }),
-                    body:JSON.stringify({
-                        email:email,
-                        utr:utr,
-                        status:"approved"
-                    })
-                }
-            );
-
-
-        const insertText =
-            await insertResponse.text();
-
-
-        if(!insertResponse.ok){
-
-            message(
-                "❌ Could not create payment.\n\n" +
-                "HTTP Status: " +
-                insertResponse.status +
-                "\n\n" +
-                insertText,
-                "error"
-            );
-
-            return;
-        }
-
-
-        message(
-            "✅ USER APPROVED!\n\n" +
-            "Email: " + email +
-            "\nUTR: " + utr +
-            "\n\n" +
-            "The user can now log in again.",
+        setMessage(
+            "✅ STUDENT APPROVED!\n\n" +
+            "Email: " +
+            email +
+            "\nUTR: " +
+            utr,
             "success"
         );
+
+
+        document.getElementById(
+            "manualEmail"
+        ).value = "";
+
+
+        document.getElementById(
+            "manualUtr"
+        ).value = "";
 
 
         await loadPayments();
@@ -898,7 +886,7 @@ async function manualApprove(){
 
     }catch(error){
 
-        message(
+        setMessage(
             "❌ Manual approval error:\n\n" +
             error.message,
             "error"
