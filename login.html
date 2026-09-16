@@ -1,39 +1,56 @@
 <!DOCTYPE html>
 <html><head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Login - Data Science Notes</title>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<title>BSc Data Science Notes - Login</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600&display=swap" rel="stylesheet">
 <style>
-body{font-family:Arial;background:#f0f0f0;display:flex;justify-content:center;align-items:center;min-height:100vh;margin:0}
-.card{background:white;padding:30px;border-radius:12px;box-shadow:0 4px 15px rgba(0,0,0,0.1);width:90%;max-width:380px;text-align:center}
-input{width:100%;padding:12px;margin:10px 0;border:1px solid #ccc;border-radius:8px;box-sizing:border-box}
-button{width:100%;padding:12px;margin:8px 0;border:none;border-radius:8px;cursor:pointer;font-weight:bold;color:white;background:black}
-#msg{margin-top:12px;font-size:14px;color:red}
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Outfit',sans-serif}
+body{min-height:100vh;background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);display:flex;justify-content:center;align-items:center;padding:20px}
+.card{background:white;width:100%;max-width:400px;padding:35px 30px;border-radius:20px;box-shadow:0 20px 40px rgba(0,0,0,0.2);text-align:center;animation:pop 0.4s ease}
+@keyframes pop{from{transform:scale(0.9);opacity:0}to{transform:scale(1);opacity:1}}
+.logo{width:60px;height:60px;background:linear-gradient(135deg,#667eea,#764ba2);border-radius:15px;display:flex;align-items:center;justify-content:center;margin:0 auto 15px;color:white;font-size:28px;font-weight:600}
+h2{font-size:22px;margin-bottom:6px;color:#1a1a1a}
+.sub{color:#666;font-size:14px;margin-bottom:25px}
+.input-box{position:relative;margin-bottom:20px}
+input{width:100%;padding:14px 15px;border:2px solid #e5e7eb;border-radius:12px;font-size:15px;outline:none;transition:0.2s}
+input:focus{border-color:#667eea}
+button{width:100%;padding:14px;background:linear-gradient(135deg,#667eea,#764ba2);color:white;border:none;border-radius:12px;font-size:16px;font-weight:600;cursor:pointer;transition:0.2s;box-shadow:0 4px 15px rgba(102,126,234,0.4)}
+button:active{transform:scale(0.98)}
+button:disabled{opacity:0.6}
+#msg{margin-top:15px;font-size:13px;min-height:18px}
 </style>
 </head><body>
 <div class="card">
-<h2>BSc Data Science Notes</h2>
-<p>Enter your email to continue</p>
-<input type="email" id="email" placeholder="your@gmail.com">
-<button id="loginBtn">Continue</button>
+<div class="logo">BSc</div>
+<h2>Data Science Notes</h2>
+<p class="sub">Enter your email to unlock notes</p>
+<div class="input-box">
+<input type="email" id="email" placeholder="you@gmail.com" autocomplete="email">
+</div>
+<button id="loginBtn">Continue →</button>
 <div id="msg"></div>
 </div>
 <script>
-const supabase = window.supabase.createClient('https://ztocwdfliodtjvmddqvb.supabase.co','sb_publishable_YhnQ6f1iSiaXt92GamwJPA_YWBIal-t');
-document.getElementById('loginBtn').onclick = async () => {
-  const email = document.getElementById('email').value.trim();
-  if(!email){document.getElementById('msg').textContent='Enter email';return;}
-  localStorage.setItem('student_email', email);
-  document.getElementById('msg').style.color='blue';
-  document.getElementById('msg').textContent='Checking payment...';
-  // Check if already approved
-  const {data} = await supabase.from('payments').select('*').eq('email',email).eq('status','approved').maybeSingle();
-  if(data){
-    localStorage.setItem('payment_approved','true');
-    window.location.href='index.html';
-  } else {
-    window.location.href='payment.html';
+const btn=document.getElementById('loginBtn');
+const emailEl=document.getElementById('email');
+const msg=document.getElementById('msg');
+
+btn.onclick = () => {
+  const email = emailEl.value.trim().toLowerCase();
+  if(!email || !email.includes('@')){
+    msg.style.color='red'; msg.textContent='Please enter valid email';
+    emailEl.style.borderColor='red'; return;
   }
+  // Save instantly - NO supabase blocking!
+  localStorage.setItem('student_email', email);
+  msg.style.color='#667eea'; msg.textContent='Opening...';
+  btn.textContent='Opening...'; btn.disabled=true;
+  
+  // Small delay for animation then redirect
+  setTimeout(()=>{ window.location.href='payment.html'; }, 500);
 };
+
+// Enter key also works
+emailEl.addEventListener('keypress', (e)=>{ if(e.key==='Enter') btn.click(); });
 </script>
 </body></html>
