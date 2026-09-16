@@ -123,6 +123,7 @@ button:disabled{
     font-size:13px;
     min-height:20px;
     line-height:1.5;
+    white-space:pre-line;
 }
 
 .error{
@@ -263,8 +264,7 @@ async function login(){
 
     btn.disabled = true;
 
-    btn.textContent =
-        "Checking...";
+    btn.textContent = "Checking...";
 
 
     showMessage(
@@ -275,18 +275,20 @@ async function login(){
 
     try{
 
-        /* =====================================
-           CHECK APPROVED PAYMENT
-        ===================================== */
+        /*
+        ========================================
+        STEP 1
+        Get ALL payment records for this email
+        ========================================
+        */
 
         const url =
             SUPABASE_URL +
             "/rest/v1/payments" +
-            "?select=id,status,email" +
+            "?select=id,email,status,utr,created_at" +
             "&email=eq." +
             encodeURIComponent(email) +
-            "&status=eq.approved" +
-            "&limit=1";
+            "&order=created_at.desc";
 
 
         const response =
@@ -300,37 +302,81 @@ async function login(){
 
                         "Authorization":
                             "Bearer " +
-                            SUPABASE_KEY
+                            SUPABASE_KEY,
+
+                        "Accept":
+                            "application/json"
                     }
                 }
             );
 
 
-        const text =
+        const responseText =
             await response.text();
 
-
-        /* Supabase error */
 
         if(!response.ok){
 
             throw new Error(
-                "HTTP " +
+                "Supabase error " +
                 response.status +
                 ": " +
-                text
+                responseText
             );
 
         }
 
 
-        const data =
-            JSON.parse(text);
+        let records = [];
+
+        try{
+
+            records =
+                JSON.parse(responseText);
+
+        }catch(parseError){
+
+            throw new Error(
+                "Invalid response from Supabase."
+            );
+
+        }
 
 
-        /* =====================================
-           SAVE EMAIL
-        ===================================== */
+        console.log(
+            "Payment records found:",
+            records
+        );
+
+
+        /*
+        ========================================
+        STEP 2
+        Check whether ANY record is approved
+        ========================================
+        */
+
+        const approvedRecord =
+            Array.isArray(records)
+            ?
+            records.find(function(record){
+
+                return String(record.status || "")
+                    .trim()
+                    .toLowerCase()
+                    === "approved";
+
+            })
+            :
+            null;
+
+
+        /*
+        ========================================
+        STEP 3
+        SAVE EMAIL
+        ========================================
+        */
 
         localStorage.setItem(
             "student_email",
@@ -338,23 +384,27 @@ async function login(){
         );
 
 
-        /* =====================================
-           APPROVED
-        ===================================== */
+        /*
+        ========================================
+        APPROVED
+        ========================================
+        */
 
-        if(
-            Array.isArray(data) &&
-            data.length > 0
-        ){
+        if(approvedRecord){
 
             localStorage.setItem(
                 "payment_status",
                 "approved"
             );
 
+            localStorage.setItem(
+                "payment_id",
+                approvedRecord.id || ""
+            );
+
 
             showMessage(
-                "✓ Payment approved! Opening your notes...",
+                "✓ Payment approved!\nOpening your notes...",
                 "success"
             );
 
@@ -365,19 +415,22 @@ async function login(){
 
             setTimeout(function(){
 
-                window.location.href =
-                    "index.html";
+                window.location.replace(
+                    "index.html"
+                );
 
-            },600);
+            },800);
 
 
             return;
         }
 
 
-        /* =====================================
-           NOT APPROVED
-        ===================================== */
+        /*
+        ========================================
+        NOT APPROVED
+        ========================================
+        */
 
         localStorage.setItem(
             "payment_status",
@@ -386,7 +439,7 @@ async function login(){
 
 
         showMessage(
-            "Payment is required. Opening payment page...",
+            "Your payment has not been approved yet.\nOpening payment page...",
             "info"
         );
 
@@ -397,16 +450,17 @@ async function login(){
 
         setTimeout(function(){
 
-            window.location.href =
-                "payment.html";
+            window.location.replace(
+                "payment.html"
+            );
 
-        },600);
+        },800);
 
 
     }catch(error){
 
         console.error(
-            "Login verification error:",
+            "LOGIN ERROR:",
             error
         );
 
@@ -418,7 +472,7 @@ async function login(){
 
 
         showMessage(
-            "Unable to check your approval.\n" +
+            "Unable to check your payment approval.\n\n" +
             error.message,
             "error"
         );
@@ -447,6 +501,8 @@ emailEl.addEventListener(
     function(event){
 
         if(event.key === "Enter"){
+
+            event.preventDefault();
 
             login();
 
