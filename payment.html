@@ -1,32 +1,44 @@
 <!DOCTYPE html>
-<html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Pay Rs.100</title>
+<html><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Payment - Data Science Notes</title>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-</head><body style="font-family:Arial;max-width:500px;margin:20px auto;padding:20px;text-align:center;border:1px solid #ddd;border-radius:10px">
-<h2>Pay Rs.100 to Get Access</h2>
-<p>Scan QR and Pay</p>
-<img src="qr.jpg" width="250" style="border:2px solid #000;padding:5px">
-<p><b>UPI: madhu12lakshmi@oksbi</b></p>
-<hr>
-<h3>After Payment, Upload Screenshot</h3>
-<input type="file" id="file" accept="image/*"><br><br>
-<button onclick="upload()" style="padding:12px 25px;background:green;color:white;border:none;border-radius:5px">Upload Screenshot</button>
-<p id="msg" style="color:green;font-weight:bold"></p>
-<p id="emailshow" style="font-size:12px"></p>
+<style>
+body{font-family:Arial;background:#f5f5f5;display:flex;justify-content:center;padding:20px;margin:0}
+.card{background:white;padding:25px;border-radius:12px;max-width:450px;width:100%;text-align:center;box-shadow:0 4px 15px rgba(0,0,0,0.1)}
+.qr{width:250px;height:250px;background:#eee;margin:15px auto;display:flex;align-items:center;justify-content:center;border-radius:8px}
+input{width:100%;padding:12px;margin:10px 0;border:1px solid #ccc;border-radius:8px;box-sizing:border-box}
+button{width:100%;padding:12px;background:green;color:white;border:none;border-radius:8px;font-weight:bold;cursor:pointer}
+#msg{margin-top:12px;font-size:14px}
+</style>
+</head><body>
+<div class="card">
+<h2>Unlock All Notes - ₹99</h2>
+<p>Pay on this QR, then enter UTR number</p>
+<div class="qr">
+<!-- REPLACE THIS WITH YOUR QR IMAGE -->
+<p>Your QR Here<br>Upload qr.jpg</p>
+<img src="qr.jpg" style="width:100%;display:none" onload="this.style.display='block'" onerror="this.style.display='none'">
+</div>
+<p>Email: <b id="emailShow"></b></p>
+<input type="text" id="utr" placeholder="Enter UTR / Transaction ID (12 digits)">
+<button id="submitBtn">Submit Payment Proof</button>
+<div id="msg"></div>
+</div>
 <script>
-const supabase = window.supabase.createClient('https://ztocwdfliodtjvmddqvb.supabase.co', 'sb_publishable_YhnQ6f1iSiaXt92GamwJPA_YWBIal-t');
-async function check(){ const {data:{user}} = await supabase.auth.getUser(); if(!user) location.href='login.html'; else document.getElementById('emailshow').innerText='Logged in: '+user.email; }
-check();
-async function upload(){
-  const file=document.getElementById('file').files[0];
-  if(!file) return alert('Select screenshot');
-  document.getElementById('msg').innerText='Uploading...';
-  const {data:{user}} = await supabase.auth.getUser();
-  const fileName = user.email.replace(/[^a-zA-Z0-9]/g,'_') + '_' + Date.now() + '.jpg';
-  const {error} = await supabase.storage.from('screenshots').upload(fileName, file);
-  if(error){ document.getElementById('msg').innerText='Error: '+error.message; return; }
-  const {data:urlData} = supabase.storage.from('screenshots').getPublicUrl(fileName);
-  await supabase.from('payments').insert({email:user.email, screenshot_url:urlData.publicUrl, status:'pending'});
-  document.getElementById('msg').innerText='✅ Uploaded! Wait for approval. After I approve, login again to see notes.';
-}
-</script></body></html>
+const supabase = window.supabase.createClient('https://ztocwdfliodtjvmddqvb.supabase.co','sb_publishable_YhnQ6f1iSiaXt92GamwJPA_YWBIal-t');
+const email = localStorage.getItem('student_email');
+if(!email){location.href='login.html';}
+document.getElementById('emailShow').textContent=email;
+document.getElementById('submitBtn').onclick=async()=>{
+ const utr=document.getElementById('utr').value.trim();
+ if(!utr){document.getElementById('msg').textContent='Enter UTR';return;}
+ document.getElementById('msg').style.color='blue';
+ document.getElementById('msg').textContent='Submitting...';
+ const {error}=await supabase.from('payments').insert({email:email, utr:utr, status:'pending'});
+ if(error){document.getElementById('msg').style.color='red';document.getElementById('msg').textContent='Error: '+error.message+' - Maybe already submitted?';return;}
+ document.getElementById('msg').style.color='green';
+ document.getElementById('msg').innerHTML='Submitted! Wait for approval.<br>After I approve, open index.html again.';
+};
+</script>
+</body></html>
