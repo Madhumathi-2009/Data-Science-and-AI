@@ -2,61 +2,64 @@
 <html><head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Payment - Data Science Notes</title>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600&display=swap" rel="stylesheet">
 <style>
 *{margin:0;padding:0;box-sizing:border-box;font-family:'Outfit',sans-serif}
 body{min-height:100vh;background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);display:flex;justify-content:center;align-items:center;padding:20px}
-.card{background:white;width:100%;max-width:420px;padding:30px;border-radius:20px;box-shadow:0 20px 40px rgba(0,0,0,0.2);text-align:center}
-h2{font-size:22px;margin-bottom:5px} .sub{color:#666;font-size:13px;margin-bottom:15px}
+.card{background:white;width:100%;max-width:420px;padding:30px;border-radius:20px;text-align:center;box-shadow:0 20px 40px rgba(0,0,0,0.2)}
+.badge{background:#eef2ff;color:#667eea;padding:6px 12px;border-radius:20px;font-size:12px;display:inline-block;margin:10px 0}
 .qr-box{background:#f9fafb;border:2px dashed #e5e7eb;border-radius:15px;padding:15px;margin:15px 0}
 .qr-box img{width:100%;max-width:280px;border-radius:10px}
-.badge{background:#eef2ff;color:#667eea;padding:6px 12px;border-radius:20px;font-size:12px;display:inline-block;margin-bottom:15px}
-input{width:100%;padding:14px;border:2px solid #e5e7eb;border-radius:12px;font-size:15px;outline:none;margin-bottom:15px}
-input:focus{border-color:#667eea}
-button{width:100%;padding:14px;background:#10b981;color:white;border:none;border-radius:12px;font-size:16px;font-weight:600;cursor:pointer}
-#msg{margin-top:15px;font-size:13px;min-height:20px;word-break:break-all}
-.back{margin-top:15px;display:block;color:#666;font-size:13px;text-decoration:none}
+input{width:100%;padding:14px;border:2px solid #e5e7eb;border-radius:12px;margin-bottom:15px;outline:none}
+button{width:100%;padding:14px;border:none;border-radius:12px;font-size:16px;font-weight:600;cursor:pointer;margin-bottom:10px}
+.btn-green{background:#10b981;color:white} .btn-blue{background:#667eea;color:white}
+#msg{margin-top:10px;font-size:13px;min-height:20px}
 </style>
 </head><body>
 <div class="card">
 <h2>Unlock Notes - ₹99</h2>
-<p class="sub">Scan & pay, then enter UTR</p>
+<p style="color:#666;font-size:13px;margin-bottom:10px">Scan QR and pay</p>
 <div class="badge" id="emailShow"></div>
 <div class="qr-box">
-<img src="qr.jpg" onerror="this.style.display='none';document.getElementById('qrText').style.display='block'">
-<p id="qrText" style="display:none;color:#999">Upload QR as qr.jpg</p>
+<img src="qr.jpg" onerror="this.style.display='none';document.getElementById('qt').style.display='block'">
+<p id="qt" style="display:none;color:#999">Upload qr.jpg in GitHub</p>
 </div>
-<input type="text" id="utr" placeholder="Enter 12-digit UTR">
-<button id="submitBtn">Submit Proof</button>
+<input type="text" id="utr" placeholder="Enter UTR / Transaction ID">
+<button class="btn-green" id="submitBtn">I Have Paid - Submit</button>
+<button class="btn-blue" id="waBtn">Send Screenshot on WhatsApp</button>
 <div id="msg"></div>
-<a href="login.html" class="back">← Change email</a>
 </div>
 <script>
-const supabase = window.supabase.createClient('https://ztocwdfliodtjvmddqvb.supabase.co','sb_publishable_YhnQ6f1iSiaXt92GamwJPA_YWBIal-t');
 const email = localStorage.getItem('student_email');
 if(!email){location.href='login.html';}
 document.getElementById('emailShow').textContent=email;
 
-document.getElementById('submitBtn').onclick=async()=>{
- const utrEl=document.getElementById('utr');
- const utr=utrEl.value.trim();
- const msg=document.getElementById('msg');
- const btn=document.getElementById('submitBtn');
- if(utr.length<4){msg.style.color='red';msg.textContent='Enter valid UTR';return;}
- btn.disabled=true; btn.textContent='Submitting...'; msg.style.color='blue'; msg.textContent='Connecting to Supabase...';
+document.getElementById('submitBtn').onclick=()=>{
+ const utr=document.getElementById('utr').value.trim();
+ if(utr.length<3){document.getElementById('msg').style.color='red';document.getElementById('msg').textContent='Enter UTR';return;}
+ // Save locally - NEVER gets stuck
+ localStorage.setItem('payment_utr', utr);
+ localStorage.setItem('payment_status', 'pending');
+ document.getElementById('msg').style.color='green';
+ document.getElementById('msg').innerHTML='✅ Saved! Your request is pending.<br>Now click WhatsApp button below<br>After I approve, open index.html';
+ document.getElementById('submitBtn').textContent='Submitted ✓';
+ // Try to also save to supabase in background (but don't block if fails)
  try{
-   const {data, error} = await supabase.from('payments').insert({email:email, utr:utr, status:'pending'}).select();
-   console.log('Result:', data, error);
-   if(error){
-     msg.style.color='red'; msg.textContent='ERROR: '+error.message+' | Details: '+JSON.stringify(error);
-     btn.disabled=false; btn.textContent='Submit Proof'; return;
-   }
-   msg.style.color='green'; msg.innerHTML='✅ Submitted!<br>Status: pending<br>Go to admin.html to approve<br>Then open index.html';
-   btn.textContent='Submitted ✓';
- }catch(e){
-   msg.style.color='red'; msg.textContent='JS Error: '+e.message; btn.disabled=false; btn.textContent='Submit Proof';
- }
+  const s=document.createElement('script');
+  s.src='https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2';
+  s.onload=async()=>{
+   const supa=window.supabase.createClient('https://ztocwdfliodtjvmddqvb.supabase.co','sb_publishable_YhnQ6f1iSiaXt92GamwJPA_YWBIal-t');
+   await supa.from('payments').insert({email:email,utr:utr,status:'pending'});
+  };
+  document.head.appendChild(s);
+ }catch(e){}
+};
+
+document.getElementById('waBtn').onclick=()=>{
+ const utr=document.getElementById('utr').value.trim()||'No UTR';
+ const text=`Hi! I paid ₹99 for Data Science Notes. Email: ${email} UTR: ${utr}. Please approve my access.`;
+ window.open(`https://wa.me/917695998405?text=${encodeURIComponent(text)}`,'_blank');
+ // REPLACE 919999999999 with YOUR WhatsApp number!
 };
 </script>
 </body></html>
