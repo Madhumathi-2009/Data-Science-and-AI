@@ -1,56 +1,89 @@
 <!DOCTYPE html>
 <html><head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Admin Approve</title>
+<title>Admin - Approve Payments</title>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<style>body{font-family:Arial;padding:20px;background:#f5f5f5} .card{background:white;padding:15px;border-radius:10px;margin-bottom:10px} input{padding:10px;border:1px solid #ddd;border-radius:8px;width:100%;margin:5px 0} button{padding:10px 15px;border:none;border-radius:8px;cursor:pointer;font-weight:bold;margin:5px 0} .green{background:#10b981;color:white} .box{background:white;padding:20px;border-radius:15px;max-width:500px;margin:0 auto}</style>
+<style>
+body{font-family:Arial;background:#f5f5f5;padding:15px} 
+.box{max-width:600px;margin:0 auto;background:white;padding:20px;border-radius:15px}
+input{width:100%;padding:12px;border:1.5px solid #ddd;border-radius:10px;margin:8px 0;box-sizing:border-box}
+button{width:100%;padding:12px;border:none;border-radius:10px;font-weight:bold;cursor:pointer;margin:5px 0}
+.green{background:#10b981;color:white} .blue{background:#667eea;color:white}
+.card{border:1px solid #eee;padding:12px;border-radius:10px;margin:10px 0;display:flex;justify-content:space-between;align-items:center}
+.pending{color:orange;font-weight:bold} .approved{color:green;font-weight:bold}
+#msg{margin-top:10px;padding:10px;border-radius:8px;font-size:13px}
+</style>
 </head><body>
 <div class="box">
-<h2>Admin Panel</h2>
-<input type="password" id="pass" placeholder="Password: admin123">
-<button onclick="load()" class="green">Load Pending Payments</button>
+<h2>Admin Panel 💰</h2>
+<input type="password" id="pass" value="admin123">
+<button class="blue" onclick="load()">Load Pending Payments</button>
 
-<h3 style="margin-top:20px">Manual Approve (for mom's phone)</h3>
-<input type="text" id="manualEmail" placeholder="Enter email to approve (mom's email)">
-<input type="text" id="manualUtr" placeholder="UTR: 626019819396">
-<button onclick="manualApprove()" style="background:#667eea;color:white;width:100%">Approve This Email Instantly</button>
+<div style="background:#f9fafb;padding:15px;border-radius:10px;margin-top:15px">
+<h4>Manual Approve (Use for your mom now)</h4>
+<input type="text" id="mEmail" placeholder="Mom's email (exact from login)">
+<input type="text" id="mUtr" placeholder="UTR: 626019819396" value="626019819396">
+<button class="green" onclick="manualApprove()">Approve This Email Now</button>
+</div>
 
-<div id="list" style="margin-top:20px"></div>
-<div id="msg" style="margin-top:15px;font-weight:bold"></div>
+<div id="msg"></div>
+<div id="list"></div>
 </div>
 <script>
-const supabase = window.supabase.createClient('https://ztocwdfliodtjvmddqvb.supabase.co','sb_publishable_YhnQ6f1iSiaXt92GamwJPA_YWBIal-t');
+const SUPABASE_URL = 'https://ztocwdfliodtjvmddqvb.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_YhnQ6f1iSiaXt92GamwJPA_YWBIal-t';
+const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
 async function load(){
- if(document.getElementById('pass').value!=='admin123'){alert('Wrong password');return;}
- document.getElementById('msg').textContent='Loading...';
- const {data,error}=await supabase.from('payments').select('*').order('created_at',{ascending:false});
- if(error){document.getElementById('msg').textContent='Error: '+error.message+' | Run SQL: ALTER TABLE payments DISABLE ROW LEVEL SECURITY;';return;}
- const list=document.getElementById('list'); list.innerHTML='';
- data.forEach(p=>{
-   const div=document.createElement('div'); div.className='card';
-   div.innerHTML=`<b>${p.email}</b><br>UTR: ${p.utr}<br>Status: ${p.status} ${p.status!='approved'?`<br><button class="green" onclick="approve('${p.id}')">Approve</button>`:''}`;
-   list.appendChild(div);
- });
- document.getElementById('msg').textContent='Loaded '+data.length+' payments';
+  const pass = document.getElementById('pass').value;
+  if(pass !== 'admin123'){ alert('Password is admin123'); return; }
+  document.getElementById('msg').innerHTML = '⏳ Loading...';
+  document.getElementById('msg').style.background='#eef2ff';
+  try{
+    const {data, error} = await supabase.from('payments').select('*').order('created_at',{ascending:false});
+    if(error){ 
+      document.getElementById('msg').innerHTML = '❌ Error: '+error.message+'<br><br>Run the SQL I gave in Supabase SQL Editor!'; 
+      document.getElementById('msg').style.background='#fee2e2'; 
+      return; 
+    }
+    const list = document.getElementById('list');
+    list.innerHTML = '';
+    if(!data || data.length===0){ 
+      document.getElementById('msg').innerHTML='No payments yet. When someone pays, their Email + UTR will show here.'; 
+      return; 
+    }
+    data.forEach(p=>{
+      const div = document.createElement('div');
+      div.className='card';
+      div.innerHTML = `<div><b>${p.email}</b><br>UTR: ${p.utr}<br>Status: <span class="${p.status}">${p.status}</span><br><small>${new Date(p.created_at).toLocaleString()}</small></div><div>${p.status!=='approved'?`<button class="green" style="width:auto;padding:8px 15px" onclick="approveId('${p.id}')">Approve</button>`:'✓ Done'}</div>`;
+      list.appendChild(div);
+    });
+    document.getElementById('msg').innerHTML = `✅ Loaded ${data.length} payments. Pending will show email+UTR above.`;
+    document.getElementById('msg').style.background='#dcfce7';
+  }catch(e){
+    document.getElementById('msg').innerHTML='JS Error: '+e.message;
+  }
 }
-async function approve(id){
- const {error}=await supabase.from('payments').update({status:'approved'}).eq('id',id);
- if(error){alert(error.message);return;} alert('Approved!'); load();
+
+async function approveId(id){
+  const {error} = await supabase.from('payments').update({status:'approved'}).eq('id',id);
+  if(error){alert(error.message);return;}
+  alert('Approved!'); load();
 }
+
 async function manualApprove(){
- const email=document.getElementById('manualEmail').value.trim().toLowerCase();
- const utr=document.getElementById('manualUtr').value.trim()||'626019819396';
- if(!email){alert('Enter email');return;}
- if(document.getElementById('pass').value!=='admin123'){alert('Enter admin password first');return;}
- document.getElementById('msg').textContent='Approving...';
- const {error}=await supabase.from('payments').insert({email:email,utr:utr,status:'approved'});
- if(error){
-   // If already exists, update it
-   const {error: e2}=await supabase.from('payments').update({status:'approved',utr:utr}).eq('email',email);
-   if(e2){document.getElementById('msg').textContent='Error: '+e2.message;return;}
- }
- document.getElementById('msg').style.color='green';
- document.getElementById('msg').textContent='✅ Approved '+email+' ! Now that phone can open index.html';
+  const email = document.getElementById('mEmail').value.trim().toLowerCase();
+  const utr = document.getElementById('mUtr').value.trim();
+  if(!email){alert('Enter mom email');return;}
+  document.getElementById('msg').innerHTML='Approving...';
+  // Try insert, if exists update
+  let {error} = await supabase.from('payments').insert({email:email, utr:utr, status:'approved'});
+  if(error){
+    const res = await supabase.from('payments').update({status:'approved', utr:utr}).eq('email', email);
+    if(res.error){ document.getElementById('msg').innerHTML='Error: '+res.error.message; return; }
+  }
+  document.getElementById('msg').innerHTML=`<span style="color:green">✅ Approved ${email} !<br>Now on mom's phone, open index.html - it will work!</span>`;
+  load();
 }
 </script>
 </body></html>
