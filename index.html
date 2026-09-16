@@ -1,6 +1,29 @@
 <!DOCTYPE html>
 <html lang="en"><head><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
+// LOCK - Check if user is approved
+(async()=>{
+  const email = localStorage.getItem('student_email');
+  if(!email){ window.location.href='login.html'; return; }
+  try{
+    const supa = window.supabase.createClient('https://ztocwdfliodtjvmddqvb.supabase.co','sb_publishable_YhnQ6f1iSiaXt92GamwJPA_YWBIal-t');
+    const {data} = await supa.from('payments').select('*').eq('email', email).eq('status','approved').maybeSingle();
+    if(!data){
+      // Not approved yet -> go to payment
+      window.location.href='payment.html';
+    }
+    // If approved -> stay on page and show notes
+  }catch(e){
+    console.log('Supabase check failed, checking local fallback');
+    const status = localStorage.getItem('payment_status');
+    if(status !== 'approved'){
+      // For testing, if localStorage says pending, still allow after manual approval
+      // Comment this out later
+    }
+  }
+})();
+</script><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
 const supabaseLock = window.supabase.createClient('https://ztocwdfliodtjvmddqvb.supabase.co','sb_publishable_YhnQ6f1iSiaXt92GamwJPA_YWBIal-t');
 (async()=>{
   const email = localStorage.getItem('student_email');
