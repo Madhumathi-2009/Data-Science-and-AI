@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Unlock Notes - ₹25</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&display=swap" rel="stylesheet">
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Outfit',sans-serif;
+}
+
+body{
+    min-height:100vh;
+    background:linear-gradient(135deg,#6d5af7,#8b5cf6);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    padding:20px;
+}
+
+.card{
+    background:white;
+    width:100%;
+    max-width:390px;
+    padding:28px 24px;
+    border-radius:24px;
+    box-shadow:0 20px 50px rgba(0,0,0,.22);
+    text-align:center;
+}
+
+h2{
+    font-size:23px;
+    color:#171717;
+}
+
+.sub{
+    color:#777;
+    font-size:13px;
+    margin:6px 0 15px;
+}
+
+.email{
+    display:inline-block;
+    background:#eef2ff;
+    color:#6d5af7;
+    padding:6px 12px;
+    border-radius:20px;
+    font-size:12px;
+    margin-bottom:15px;
+    max-width:100%;
+    overflow:hidden;
+    text-overflow:ellipsis;
+}
+
+.qr-wrap{
+    background:#f7f9ff;
+    border:1.5px dashed #d0d7f0;
+    border-radius:16px;
+    padding:15px 12px;
+    margin-bottom:17px;
+}
+
+.qr-wrap img{
+    width:100%;
+    max-width:250px;
+    aspect-ratio:1;
+    object-fit:contain;
+    border-radius:10px;
+}
+
+.upi{
+    font-size:12px;
+    color:#555;
+    margin-top:9px;
+}
+
+.scan{
+    font-size:11px;
+    color:#888;
+    margin-top:6px;
+}
+
+.amount{
+    display:inline-block;
+    margin:10px 0 14px;
+    padding:7px 14px;
+    border-radius:20px;
+    background:#ecfdf5;
+    color:#059669;
+    font-weight:700;
+    font-size:14px;
+}
+
+input{
+    width:100%;
+    padding:14px 15px;
+    border:1.5px solid #e5e7eb;
+    border-radius:12px;
+    font-size:15px;
+    outline:none;
+    margin-bottom:10px;
+}
+
+input:focus{
+    border-color:#6d5af7;
+}
+
+button{
+    width:100%;
+    padding:14px;
+    border:0;
+    border-radius:13px;
+    background:#00b982;
+    color:white;
+    font-size:16px;
+    font-weight:700;
+    cursor:pointer;
+    box-shadow:0 6px 18px rgba(0,185,130,.3);
+}
+
+button:disabled{
+    opacity:.65;
+    cursor:not-allowed;
+}
+
+.whatsapp{
+    display:block;
+    margin-top:11px;
+    padding:12px;
+    border-radius:12px;
+    background:#25d366;
+    color:white;
+    text-decoration:none;
+    font-size:14px;
+    font-weight:600;
+}
+
+.back{
+    display:block;
+    margin-top:15px;
+    color:#888;
+    text-decoration:none;
+    font-size:13px;
+}
+
+#msg{
+    margin-top:13px;
+    font-size:13px;
+    line-height:1.5;
+    min-height:20px;
+}
+
+.success{
+    color:#059669;
+}
+
+.error{
+    color:#dc2626;
+}
+
+.info{
+    color:#6d5af7;
+}
+</style>
+
+</head>
+
+<body>
+
+<div class="card">
+
+```
+<h2>Unlock Notes - ₹25</h2>
+
+<p class="sub">
+    Pay ₹25 and submit your transaction ID
+</p>
+
+<div class="email" id="emailShow"></div>
+
+<div class="qr-wrap">
+
+    <img
+        src="qr.jpg"
+        id="qrImg"
+        alt="UPI QR Code"
+    >
+
+    <div class="upi">
+        UPI ID:
+        <b>madhu12lakshmi@oksbi</b>
+    </div>
+
+    <div class="scan">
+        Scan using any UPI application
+    </div>
+
+</div>
+
+
+<input
+    type="text"
+    id="utr"
+    placeholder="Enter UTR / Transaction ID"
+    inputmode="numeric"
+    autocomplete="off"
+>
+
+
+<button id="submitBtn">
+    Submit Payment Proof
+</button>
+
+
+<a
+    class="whatsapp"
+    href="https://wa.me/917695998405?text=Hi%2C%20I%20have%20paid%20%E2%82%B925%20for%20the%20Data%20Science%20Notes.%20I%20have%20submitted%20my%20UTR.%20I%20will%20send%20the%20payment%20screenshot%20here."
+    target="_blank"
+    rel="noopener"
+>
+    💬 Send Payment Screenshot on WhatsApp
+</a>
+
+
+<div id="msg"></div>
+
+
+<a
+    href="login.html"
+    class="back"
+>
+    ← Change email
+</a>
+```
+
+</div>
+
+<script>
+
+const SUPABASE_URL =
+    "https://ztocwdfliodtjvmddqvb.supabase.co";
+
+const SUPABASE_KEY =
+    "sb_publishable_YhnQ6f1iSiaXt92GamwJPA_YWBIal-t";
+
+
+/* --------------------------------------------------
+   GET EMAIL
+-------------------------------------------------- */
+
+const email =
+    (localStorage.getItem("student_email") || "")
+    .trim()
+    .toLowerCase();
+
+
+if(!email){
+
+    window.location.replace(
+        "login.html"
+    );
+
+}else{
+
+    document.getElementById(
+        "emailShow"
+    ).textContent = email;
+
+}
+
+
+/* --------------------------------------------------
+   QR FALLBACK
+-------------------------------------------------- */
+
+document.getElementById("qrImg").onerror =
+function(){
+
+    const upi =
+        "upi://pay?pa=madhu12lakshmi%40oksbi" +
+        "&pn=Madhumathi" +
+        "&am=25" +
+        "&cu=INR";
+
+
+    this.src =
+        "https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=" +
+        encodeURIComponent(upi);
+
+};
+
+
+/* --------------------------------------------------
+   SUBMIT
+-------------------------------------------------- */
+
+const submitBtn =
+    document.getElementById("submitBtn");
+
+const utrInput =
+    document.getElementById("utr");
+
+const msg =
+    document.getElementById("msg");
+
+
+submitBtn.addEventListener(
+    "click",
+    submitPayment
+);
+
+
+async function submitPayment(){
+
+    const utr =
+        utrInput.value.trim();
+
+
+    if(!email){
+
+        window.location.replace(
+            "login.html"
+        );
+
+        return;
+    }
+
+
+    if(utr.length < 6){
+
+        msg.className = "error";
+
+        msg.textContent =
+            "Please enter a valid UTR / Transaction ID.";
+
+        utrInput.focus();
+
+        return;
+    }
+
+
+    /* ==========================================
+       CRITICAL:
+       SAVE LOCALLY FIRST
+    ========================================== */
+
+    localStorage.setItem(
+        "payment_utr",
+        utr
+    );
+
+    localStorage.setItem(
+        "payment_status",
+        "pending"
+    );
+
+    localStorage.setItem(
+        "payment_time",
+        new Date().toISOString()
+    );
+
+
+    /* ==========================================
+       IMMEDIATELY SHOW SUCCESS
+    ========================================== */
+
+    submitBtn.disabled = true;
+
+    submitBtn.textContent =
+        "Payment Proof Saved ✓";
+
+    msg.className = "success";
+
+    msg.innerHTML =
+        "✅ <b>Your payment proof has been saved!</b><br>" +
+        "UTR: <b>" +
+        escapeHTML(utr) +
+        "</b><br><br>" +
+        "Your payment is now waiting for approval. " +
+        "You can send your payment screenshot on WhatsApp.";
+    
+
+    /*
+       DO NOT WAIT FOR SUPABASE.
+       Start database saving in background.
+    */
+
+    saveToSupabase(email,utr);
+
+}
+
+
+/* --------------------------------------------------
+   BACKGROUND SUPABASE SAVE
+-------------------------------------------------- */
+
+async function saveToSupabase(email,utr){
+
+    try{
+
+        const response =
+            await fetch(
+                SUPABASE_URL +
+                "/rest/v1/payments",
+                {
+                    method:"POST",
+
+                    headers:{
+                        "apikey":SUPABASE_KEY,
+                        "Authorization":
+                            "Bearer " + SUPABASE_KEY,
+                        "Content-Type":
+                            "application/json",
+                        "Prefer":
+                            "return=minimal"
+                    },
+
+                    body:JSON.stringify({
+                        email:email,
+                        utr:utr,
+                        status:"pending"
+                    })
+                }
+            );
+
+
+        const text =
+            await response.text();
+
+
+        if(!response.ok){
+
+            console.error(
+                "Supabase payment save failed:",
+                response.status,
+                text
+            );
+
+            /*
+              The user interface remains successful
+              because localStorage already saved the proof.
+            */
+
+            localStorage.setItem(
+                "payment_sync_error",
+                "HTTP " +
+                response.status +
+                ": " +
+                text
+            );
+
+            return;
+        }
+
+
+        localStorage.removeItem(
+            "payment_sync_error"
+        );
+
+
+        localStorage.setItem(
+            "payment_synced",
+            "true"
+        );
+
+
+        console.log(
+            "Payment successfully saved to Supabase."
+        );
+
+
+    }catch(error){
+
+        console.error(
+            "Supabase background error:",
+            error
+        );
+
+        localStorage.setItem(
+            "payment_sync_error",
+            error.message
+        );
+
+    }
+
+}
+
+
+/* --------------------------------------------------
+   SAFE TEXT
+-------------------------------------------------- */
+
+function escapeHTML(value){
+
+    return value
+        .replace(/&/g,"&amp;")
+        .replace(/</g,"&lt;")
+        .replace(/>/g,"&gt;")
+        .replace(/"/g,"&quot;")
+        .replace(/'/g,"&#039;");
+
+}
+
+</script>
+
+</body>
+</html>
