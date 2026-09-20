@@ -19,8 +19,214 @@ pre{margin:0;white-space:pre-wrap;word-break:break-word;border-radius:14px;paddi
 .visual{margin-top:12px;background:#fff;border:1px solid var(--border);border-radius:14px;padding:15px;overflow:auto}.visual svg{display:block;width:100%;max-width:760px;height:auto;margin:auto}
 .tip{padding:14px 16px;border-left:4px solid var(--accent2);background:#ecfeff;border-radius:10px;margin:15px 0}.summary{background:linear-gradient(135deg,#f8fafc,#eff6ff)}
 footer{text-align:center;padding:30px;color:var(--muted);border-top:1px solid var(--border)}
-body.dark{--bg:#070b12;--card:#0f172a;--text:#e5e7eb;--muted:#94a3b8;--border:#263244;--code:#020617;--output:#111827;--shadow:0 10px 30px rgba(0,0,0,.25)}body.dark header{background:rgba(7,11,18,.94)}body.dark .unit-head{background:linear-gradient(135deg,#0f1b31,#09242a);border-color:#1e40af}body.dark .note th{background:#172033}body.dark .visual{background:#0b1220}body.dark .output{color:#e5e7eb}body.dark .code-title{color:#e5e7eb}
-@media(max-width:650px){main{padding:35px 14px 60px}.note{padding:18px}.nav{padding:12px 14px}}
+/* ================= DARK MODE ================= */
+
+body.dark{
+    --bg:#070b12;
+    --card:#0f172a;
+    --text:#e5e7eb;
+    --muted:#94a3b8;
+    --border:#263244;
+    --code:#020617;
+    --output:#111827;
+    --shadow:0 10px 30px rgba(0,0,0,.25);
+}
+
+/* Header */
+body.dark header{
+    background:rgba(7,11,18,.94);
+    border-bottom-color:#263244;
+}
+
+/* Buttons */
+body.dark .btn{
+    background:#0f172a;
+    color:#e5e7eb;
+    border-color:#334155;
+}
+
+body.dark .btn:hover{
+    border-color:#60a5fa;
+    color:#60a5fa;
+}
+
+/* Unit heading */
+body.dark .unit-head{
+    background:linear-gradient(135deg,#0f1b31,#09242a);
+    border-color:#1e40af;
+}
+
+body.dark .unit-head h1{
+    color:#f1f5f9;
+}
+
+body.dark .unit-head p{
+    color:#94a3b8;
+}
+
+/* Notes */
+body.dark .note{
+    background:#0f172a;
+    border-color:#263244;
+    color:#e5e7eb;
+}
+
+body.dark .note h2{
+    color:#60a5fa;
+}
+
+body.dark .note h3{
+    color:#cbd5e1;
+}
+
+body.dark .note th{
+    background:#172033;
+    color:#f1f5f9;
+}
+
+body.dark .note td{
+    color:#e5e7eb;
+    border-color:#334155;
+}
+
+/* Search box */
+body.dark .search{
+    background:#0f172a;
+    color:#e5e7eb;
+    border-color:#334155;
+}
+
+body.dark .search::placeholder{
+    color:#64748b;
+}
+
+/* Code */
+body.dark .code{
+    background:#020617;
+    color:#e2e8f0;
+}
+
+body.dark .code-title{
+    color:#f1f5f9;
+}
+
+/* Output */
+body.dark .output{
+    background:#111827;
+    color:#e5e7eb;
+    border-color:#263244;
+}
+
+body.dark .output-title{
+    color:#2dd4bf;
+}
+
+/* Tip */
+body.dark .tip{
+    background:#082f35;
+    color:#dbeafe;
+    border-left-color:#22d3ee;
+}
+
+/* Summary sections
+   FIX: Unit 3, Unit 4 and Unit 5 summaries
+   were using a light background in dark mode.
+*/
+body.dark .summary{
+    background:linear-gradient(
+        135deg,
+        #111827,
+        #172554
+    );
+
+    color:#f1f5f9;
+
+    border:1px solid #334155;
+}
+
+/* Summary headings */
+body.dark .summary h2,
+body.dark .summary h3{
+    color:#93c5fd;
+}
+
+/* Summary paragraphs */
+body.dark .summary p{
+    color:#e2e8f0;
+}
+
+/* Summary list */
+body.dark .summary li{
+    color:#e2e8f0;
+}
+
+/* Summary strong text */
+body.dark .summary strong{
+    color:#ffffff;
+}
+
+/* Summary tables */
+body.dark .summary table{
+    background:#0f172a;
+    color:#e5e7eb;
+}
+
+body.dark .summary th{
+    background:#1e293b;
+    color:#ffffff;
+    border-color:#334155;
+}
+
+body.dark .summary td{
+    background:#0f172a;
+    color:#e2e8f0;
+    border-color:#334155;
+}
+
+/* Visual charts */
+body.dark .visual{
+    background:#0b1220;
+    border-color:#263244;
+}
+
+body.dark .visual-note .visual{
+    background:#0b1220;
+    border-color:#263244;
+}
+
+/* Chart caption */
+body.dark .chart-caption{
+    background:#0f172a;
+    border-color:#263244;
+    color:#94a3b8;
+}
+
+/* Chart legend */
+body.dark .chart-legend{
+    color:#cbd5e1;
+}
+
+/* Chart SVG */
+body.dark .chart-wrap svg{
+    color:#e5e7eb;
+}
+
+/* Website button */
+body.dark .website-btn{
+    color:#ffffff;
+}
+
+/* Footer */
+body.dark footer{
+    background:#070b12;
+    color:#94a3b8;
+    border-top-color:#263244;
+}
+
+/* Back button */
+body.dark .back{
+    color:#e5e7eb;
+}@media(max-width:650px){main{padding:35px 14px 60px}.note{padding:18px}.nav{padding:12px 14px}}
 .website-btn {
     display: inline-flex;
     align-items: center;
@@ -161,7 +367,7 @@ Multiplication: 1000
 Division: 10.0
 Floor Division: 10
 Modulus: 0
-Exponent: 10000000000</pre><div class="tip">The pasted version contained corrupted symbols and outputs. The executable operators above are the intended Python operators: <code>*</code> and <code>**</code>, and the output is corrected accordingly.</div></article>
+Exponent: 10000000000</pre>
 
 <article class="note"><h2>1.4 Relational Operators</h2><p>Relational operators, also called comparison operators, compare two values and return <code>True</code> or <code>False</code>.</p>
 <table><tr><th>Operator</th><th>Description</th><th>a=10,b=5</th><th>Output</th></tr><tr><td>==</td><td>Equal to</td><td>a==b</td><td>False</td></tr><tr><td>!=</td><td>Not equal to</td><td>a!=b</td><td>True</td></tr><tr><td>&gt;</td><td>Greater than</td><td>a&gt;b</td><td>True</td></tr><tr><td>&lt;</td><td>Less than</td><td>a&lt;b</td><td>False</td></tr><tr><td>&gt;=</td><td>Greater than or equal to</td><td>a&gt;=b</td><td>True</td></tr><tr><td>&lt;=</td><td>Less than or equal to</td><td>a&lt;=b</td><td>False</td></tr></table>
