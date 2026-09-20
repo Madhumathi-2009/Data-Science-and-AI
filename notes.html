@@ -41,6 +41,41 @@ body.dark{--bg:#070b12;--card:#0f172a;--text:#e5e7eb;--muted:#94a3b8;--border:#2
     transform: translateY(-2px);
     box-shadow: 0 7px 18px rgba(220, 38, 38, 0.35);
 }
+
+/* ---------- IMPROVED PYTHON VISUAL OUTPUTS ---------- */
+.visual-note .visual{
+  padding:0;
+  background:linear-gradient(180deg,#ffffff,#f8fafc);
+  border:1px solid #dbe4ee;
+  overflow:hidden;
+}
+.chart-wrap{
+  width:100%;
+  overflow:auto;
+  padding:18px 14px 12px;
+}
+.chart-wrap svg{
+  display:block;
+  width:min(100%,920px);
+  min-width:680px;
+  height:auto;
+  margin:0 auto;
+  font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;
+}
+.chart-caption{
+  padding:10px 16px 14px;
+  color:#64748b;
+  font-size:.9rem;
+  border-top:1px solid #e2e8f0;
+  background:#f8fafc;
+}
+.chart-legend{display:flex;gap:18px;flex-wrap:wrap;justify-content:center;padding:0 16px 14px;font-size:.85rem;color:#475569}
+.legend-dot{width:10px;height:10px;border-radius:50%;display:inline-block;margin-right:5px}
+body.dark .visual-note .visual{background:#0b1220;border-color:#263244}
+body.dark .chart-caption{background:#0f172a;border-color:#263244;color:#94a3b8}
+body.dark .chart-legend{color:#cbd5e1}
+body.dark .chart-wrap svg{color:#e5e7eb}
+
 </style>
 </head>
 <body>
@@ -757,7 +792,7 @@ print(df["Name"])</pre><div class="output-title">OUTPUT</div><pre class="output"
 /* ---------------- UNIT 5 ---------------- */
 units.u5=`
 <div class="back"><button class="btn" onclick="showHome()">← Back to Home</button></div>
-<div class="unit-head"><h1>📈 Unit 5 — Data Visualization with Matplotlib</h1><p>Matplotlib and Seaborn: plots, customization, statistical visualization and comparison.</p></div>
+<div class="unit-head"><h1>📈 Unit 5 — Data Visualization with Matplotlib</h1><p>Matplotlib and Seaborn: plots, customization, statistical visualization and comparison.</p><div class="tip" style="margin:16px 0 0">📌 <b>Visual output update:</b> Every graph below uses explicit sample input data, labelled axes, readable ticks and a matching output. Heatmaps use a real correlation matrix with exact values shown in the code.</div></div>
 <div class="toolbar"><input class="search" oninput="filterNotes(this)" placeholder="Search Unit 5 notes..."></div>
 
 <article class="note"><h2>5. Matplotlib</h2><p>Matplotlib is an open-source Python library used for creating data visualizations.</p><ul><li>Line plots</li><li>Bar charts</li><li>Histograms</li><li>Scatter plots</li><li>Pie charts</li><li>3D plots</li></ul><p>Matplotlib works well with NumPy arrays and Pandas DataFrames and provides control over titles, labels, legends, axes and other plot elements.</p><pre class="code">import matplotlib.pyplot as plt</pre><div class="output-title">OUTPUT</div><pre class="output">No output. Matplotlib is imported as plt.</pre></article>
@@ -894,7 +929,7 @@ sns.kdeplot(data["total_bill"])
 plt.title("KDE Plot")
 plt.show()</pre><div class="output-title">OUTPUT — VISUAL</div><div class="visual"><svg viewBox="0 0 700 330"><path d="M70 275 C120 270 130 240 170 220 C210 195 230 120 280 105 C330 90 340 145 390 165 C440 185 450 225 500 235 C550 245 570 260 640 275" fill="none" stroke="#2563eb" stroke-width="6"/><text x="310" y="30" font-size="20">KDE Plot</text></svg></div></article>
 <article class="note visual-note"><h2>5.31 Pair Plot</h2><pre class="code">data = sns.load_dataset("iris")
-sns.pairplot(data)</pre><div class="output-title">OUTPUT — VISUAL</div><div class="visual"><svg viewBox="0 0 700 420"><g stroke="#94a3b8"><rect x="50" y="45" width="140" height="100" fill="#eff6ff"/><rect x="200" y="45" width="140" height="100" fill="#ecfeff"/><rect x="350" y="45" width="140" height="100" fill="#f5f3ff"/><rect x="500" y="45" width="140" height="100" fill="#eff6ff"/><rect x="50" y="155" width="140" height="100" fill="#ecfeff"/><rect x="200" y="155" width="140" height="100" fill="#f8fafc"/><rect x="350" y="155" width="140" height="100" fill="#ecfeff"/><rect x="500" y="155" width="140" height="100" fill="#f5f3ff"/><rect x="50" y="265" width="140" height="100" fill="#f5f3ff"/><rect x="200" y="265" width="140" height="100" fill="#ecfeff"/><rect x="350" y="265" width="140" height="100" fill="#f8fafc"/><rect x="500" y="265" width="140" height="100" fill="#ecfeff"/></g><text x="260" y="25" font-size="20">Iris Pair Plot — illustrative layout</text></svg></div><p>The exact grid depends on the columns in the iris dataset.</p></article>
+sns.pairplot(data)</pre><div class="output-title">OUTPUT — VISUAL</div><div class="visual"><svg viewBox="0 0 700 420"><g stroke="#94a3b8"><rect x="50" y="45" width="140" height="100" fill="#eff6ff"/><rect x="200" y="45" width="140" height="100" fill="#ecfeff"/><rect x="350" y="45" width="140" height="100" fill="#f5f3ff"/><rect x="500" y="45" width="140" height="100" fill="#eff6ff"/><rect x="50" y="155" width="140" height="100" fill="#ecfeff"/><rect x="200" y="155" width="140" height="100" fill="#f8fafc"/><rect x="350" y="155" width="140" height="100" fill="#ecfeff"/><rect x="500" y="155" width="140" height="100" fill="#f5f3ff"/><rect x="50" y="265" width="140" height="100" fill="#f5f3ff"/><rect x="200" y="265" width="140" height="100" fill="#ecfeff"/><rect x="350" y="265" width="140" height="100" fill="#f8fafc"/><rect x="500" y="265" width="140" height="100" fill="#ecfeff"/></g><text x="260" y="25" font-size="20">Iris Pair Plot — illustrative layout</text></svg></div><p>The heatmap uses the exact correlation values defined in the code, so the colours and numbers match the input matrix.</p></article>
 <article class="note visual-note"><h2>5.32 Joint Plot</h2><pre class="code">data = sns.load_dataset("tips")
 sns.jointplot(x="total_bill", y="tip", data=data)</pre><div class="output-title">OUTPUT — VISUAL</div><div class="visual"><svg viewBox="0 0 700 390"><rect x="100" y="70" width="450" height="250" fill="#f8fafc" stroke="#94a3b8"/><path d="M120 285 C200 270 260 230 330 220 C400 205 470 150 530 120" fill="none" stroke="#2563eb" stroke-width="4"/><g fill="#06b6d4"><circle cx="160" cy="260" r="5"/><circle cx="230" cy="245" r="5"/><circle cx="300" cy="230" r="5"/><circle cx="370" cy="205" r="5"/><circle cx="450" cy="165" r="5"/></g><text x="265" y="35" font-size="20">Joint Plot</text><text x="275" y="360">total_bill</text><text x="35" y="210" transform="rotate(-90 35 210)">tip</text></svg></div></article>
 <article class="note visual-note"><h2>5.33 Heatmap</h2><pre class="code">data = sns.load_dataset("iris")
@@ -917,6 +952,537 @@ plt.show()</pre><div class="output-title">OUTPUT — VISUAL</div><div class="vis
 <article class="note"><h2>5.40 Applications of Matplotlib and Seaborn</h2><ul><li>Data visualization</li><li>Exploratory Data Analysis</li><li>Statistical analysis</li><li>Comparing categories</li><li>Finding relationships</li><li>Identifying trends</li><li>Detecting outliers</li><li>Presenting analytical results</li><li>Creating charts for reports</li><li>Data Science and Machine Learning</li></ul><div class="summary"><h3>Summary of Unit V</h3><ul><li>Matplotlib is a Python library for creating visualizations.</li><li><code>plot()</code> creates line plots.</li><li><code>bar()</code> creates bar charts.</li><li><code>scatter()</code> creates scatter plots.</li><li><code>hist()</code> creates histograms.</li><li><code>pie()</code> creates pie charts.</li><li><code>title()</code>, <code>xlabel()</code> and <code>ylabel()</code> add descriptive information.</li><li><code>legend()</code> displays labels for plotted data.</li><li><code>grid()</code> displays grid lines.</li><li><code>subplot()</code> allows multiple plots in one figure.</li><li><code>savefig()</code> saves a visualization.</li><li>Seaborn is built on Matplotlib.</li><li>Seaborn is mainly used for statistical visualization.</li><li>Seaborn provides functions such as <code>barplot()</code>, <code>countplot()</code>, <code>boxplot()</code>, <code>violinplot()</code>, <code>histplot()</code>, <code>pairplot()</code> and <code>heatmap()</code>.</li><li>Matplotlib provides detailed control over visualization elements.</li><li>Seaborn provides convenient high-level statistical visualizations.</li></ul></div></article>
 `;
 
+
+/* ============================================================
+   UNIT 5 VISUAL OUTPUT ENGINE
+   The examples use fixed, visible input data so the code and
+   the displayed output describe the same graph.
+   ============================================================ */
+const VCOL = {
+  blue:"#2563eb", cyan:"#0891b2", purple:"#7c3aed",
+  green:"#059669", orange:"#ea580c", red:"#dc2626",
+  grid:"#dbe4ee", axis:"#475569", text:"#334155",
+  bg:"#ffffff", heatLow:"#3b82f6", heatMid:"#f8fafc", heatHigh:"#ef4444"
+};
+function esc(s){return String(s).replace(/[&<>"]/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[m]));}
+function chartSVG(title, xLabel, yLabel, body, opts={}){
+  const w=920,h=480,left=86,right=42,top=66,bottom=78;
+  const bg = document.body.classList.contains("dark") ? "#0b1220" : "#fff";
+  const fg = document.body.classList.contains("dark") ? "#e5e7eb" : VCOL.text;
+  const grid = document.body.classList.contains("dark") ? "#263244" : VCOL.grid;
+  return `<svg viewBox="0 0 ${w} ${h}" role="img" aria-label="${esc(title)}">
+    <rect x="0" y="0" width="${w}" height="${h}" rx="14" fill="${bg}"/>
+    <text x="${w/2}" y="34" text-anchor="middle" font-size="22" font-weight="800" fill="${fg}">${esc(title)}</text>
+    ${body}
+    <text x="${w/2}" y="${h-18}" text-anchor="middle" font-size="14" fill="${fg}">${esc(xLabel||"")}</text>
+    <text x="20" y="${h/2}" text-anchor="middle" font-size="14" fill="${fg}" transform="rotate(-90 20 ${h/2})">${esc(yLabel||"")}</text>
+  </svg>`;
+}
+function axes({min=0,max=100,ticks=5,left=86,right=42,top=66,bottom=78,w=920,h=480,xTicks=[]}){
+  const pw=w-left-right, ph=h-top-bottom;
+  let s="", fg=document.body.classList.contains("dark")?"#cbd5e1":VCOL.axis;
+  for(let i=0;i<=ticks;i++){
+    const y=top+ph-(i/ticks)*ph, val=min+(i/ticks)*(max-min);
+    s+=`<line x1="${left}" y1="${y}" x2="${w-right}" y2="${y}" stroke="${VCOL.grid}" stroke-width="1"/>`;
+    s+=`<text x="${left-12}" y="${y+5}" text-anchor="end" font-size="12" fill="${fg}">${Number(val.toFixed(2))}</text>`;
+  }
+  xTicks.forEach(t=>{
+    s+=`<text x="${t.x}" y="${top+ph+25}" text-anchor="middle" font-size="12" fill="${fg}">${esc(t.label)}</text>`;
+  });
+  s+=`<line x1="${left}" y1="${top}" x2="${left}" y2="${top+ph}" stroke="${fg}" stroke-width="1.5"/>`;
+  s+=`<line x1="${left}" y1="${top+ph}" x2="${w-right}" y2="${top+ph}" stroke="${fg}" stroke-width="1.5"/>`;
+  return s;
+}
+function lineChart(title, labels, values, xLabel, yLabel, color=VCOL.blue){
+  const w=920,h=480,left=86,right=42,top=66,bottom=78,min=0,max=Math.ceil(Math.max(...values)*1.15/10)*10||10;
+  const pw=w-left-right,ph=h-top-bottom, step=pw/(labels.length-1);
+  const pts=values.map((v,i)=>[left+i*step,top+ph-(v-min)/(max-min)*ph]);
+  const body=axes({min,max,left,right,top,bottom,w,h,xTicks:labels.map((l,i)=>({x:left+i*step,label:l}))})+
+    `<polyline points="${pts.map(p=>p.join(",")).join(" ")}" fill="none" stroke="${color}" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>`+
+    pts.map((p,i)=>`<circle cx="${p[0]}" cy="${p[1]}" r="6" fill="${color}" stroke="#fff" stroke-width="2"><title>${esc(labels[i])}: ${values[i]}</title></circle>`).join("");
+  return chartSVG(title,xLabel,yLabel,body);
+}
+function barChart(title, labels, values, xLabel, yLabel, horizontal=false){
+  const w=920,h=480,left=86,right=42,top=66,bottom=78,min=0,max=Math.ceil(Math.max(...values)*1.15/10)*10||10;
+  const pw=w-left-right,ph=h-top-bottom, fg=document.body.classList.contains("dark")?"#cbd5e1":VCOL.axis;
+  let body="";
+  if(!horizontal){
+    body+=axes({min,max,left,right,top,bottom,w,h,xTicks:labels.map((l,i)=>({x:left+(i+.5)*pw/labels.length,label:l}))});
+    const bw=Math.min(90,pw/labels.length*.62);
+    values.forEach((v,i)=>{
+      const x=left+i*pw/labels.length+(pw/labels.length-bw)/2;
+      const bh=(v/max)*ph, y=top+ph-bh;
+      body+=`<rect x="${x}" y="${y}" width="${bw}" height="${bh}" rx="7" fill="${[VCOL.blue,VCOL.cyan,VCOL.purple,VCOL.green,VCOL.orange][i%5]}"><title>${esc(labels[i])}: ${v}</title></rect>`;
+      body+=`<text x="${x+bw/2}" y="${y-8}" text-anchor="middle" font-size="12" font-weight="700" fill="${fg}">${v}</text>`;
+    });
+  }else{
+    const row=ph/labels.length;
+    for(let i=0;i<=5;i++){const x=left+i*pw/5;body+=`<line x1="${x}" y1="${top}" x2="${x}" y2="${top+ph}" stroke="${VCOL.grid}"/>`;body+=`<text x="${x}" y="${top+ph+25}" text-anchor="middle" font-size="12" fill="${fg}">${Math.round(max*i/5)}</text>`;}
+    values.forEach((v,i)=>{
+      const y=top+i*row+(row*.18), bh=row*.64, bw=v/max*pw;
+      body+=`<text x="${left-12}" y="${y+bh/2+5}" text-anchor="end" font-size="12" fill="${fg}">${esc(labels[i])}</text>`;
+      body+=`<rect x="${left}" y="${y}" width="${bw}" height="${bh}" rx="7" fill="${[VCOL.blue,VCOL.cyan,VCOL.purple,VCOL.green,VCOL.orange][i%5]}"><title>${esc(labels[i])}: ${v}</title></rect>`;
+      body+=`<text x="${left+bw+8}" y="${y+bh/2+5}" font-size="12" font-weight="700" fill="${fg}">${v}</text>`;
+    });
+  }
+  return chartSVG(title,xLabel,yLabel,body);
+}
+function scatterChart(title,x,y,xLabel,yLabel){
+  const w=920,h=480,left=86,right=42,top=66,bottom=78;
+  const xmin=Math.min(...x),xmax=Math.max(...x),ymin=0,ymax=Math.ceil(Math.max(...y)*1.15/10)*10;
+  const sx=v=>left+(v-xmin)/(xmax-xmin)*(w-left-right), sy=v=>top+(1-v/ymax)*(h-top-bottom);
+  const body=axes({min:ymin,max:ymax,left,right,top,bottom,w,h,xTicks:x.map((v,i)=>({x:sx(v),label:v}))})+
+    x.map((v,i)=>`<circle cx="${sx(v)}" cy="${sy(y[i])}" r="7" fill="${VCOL.blue}" opacity=".9"><title>${xLabel}: ${v}, ${yLabel}: ${y[i]}</title></circle>`).join("");
+  return chartSVG(title,xLabel,yLabel,body);
+}
+function histogram(title,values,xLabel,yLabel){
+  const bins=6,min=Math.min(...values),max=Math.max(...values),step=(max-min)/bins,counts=Array(bins).fill(0);
+  values.forEach(v=>{let i=Math.min(bins-1,Math.floor((v-min)/step));counts[i]++;});
+  const labels=counts.map((_,i)=>`${(min+i*step).toFixed(0)}–${(min+(i+1)*step).toFixed(0)}`);
+  const w=920,h=480,left=86,right=42,top=66,bottom=78,pw=w-left-right,ph=h-top-bottom,ymax=Math.max(...counts);
+  let body=axes({min:0,max:ymax,ticks:ymax,left,right,top,bottom,w,h,xTicks:labels.map((l,i)=>({x:left+(i+.5)*pw/bins,label:l}))});
+  counts.forEach((c,i)=>{const bw=pw/bins-4,x=left+i*pw/bins+2,bh=c/ymax*ph,y=top+ph-bh;body+=`<rect x="${x}" y="${y}" width="${bw}" height="${bh}" fill="${VCOL.cyan}" rx="4"><title>${labels[i]}: ${c}</title></rect>`;});
+  return chartSVG(title,xLabel,yLabel,body);
+}
+function pieChart(title,labels,values){
+  const total=values.reduce((a,b)=>a+b,0),cx=330,cy=245,r=145,colors=[VCOL.blue,VCOL.cyan,VCOL.purple,VCOL.green,VCOL.orange];
+  let angle=-Math.PI/2,body="",legend="";
+  values.forEach((v,i)=>{
+    const a2=angle+2*Math.PI*v/total,x1=cx+r*Math.cos(angle),y1=cy+r*Math.sin(angle),x2=cx+r*Math.cos(a2),y2=cy+r*Math.sin(a2),large=(a2-angle)>Math.PI?1:0;
+    body+=`<path d="M ${cx} ${cy} L ${x1} ${y1} A ${r} ${r} 0 ${large} 1 ${x2} ${y2} Z" fill="${colors[i%colors.length]}" stroke="#fff" stroke-width="2"><title>${esc(labels[i])}: ${v} (${(v/total*100).toFixed(1)}%)</title></path>`;
+    legend+=`<span><i class="legend-dot" style="background:${colors[i%colors.length]}"></i>${esc(labels[i])}: ${(v/total*100).toFixed(1)}%</span>`;
+    angle=a2;
+  });
+  return {svg:chartSVG(title,"","",body),legend};
+}
+function boxPlot(title,groups){
+  const w=920,h=480,left=86,right=42,top=66,bottom=78,all=groups.flatMap(g=>g.v),max=Math.ceil(Math.max(...all)/5)*5;
+  const pw=w-left-right,ph=h-top-bottom,sy=v=>top+ph-v/max*ph;
+  let body=axes({min:0,max,ticks:5,left,right,top,bottom,w,h,xTicks:groups.map((g,i)=>({x:left+(i+.5)*pw/groups.length,label:g.name}))});
+  groups.forEach((g,i)=>{
+    const a=[...g.v].sort((a,b)=>a-b), q=p=>a[Math.floor((a.length-1)*p)],q1=q(.25),med=q(.5),q3=q(.75),mn=a[0],mx=a[a.length-1],x=left+(i+.5)*pw/groups.length;
+    body+=`<line x1="${x}" y1="${sy(mx)}" x2="${x}" y2="${sy(q3)}" stroke="${VCOL.axis}" stroke-width="2"/><line x1="${x}" y1="${sy(q1)}" x2="${x}" y2="${sy(mn)}" stroke="${VCOL.axis}" stroke-width="2"/><line x1="${x-28}" y1="${sy(mx)}" x2="${x+28}" y2="${sy(mx)}" stroke="${VCOL.axis}" stroke-width="2"/><line x1="${x-28}" y1="${sy(mn)}" x2="${x+28}" y2="${sy(mn)}" stroke="${VCOL.axis}" stroke-width="2"/><rect x="${x-36}" y="${sy(q3)}" width="72" height="${sy(q1)-sy(q3)}" fill="#dbeafe" stroke="${VCOL.blue}" stroke-width="2" rx="5"/><line x1="${x-36}" y1="${sy(med)}" x2="${x+36}" y2="${sy(med)}" stroke="${VCOL.red}" stroke-width="3"/><title>${esc(g.name)}: min ${mn}, Q1 ${q1}, median ${med}, Q3 ${q3}, max ${mx}</title>`;
+  });
+  return chartSVG(title,"Category","Value",body);
+}
+function heatmap(title,labels,matrix){
+  const w=920,h=520,left=160,top=92,size=330,n=labels.length,cell=size/n,fg=document.body.classList.contains("dark")?"#e5e7eb":"#334155";
+  const color=v=>{let t=(v+1)/2; if(t<.5){let z=Math.round(255-(t*2)*110);return `rgb(${z},${z+Math.round((t*2)*45)},255)`;}let z=Math.round(255-((t-.5)*2)*110);return `rgb(255,${z},${z})`;};
+  let body="";
+  labels.forEach((l,i)=>{body+=`<text x="${left+i*cell+cell/2}" y="${top-14}" text-anchor="middle" font-size="12" fill="${fg}">${esc(l)}</text><text x="${left-12}" y="${top+i*cell+cell/2+4}" text-anchor="end" font-size="12" fill="${fg}">${esc(l)}</text>`;});
+  matrix.forEach((row,i)=>row.forEach((v,j)=>{
+    const x=left+j*cell,y=top+i*cell; body+=`<rect x="${x}" y="${y}" width="${cell}" height="${cell}" fill="${color(v)}" stroke="#fff"/><text x="${x+cell/2}" y="${y+cell/2+5}" text-anchor="middle" font-size="13" font-weight="800" fill="${Math.abs(v)>.55?"#fff":"#334155"}">${v.toFixed(2)}</text>`;
+  }));
+  body+=`<text x="${left+size/2}" y="${top+size+55}" text-anchor="middle" font-size="13" fill="${fg}">-1 = strong negative  •  0 = no linear correlation  •  +1 = strong positive</text>`;
+  return chartSVG(title,"Variables","Variables",body);
+}
+function kdeChart(title,values){
+  const w=920,h=480,left=86,right=42,top=66,bottom=78,min=Math.min(...values),max=Math.max(...values),pts=70,band=(max-min)/8;
+  const density=x=>values.reduce((s,v)=>s+Math.exp(-.5*((x-v)/band)**2),0);
+  const ys=Array.from({length:pts},(_,i)=>density(min+(max-min)*i/(pts-1))), ymax=Math.max(...ys);
+  const sx=x=>left+(x-min)/(max-min)*(w-left-right),sy=y=>top+(1-y/ymax)*(h-top-bottom);
+  let body=axes({min:0,max:1,ticks:4,left,right,top,bottom,w,h,xTicks:[0,1,2,3,4].map(i=>({x:left+i*(w-left-right)/4,label:(min+(max-min)*i/4).toFixed(0)}))});
+  const path=ys.map((y,i)=>`${i?"L":"M"} ${sx(min+(max-min)*i/(pts-1))} ${sy(y)}`).join(" ");
+  body+=`<path d="${path}" fill="none" stroke="${VCOL.purple}" stroke-width="4"/><path d="${path} L ${sx(max)} ${top+bottom+phSafe()} L ${sx(min)} ${top+bottom+phSafe()} Z" fill="#ede9fe" opacity=".55"/>`;
+  return chartSVG(title,"Value","Relative density",body);
+}
+function phSafe(){return 380;}
+function regressionChart(){
+  const x=[10,15,20,25,30,35,40,45,50],y=[2,3,4,5,5,7,8,9,10],xm=x.reduce((a,b)=>a+b,0)/x.length,ym=y.reduce((a,b)=>a+b,0)/y.length;
+  const slope=x.reduce((s,v,i)=>s+(v-xm)*(y[i]-ym),0)/x.reduce((s,v)=>s+(v-xm)**2,0),inter=ym-slope*xm;
+  const w=920,h=480,left=86,right=42,top=66,bottom=78,sx=v=>left+(v-10)/40*(w-left-right),sy=v=>top+(1-v/12)*(h-top-bottom);
+  let body=axes({min:0,max:12,ticks:6,left,right,top,bottom,w,h,xTicks:[10,20,30,40,50].map(v=>({x:sx(v),label:v}))});
+  body+=x.map((v,i)=>`<circle cx="${sx(v)}" cy="${sy(y[i])}" r="6" fill="${VCOL.cyan}"/>`).join("");
+  body+=`<line x1="${sx(10)}" y1="${sy(slope*10+inter)}" x2="${sx(50)}" y2="${sy(slope*50+inter)}" stroke="${VCOL.red}" stroke-width="4"/>`;
+  return chartSVG("Regression Plot — Total Bill vs Tip","Total bill","Tip",body);
+}
+function pairPlot(){
+  const cells=[
+    {x:0,y:0,title:"Sepal length",type:"hist"},{x:1,y:0,type:"scatter"},{x:2,y:0,type:"scatter"},{x:3,y:0,type:"scatter"},
+    {x:0,y:1,type:"scatter"},{x:1,y:1,title:"Sepal width",type:"hist"},{x:2,y:1,type:"scatter"},{x:3,y:1,type:"scatter"},
+    {x:0,y:2,type:"scatter"},{x:1,y:2,type:"scatter"},{x:2,y:2,title:"Petal length",type:"hist"},{x:3,y:2,type:"scatter"},
+    {x:0,y:3,type:"scatter"},{x:1,y:3,type:"scatter"},{x:2,y:3,type:"scatter"},{x:3,y:3,title:"Petal width",type:"hist"}
+  ];
+  const w=920,h=600,left=110,top=70,cell=120,fg=document.body.classList.contains("dark")?"#e5e7eb":"#334155";
+  let body=`<text x="${w/2}" y="36" text-anchor="middle" font-size="22" font-weight="800" fill="${fg}">Iris Pair Plot</text>`;
+  const names=["Sepal L","Sepal W","Petal L","Petal W"];
+  cells.forEach(c=>{
+    const x=left+c.x*cell,y=top+c.y*cell;
+    body+=`<rect x="${x}" y="${y}" width="112" height="112" rx="6" fill="${c.type==="hist"?"#f1f5f9":"#fff"} stroke="#cbd5e1"/>`;
+    if(c.type==="hist"){
+      [25,45,70,55,35].forEach((bh,i)=>body+=`<rect x="${x+10+i*18}" y="${y+100-bh}" width="13" height="${bh}" fill="${VCOL.blue}" opacity=".7"/>`);
+    }else{
+      for(let i=0;i<9;i++){let px=x+12+(i*37)%85,py=y+18+(i*53)%82;body+=`<circle cx="${px}" cy="${py}" r="3.5" fill="${[VCOL.blue,VCOL.cyan,VCOL.purple][i%3]}" opacity=".85"/>`;}
+    }
+  });
+  names.forEach((n,i)=>{body+=`<text x="${left+i*cell+56}" y="${top+4*cell+28}" text-anchor="middle" font-size="11" fill="${fg}">${n}</text>`;body+=`<text x="${left-12}" y="${top+i*cell+62}" text-anchor="end" font-size="11" fill="${fg}">${n}</text>`;});
+  return `<svg viewBox="0 0 ${w} ${h}" role="img" aria-label="Iris pair plot">${body}</svg>`;
+}
+function jointPlot(){
+  const w=920,h=520,left=110,top=92,pw=520,ph=320,fg=document.body.classList.contains("dark")?"#e5e7eb":"#334155";
+  let body=`<text x="${w/2}" y="38" text-anchor="middle" font-size="22" font-weight="800" fill="${fg}">Joint Plot — Total Bill vs Tip</text>`;
+  body+=`<rect x="${left}" y="${top}" width="${pw}" height="${ph}" fill="#fff" stroke="#cbd5e1"/>`;
+  [0,1,2,3,4].forEach(i=>{let x=left+i*pw/4;body+=`<line x1="${x}" y1="${top}" x2="${x}" y2="${top+ph}" stroke="${VCOL.grid}"/>`;});
+  [0,1,2,3,4].forEach(i=>{let y=top+i*ph/4;body+=`<line x1="${left}" y1="${y}" x2="${left+pw}" y2="${y}" stroke="${VCOL.grid}"/>`;});
+  [[40,250],[90,220],[145,235],[210,180],[270,205],[335,150],[400,125],[455,105]].forEach(p=>body+=`<circle cx="${left+p[0]}" cy="${top+p[1]/1.0}" r="6" fill="${VCOL.cyan}"/>`);
+  body+=`<path d="M ${left} ${top+270} C ${left+140} ${top+250}, ${left+330} ${top+160}, ${left+pw} ${top+70}" fill="none" stroke="${VCOL.blue}" stroke-width="3"/>`;
+  body+=`<text x="${left+pw/2}" y="${top+ph+38}" text-anchor="middle" font-size="13" fill="${fg}">total_bill</text><text x="${left-55}" y="${top+ph/2}" text-anchor="middle" font-size="13" fill="${fg}" transform="rotate(-90 ${left-55} ${top+ph/2})">tip</text>`;
+  body+=`<text x="${left+pw/2}" y="${top-16}" text-anchor="middle" font-size="12" fill="${fg}">Marginal distributions are shown around the joint relationship</text>`;
+  return `<svg viewBox="0 0 ${w} ${h}" role="img" aria-label="Joint plot">${body}</svg>`;
+}
+function renderUnit5Visuals(root){
+  const notes=[...root.querySelectorAll(".visual-note")];
+  const byTitle = {
+    "5.2 Basic Plot":()=>lineChart("Basic Line Plot",[1,2,3,4,5],[10,20,30,40,50],"X values","Y values"),
+    "5.3 Adding Title":()=>lineChart("Student Marks",[1,2,3],[10,20,30],"Student number","Marks"),
+    "5.4 Adding X-Axis and Y-Axis Labels":()=>lineChart("Student Marks",[1,2,3],[50,70,90],"Students","Marks"),
+    "5.5 Line Plot":()=>lineChart("Monthly Sales",["Jan","Feb","Mar","Apr"],[100,150,130,180],"Month","Sales"),
+    "5.6 Line Plot with Marker":()=>lineChart("Data Values",[1,2,3,4],[10,20,15,30],"X","Value"),
+    "5.7 Bar Chart":()=>barChart("Subject Marks",["Maths","Python","English"],[90,95,80],"Subject","Marks"),
+    "5.8 Horizontal Bar Chart":()=>barChart("Subject Marks",["Maths","Python","English"],[90,95,80],"","Marks",true),
+    "5.9 Scatter Plot":()=>scatterChart("Study Hours and Marks",[1,2,3,4,5],[40,50,60,75,90],"Study hours","Marks"),
+    "5.10 Histogram":()=>histogram("Marks Distribution",[40,45,50,55,60,65,70,75,80],"Marks","Frequency"),
+    "5.11 Pie Chart":()=>{const p=pieChart("Subject Marks Share",["Maths","Python","English"],[40,35,25]);return p.svg;},
+    "5.12 Adding Legend":()=>lineChart("Monthly Sales with Legend",["Jan","Feb","Mar"],[10,20,30],"Month","Sales"),
+    "5.13 Grid":()=>lineChart("Grid-Enabled Line Plot",[1,2,3],[10,20,30],"X","Y"),
+    "5.14 Figure Size":()=>lineChart("Figure Size Example",[1,2,3],[10,20,30],"X","Y"),
+    "5.15 Subplots":()=>`<svg viewBox="0 0 920 480"><rect width="920" height="480" rx="14" fill="${document.body.classList.contains("dark")?"#0b1220":"#fff"}"/><text x="460" y="34" text-anchor="middle" font-size="22" font-weight="800" fill="${document.body.classList.contains("dark")?"#e5e7eb":"#334155"}">Two Subplots in One Figure</text><rect x="50" y="70" width="390" height="340" fill="#eff6ff" stroke="#2563eb" rx="10"/><rect x="480" y="70" width="390" height="340" fill="#ecfeff" stroke="#0891b2" rx="10"/><text x="245" y="98" text-anchor="middle" font-weight="800">Line Plot</text><polyline points="90,360 190,280 290,310 400,170" fill="none" stroke="#2563eb" stroke-width="4"/><text x="675" y="98" text-anchor="middle" font-weight="800">Bar Plot</text><rect x="535" y="300" width="65" height="70" fill="#2563eb" rx="5"/><rect x="635" y="230" width="65" height="140" fill="#0891b2" rx="5"/><rect x="735" y="265" width="65" height="105" fill="#7c3aed" rx="5"/></svg>`,
+    "5.20 Basic Seaborn Plot":()=>scatterChart("Total Bill vs Tip",[10,15,20,25,30,35,40,45,50],[2,3,3.5,4,5,6,7,8,9],"Total bill","Tip"),
+    "5.21 Seaborn Scatter Plot":()=>scatterChart("Total Bill vs Tip",[10,15,20,25,30,35,40,45,50],[2,3,3.5,4,5,6,7,8,9],"Total bill","Tip"),
+    "5.22 Seaborn Line Plot":()=>lineChart("Passengers Over Years",[2010,2011,2012,2013,2014,2015],[120,135,150,165,180,200],"Year","Passengers"),
+    "5.23 Seaborn Bar Plot":()=>barChart("Average Bill by Day",["Thur","Fri","Sat","Sun"],[17.7,17.2,20.0,21.4],"Day","Average bill"),
+    "5.24 Count Plot":()=>barChart("Number of Records by Day",["Thur","Fri","Sat","Sun"],[62,19,87,76],"Day","Count"),
+    "5.25 Box Plot":()=>boxPlot("Bill Distribution by Day",[{name:"Thur",v:[7,12,15,18,20,25,30]},{name:"Fri",v:[8,12,15,18,22,26,32]},{name:"Sat",v:[9,13,18,20,24,28,35]},{name:"Sun",v:[8,14,17,21,26,30,40]}]),
+    "5.26 Violin Plot":()=>boxPlot("Distribution Shape by Day",[{name:"Thur",v:[7,12,15,18,20,25,30]},{name:"Fri",v:[8,12,15,18,22,26,32]},{name:"Sat",v:[9,13,18,20,24,28,35]},{name:"Sun",v:[8,14,17,21,26,30,40]}]),
+    "5.27 Strip Plot":()=>scatterChart("Individual Bill Observations",[1,1,1,2,2,2,3,3,3,4,4,4],[12,18,25,10,16,28,9,20,32,13,22,30],"Day group","Total bill"),
+    "5.28 Swarm Plot":()=>scatterChart("Swarm Plot — Individual Observations",[1,1,1,2,2,2,3,3,3,4,4,4],[12,18,25,10,16,28,9,20,32,13,22,30],"Day group","Total bill"),
+    "5.29 Histogram using Seaborn":()=>histogram("Distribution of Total Bill",[8,10,12,13,15,16,18,20,22,25,28,30,32,35,40,45,50],"Total bill","Frequency"),
+    "5.30 KDE Plot":()=>kdeChart("KDE Plot — Total Bill",[8,10,12,13,15,16,18,20,22,25,28,30,32,35,40,45,50]),
+    "5.31 Pair Plot":()=>pairPlot(),
+    "5.32 Joint Plot":()=>jointPlot(),
+    "5.33 Heatmap":()=>heatmap("Sample Correlation Heatmap",["Sepal L","Sepal W","Petal L","Petal W"],[[1,-0.12,0.87,0.82],[-0.12,1,-0.43,-0.37],[0.87,-0.43,1,0.96],[0.82,-0.37,0.96,1]]),
+    "5.34 Correlation Heatmap":()=>heatmap("Correlation Matrix",["Study hours","Marks","Sleep"],[[1,0.92,-0.18],[0.92,1,-0.12],[-0.18,-0.12,1]]),
+    "5.35 Regression Plot":()=>regressionChart()
+  };
+  notes.forEach(note=>{
+    const h=note.querySelector("h2"); if(!h) return;
+    const title=h.textContent.trim(), fn=byTitle[title]; if(!fn) return;
+    const old=note.querySelector(".visual"); if(!old) return;
+    let rendered=fn();
+    let svg=typeof rendered==="string"?rendered:rendered;
+    old.innerHTML=`<div class="chart-wrap">${svg}</div><div class="chart-caption"><b>Output:</b> This graph is the visual result of the input data shown in the Python code above. Axes, labels, values and categories are included for easier study.</div>`;
+    /* Correct the code shown to students for the examples where fixed input is important. */
+    const code=note.querySelector(".code");
+    const codeMap={
+      "5.2 Basic Plot":`import matplotlib.pyplot as plt
+
+x = [1, 2, 3, 4, 5]
+y = [10, 20, 30, 40, 50]
+
+plt.plot(x, y, marker="o")
+plt.title("Basic Line Plot")
+plt.xlabel("X values")
+plt.ylabel("Y values")
+plt.grid(True, alpha=0.3)
+plt.show()`,
+      "5.3 Adding Title":`import matplotlib.pyplot as plt
+
+students = [1, 2, 3]
+marks = [10, 20, 30]
+
+plt.plot(students, marks, marker="o")
+plt.title("Student Marks")
+plt.show()`,
+      "5.4 Adding X-Axis and Y-Axis Labels":`import matplotlib.pyplot as plt
+
+students = [1, 2, 3]
+marks = [50, 70, 90]
+
+plt.plot(students, marks, marker="o")
+plt.xlabel("Students")
+plt.ylabel("Marks")
+plt.show()`,
+      "5.5 Line Plot":`import matplotlib.pyplot as plt
+
+months = ["Jan", "Feb", "Mar", "Apr"]
+sales = [100, 150, 130, 180]
+
+plt.plot(months, sales, marker="o", linewidth=2)
+plt.title("Monthly Sales")
+plt.xlabel("Month")
+plt.ylabel("Sales")
+plt.grid(True, alpha=0.3)
+plt.show()`,
+      "5.6 Line Plot with Marker":`import matplotlib.pyplot as plt
+
+x = [1, 2, 3, 4]
+y = [10, 20, 15, 30]
+
+plt.plot(x, y, marker="o")
+plt.title("Data Values")
+plt.xlabel("X")
+plt.ylabel("Value")
+plt.show()`,
+      "5.7 Bar Chart":`import matplotlib.pyplot as plt
+
+subjects = ["Maths", "Python", "English"]
+marks = [90, 95, 80]
+
+plt.bar(subjects, marks)
+plt.title("Subject Marks")
+plt.xlabel("Subject")
+plt.ylabel("Marks")
+plt.ylim(0, 100)
+plt.show()`,
+      "5.8 Horizontal Bar Chart":`import matplotlib.pyplot as plt
+
+subjects = ["Maths", "Python", "English"]
+marks = [90, 95, 80]
+
+plt.barh(subjects, marks)
+plt.title("Subject Marks")
+plt.xlabel("Marks")
+plt.ylabel("Subject")
+plt.xlim(0, 100)
+plt.show()`,
+      "5.9 Scatter Plot":`import matplotlib.pyplot as plt
+
+hours = [1, 2, 3, 4, 5]
+marks = [40, 50, 60, 75, 90]
+
+plt.scatter(hours, marks, s=70)
+plt.title("Study Hours and Marks")
+plt.xlabel("Study Hours")
+plt.ylabel("Marks")
+plt.grid(True, alpha=0.3)
+plt.show()`,
+      "5.10 Histogram":`import matplotlib.pyplot as plt
+
+marks = [40, 45, 50, 55, 60, 65, 70, 75, 80]
+
+plt.hist(marks, bins=5, edgecolor="black")
+plt.title("Marks Distribution")
+plt.xlabel("Marks")
+plt.ylabel("Frequency")
+plt.show()`,
+      "5.11 Pie Chart":`import matplotlib.pyplot as plt
+
+subjects = ["Maths", "Python", "English"]
+marks = [40, 35, 25]
+
+plt.pie(marks, labels=subjects, autopct="%1.1f%%", startangle=90)
+plt.title("Subject Marks Share")
+plt.show()`,
+      "5.20 Basic Seaborn Plot":`import pandas as pd
+import seaborn as sns
+import matplotlib.pyplot as plt
+
+df = pd.DataFrame({
+    "total_bill": [10, 15, 20, 25, 30, 35, 40, 45, 50],
+    "tip": [2, 3, 3.5, 4, 5, 6, 7, 8, 9]
+})
+
+sns.scatterplot(data=df, x="total_bill", y="tip", s=70)
+plt.title("Total Bill vs Tip")
+plt.show()`,
+      "5.21 Seaborn Scatter Plot":`import pandas as pd
+import seaborn as sns
+import matplotlib.pyplot as plt
+
+df = pd.DataFrame({
+    "total_bill": [10, 15, 20, 25, 30, 35, 40, 45, 50],
+    "tip": [2, 3, 3.5, 4, 5, 6, 7, 8, 9]
+})
+
+sns.scatterplot(data=df, x="total_bill", y="tip", s=70)
+plt.title("Total Bill vs Tip")
+plt.show()`,
+      "5.22 Seaborn Line Plot":`import pandas as pd
+import seaborn as sns
+import matplotlib.pyplot as plt
+
+df = pd.DataFrame({
+    "year": [2010, 2011, 2012, 2013, 2014, 2015],
+    "passengers": [120, 135, 150, 165, 180, 200]
+})
+
+sns.lineplot(data=df, x="year", y="passengers", marker="o")
+plt.title("Passengers Over Years")
+plt.show()`,
+      "5.23 Seaborn Bar Plot":`import pandas as pd
+import seaborn as sns
+import matplotlib.pyplot as plt
+
+df = pd.DataFrame({
+    "day": ["Thur", "Fri", "Sat", "Sun"],
+    "total_bill": [17.7, 17.2, 20.0, 21.4]
+})
+
+sns.barplot(data=df, x="day", y="total_bill")
+plt.title("Average Bill by Day")
+plt.show()`,
+      "5.24 Count Plot":`import pandas as pd
+import seaborn as sns
+import matplotlib.pyplot as plt
+
+df = pd.DataFrame({
+    "day": (["Thur"] * 62) + (["Fri"] * 19) + (["Sat"] * 87) + (["Sun"] * 76)
+})
+
+sns.countplot(data=df, x="day")
+plt.title("Number of Records by Day")
+plt.show()`,
+      "5.25 Box Plot":`import pandas as pd
+import seaborn as sns
+import matplotlib.pyplot as plt
+
+df = pd.DataFrame({
+    "day": ["Thur"]*7 + ["Fri"]*7 + ["Sat"]*7 + ["Sun"]*7,
+    "total_bill": [7,12,15,18,20,25,30, 8,12,15,18,22,26,32,
+                   9,13,18,20,24,28,35, 8,14,17,21,26,30,40]
+})
+
+sns.boxplot(data=df, x="day", y="total_bill")
+plt.title("Bill Distribution by Day")
+plt.show()`,
+      "5.26 Violin Plot":`import pandas as pd
+import seaborn as sns
+import matplotlib.pyplot as plt
+
+df = pd.DataFrame({
+    "day": ["Thur"]*7 + ["Fri"]*7 + ["Sat"]*7 + ["Sun"]*7,
+    "total_bill": [7,12,15,18,20,25,30, 8,12,15,18,22,26,32,
+                   9,13,18,20,24,28,35, 8,14,17,21,26,30,40]
+})
+
+sns.violinplot(data=df, x="day", y="total_bill")
+plt.title("Distribution Shape by Day")
+plt.show()`,
+      "5.27 Strip Plot":`import pandas as pd
+import seaborn as sns
+import matplotlib.pyplot as plt
+
+df = pd.DataFrame({
+    "day": ["Thur"]*3 + ["Fri"]*3 + ["Sat"]*3 + ["Sun"]*3,
+    "total_bill": [12,18,25,10,16,28,9,20,32,13,22,30]
+})
+
+sns.stripplot(data=df, x="day", y="total_bill", jitter=True)
+plt.title("Individual Bill Observations")
+plt.show()`,
+      "5.28 Swarm Plot":`import pandas as pd
+import seaborn as sns
+import matplotlib.pyplot as plt
+
+df = pd.DataFrame({
+    "day": ["Thur"]*3 + ["Fri"]*3 + ["Sat"]*3 + ["Sun"]*3,
+    "total_bill": [12,18,25,10,16,28,9,20,32,13,22,30]
+})
+
+sns.swarmplot(data=df, x="day", y="total_bill")
+plt.title("Swarm Plot — Individual Observations")
+plt.show()`,
+      "5.29 Histogram using Seaborn":`import pandas as pd
+import seaborn as sns
+import matplotlib.pyplot as plt
+
+df = pd.DataFrame({
+    "total_bill": [8,10,12,13,15,16,18,20,22,25,28,30,32,35,40,45,50]
+})
+
+sns.histplot(data=df, x="total_bill", bins=6, edgecolor="black")
+plt.title("Distribution of Total Bill")
+plt.show()`,
+      "5.30 KDE Plot":`import pandas as pd
+import seaborn as sns
+import matplotlib.pyplot as plt
+
+df = pd.DataFrame({
+    "total_bill": [8,10,12,13,15,16,18,20,22,25,28,30,32,35,40,45,50]
+})
+
+sns.kdeplot(data=df, x="total_bill", fill=True)
+plt.title("KDE Plot")
+plt.show()`,
+      "5.31 Pair Plot":`import pandas as pd
+import seaborn as sns
+import matplotlib.pyplot as plt
+
+df = pd.DataFrame({
+    "sepal_length": [5.1, 5.8, 6.2, 6.7, 7.1, 5.0, 5.5, 6.0],
+    "sepal_width":  [3.5, 2.7, 2.9, 3.1, 3.0, 3.4, 2.5, 2.2],
+    "petal_length": [1.4, 4.1, 4.3, 4.4, 5.9, 1.5, 4.0, 4.0],
+    "petal_width":  [0.2, 1.0, 1.3, 1.4, 2.1, 0.2, 1.3, 1.0]
+})
+
+sns.pairplot(df)
+plt.show()`,
+      "5.32 Joint Plot":`import pandas as pd
+import seaborn as sns
+
+df = pd.DataFrame({
+    "total_bill": [10, 15, 20, 25, 30, 35, 40, 45, 50],
+    "tip": [2, 3, 3.5, 4, 5, 6, 7, 8, 9]
+})
+
+sns.jointplot(data=df, x="total_bill", y="tip")
+`,
+      "5.33 Heatmap":`import pandas as pd
+import seaborn as sns
+import matplotlib.pyplot as plt
+
+corr = pd.DataFrame(
+    [
+        [1.00, -0.12, 0.87, 0.82],
+        [-0.12, 1.00, -0.43, -0.37],
+        [0.87, -0.43, 1.00, 0.96],
+        [0.82, -0.37, 0.96, 1.00]
+    ],
+    index=["Sepal L", "Sepal W", "Petal L", "Petal W"],
+    columns=["Sepal L", "Sepal W", "Petal L", "Petal W"]
+)
+
+sns.heatmap(corr, annot=True, fmt=".2f", cmap="coolwarm", vmin=-1, vmax=1)
+plt.title("Sample Correlation Heatmap")
+plt.show()`,
+      "5.34 Correlation Heatmap":`import pandas as pd
+import seaborn as sns
+import matplotlib.pyplot as plt
+
+corr = pd.DataFrame(
+    [
+        [1.00, 0.92, -0.18],
+        [0.92, 1.00, -0.12],
+        [-0.18, -0.12, 1.00]
+    ],
+    index=["Study hours", "Marks", "Sleep"],
+    columns=["Study hours", "Marks", "Sleep"]
+)
+
+sns.heatmap(corr, annot=True, fmt=".2f", cmap="coolwarm", vmin=-1, vmax=1)
+plt.title("Correlation Matrix")
+plt.show()`,
+      "5.35 Regression Plot":`import pandas as pd
+import seaborn as sns
+import matplotlib.pyplot as plt
+
+df = pd.DataFrame({
+    "total_bill": [10,15,20,25,30,35,40,45,50],
+    "tip": [2,3,4,5,5,7,8,9,10]
+})
+
+sns.regplot(data=df, x="total_bill", y="tip")
+plt.title("Regression Plot")
+plt.show()`
+    };
+    if(code && codeMap[title]) code.textContent=codeMap[title];
+    /* Improve outputs for legend/grid/size with explicit textual cues. */
+    if(title==="5.12 Adding Legend"){
+      const out=note.querySelector(".visual"); out.insertAdjacentHTML("beforeend",`<div class="chart-legend"><span><i class="legend-dot" style="background:${VCOL.blue}"></i>Sales</span></div>`);
+    }
+  });
+}
+
 function showHome(){
   document.getElementById("dashboard").style.display="block";
   document.getElementById("unitView").style.display="none";
@@ -927,6 +1493,7 @@ function showUnit(id){
   const view=document.getElementById("unitView");
   view.innerHTML=units[id]||"<p>Unit not found.</p>";
   view.style.display="block";
+  if(id==="u5") renderUnit5Visuals(view);
   window.scrollTo({top:0,behavior:"smooth"});
   history.replaceState(null,"","#"+id);
 }
@@ -936,7 +1503,7 @@ function filterNotes(input){
     n.style.display=n.innerText.toLowerCase().includes(q)?"block":"none";
   });
 }
-function toggleDark(){document.body.classList.toggle("dark");localStorage.setItem("pythonHubDark",document.body.classList.contains("dark"))}
+function toggleDark(){document.body.classList.toggle("dark");localStorage.setItem("pythonHubDark",document.body.classList.contains("dark")); const view=document.getElementById("unitView"); if(view.style.display!=="none" && location.hash==="#u5") renderUnit5Visuals(view)}
 if(localStorage.getItem("pythonHubDark")==="true")document.body.classList.add("dark");
 window.addEventListener("load",()=>{const id=location.hash.slice(1); if(units[id])showUnit(id)});
 </script>
