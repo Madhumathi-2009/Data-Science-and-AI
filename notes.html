@@ -1,0 +1,944 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Python Notes Hub | B.Sc Data Science and AI</title>
+<style>
+:root{--bg:#f8fafc;--card:#fff;--text:#1e293b;--muted:#64748b;--accent:#2563eb;--accent2:#06b6d4;--border:#e2e8f0;--code:#0f172a;--output:#f1f5f9;--shadow:0 10px 30px rgba(15,23,42,.08)}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:var(--bg);color:var(--text);line-height:1.7}
+header{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.94);backdrop-filter:blur(14px);border-bottom:1px solid var(--border)}
+.nav{max-width:1200px;margin:auto;padding:14px 22px;display:flex;align-items:center;justify-content:space-between;gap:15px}
+.brand{font-weight:800;font-size:1.15rem}.actions{display:flex;gap:8px}.btn{border:1px solid var(--border);background:var(--card);color:var(--text);padding:9px 14px;border-radius:999px;cursor:pointer;font-weight:700}.btn:hover{transform:translateY(-2px);border-color:var(--accent);color:var(--accent)}
+main{max-width:1200px;margin:auto;padding:55px 22px 80px}.hero{text-align:center;margin-bottom:40px}.hero h1{font-size:clamp(2rem,5vw,3.6rem);margin:8px 0;background:linear-gradient(90deg,var(--accent),var(--accent2));-webkit-background-clip:text;color:transparent}.hero p{color:var(--muted);font-size:1.08rem}
+.unit-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:20px}.unit-card{background:var(--card);border:1px solid var(--border);border-radius:22px;padding:28px;box-shadow:var(--shadow);cursor:pointer;transition:.3s;position:relative;overflow:hidden}.unit-card:before{content:"";position:absolute;inset:auto -30px -50px auto;width:130px;height:130px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--accent2));opacity:.08}.unit-card:hover{transform:translateY(-7px);border-color:var(--accent)}.icon{font-size:2rem}.unit-card h2{font-size:1.1rem;margin:10px 0 5px}.unit-card p{margin:0;color:var(--muted);font-size:.92rem}
+#unitView{display:none}.back{margin-bottom:22px}.unit-head{background:linear-gradient(135deg,#eff6ff,#ecfeff);border:1px solid #bfdbfe;border-radius:24px;padding:28px;margin-bottom:24px}.unit-head h1{margin:0 0 5px}.unit-head p{margin:0;color:var(--muted)}
+.toolbar{display:flex;gap:10px;flex-wrap:wrap;margin:18px 0}.search{flex:1;min-width:220px;padding:12px 16px;border:1px solid var(--border);border-radius:14px;background:var(--card);color:var(--text)}
+.note{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:25px;margin:18px 0;box-shadow:0 6px 20px rgba(15,23,42,.04)}.note h2{margin-top:0;color:var(--accent);font-size:1.55rem}.note h3{color:#334155;margin-top:26px}.note ul{padding-left:24px}.note table{width:100%;border-collapse:collapse;margin:16px 0;display:block;overflow-x:auto}.note th,.note td{border:1px solid var(--border);padding:10px;text-align:left;min-width:130px}.note th{background:#f1f5f9}.code-title,.output-title{font-weight:900;margin-top:18px;margin-bottom:8px}.code-title{color:#0f172a}.output-title{color:#0f766e}
+pre{margin:0;white-space:pre-wrap;word-break:break-word;border-radius:14px;padding:17px;overflow:auto}.code{background:var(--code);color:#e2e8f0}.output{background:var(--output);border:1px solid var(--border);color:#0f172a}
+.visual{margin-top:12px;background:#fff;border:1px solid var(--border);border-radius:14px;padding:15px;overflow:auto}.visual svg{display:block;width:100%;max-width:760px;height:auto;margin:auto}
+.tip{padding:14px 16px;border-left:4px solid var(--accent2);background:#ecfeff;border-radius:10px;margin:15px 0}.summary{background:linear-gradient(135deg,#f8fafc,#eff6ff)}
+footer{text-align:center;padding:30px;color:var(--muted);border-top:1px solid var(--border)}
+body.dark{--bg:#070b12;--card:#0f172a;--text:#e5e7eb;--muted:#94a3b8;--border:#263244;--code:#020617;--output:#111827;--shadow:0 10px 30px rgba(0,0,0,.25)}body.dark header{background:rgba(7,11,18,.94)}body.dark .unit-head{background:linear-gradient(135deg,#0f1b31,#09242a);border-color:#1e40af}body.dark .note th{background:#172033}body.dark .visual{background:#0b1220}body.dark .output{color:#e5e7eb}body.dark .code-title{color:#e5e7eb}
+@media(max-width:650px){main{padding:35px 14px 60px}.note{padding:18px}.nav{padding:12px 14px}}
+.website-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 10px 18px;
+    border-radius: 12px;
+    background: #fd83d8;
+    color: white;
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 14px;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(220, 38, 38, 0.25);
+}
+
+.website-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 7px 18px rgba(220, 38, 38, 0.35);
+}
+</style>
+</head>
+<body>
+<header><div class="nav"><div class="brand">📝 Notes Hub</div><div class="actions"><button class="btn" onclick="showHome()">🏠 Home</button><button class="btn" onclick="toggleDark()">🌙 Dark</button><a href="https://madhumathi-2009.github.io/Data-Science-and-AI/index.html"
+   target="_blank"
+   rel="noopener noreferrer"
+   class="website-btn">
+    🌐 Open Q&A
+</a></div></div></header>
+<main>
+<section id="dashboard">
+<div class="hero"><div style="font-size:2rem">🐍</div><h1>B.Sc Data Science and AI PYTHON</h1><p>Learn the concept, understand the code, observe output.</p></div>
+<div class="unit-grid">
+<div class="unit-card" onclick="showUnit('u1')"><div class="icon">📊</div><h2>Unit 1 — Data Science Introduction</h2><p>Python fundamentals, variables, operators, control statements and functions.</p></div>
+<div class="unit-card" onclick="showUnit('u2')"><div class="icon">📁</div><h2>Unit 2 — Built-in Data Structures</h2><p>Lists, tuples, sets, dictionaries, arrays, strings and regular expressions.</p></div>
+<div class="unit-card" onclick="showUnit('u3')"><div class="icon">🔢</div><h2>Unit 3 — NumPy Basics</h2><p>Arrays, operations, aggregation, broadcasting and EDA fundamentals.</p></div>
+<div class="unit-card" onclick="showUnit('u4')"><div class="icon">🐼</div><h2>Unit 4 — Data Manipulation with Pandas</h2><p>Series, DataFrames, selection, cleaning, grouping, merging and files.</p></div>
+<div class="unit-card" onclick="showUnit('u5')"><div class="icon">📈</div><h2>Unit 5 — Data Visualization with Matplotlib</h2><p>Matplotlib and Seaborn plots, customization and statistical visualization.</p></div>
+</div>
+</section>
+<section id="unitView"></section>
+</main>
+<footer>By Madhumathi | B.Sc. Data Science and AI Student</footer>
+
+<script>
+const units={};
+
+/* ---------------- UNIT 1 ---------------- */
+units.u1=`
+<div class="back"><button class="btn" onclick="showHome()">← Back to Home</button></div>
+<div class="unit-head"><h1>📊 Unit 1 — Data Science Introduction</h1><p>Python Introduction, Variables, Keywords, Operators, Data Types, Control Statements, Functions and Built-in Functions.</p></div>
+<div class="toolbar"><input class="search" oninput="filterNotes(this)" placeholder="Search Unit 1 notes..."></div>
+
+<article class="note"><h2>1. Python Introduction</h2>
+<p>Python is a <b>High level Programming language</b>.</p><ul><li>Allows writing code in fewer lines.</li><li>It is a dynamically typed language.</li><li>Used in Web development, data analysis, Artificial Intelligence and many other fields.</li><li>It has automatic garbage collection.</li></ul>
+<h3>How it works</h3><ul><li><code>print()</code> is a built-in function that instructs the computer to display text on the screen.</li><li><code>"HelloWorld"</code> is a string enclosed within single or double quotes.</li><li><code>#</code> is used to write comments in Python. Comments are ignored during execution.</li></ul>
+<div class="code-title">PYTHON CODE</div><pre class="code">print("HelloWorld")</pre><div class="output-title">OUTPUT</div><pre class="output">HelloWorld</pre></article>
+
+<article class="note"><h2>1.1 Variables</h2><p>Variables are used to store data that can be referenced and manipulated during program execution. A variable assigns a value.</p>
+<div class="code-title">EXAMPLE</div><pre class="code">a = 5
+b = "Alex"
+print("Name:", b)
+print("Age:", a)</pre><div class="output-title">OUTPUT</div><pre class="output">Name: Alex
+Age: 5</pre>
+<ul><li><code>a</code> is the variable assigned to the value 5.</li><li><code>b</code> is the variable assigned to the string value Alex.</li><li>A variable can hold an integer, float, string or any other data type.</li></ul>
+<h3>Rules for Naming Variables</h3><ul><li>Must start with a letter or underscore (<code>_</code>).</li><li>Can contain letters, numbers and underscores.</li><li>Names are case-sensitive. <code>age</code> and <code>Age</code> are different.</li><li>Use the same name assigned to the value when printing.</li><li>Cannot use Python keywords such as <code>if</code>, <code>for</code>, <code>class</code>, etc.</li></ul>
+<table><tr><th>Valid</th><th>Reason</th></tr><tr><td><code>Age = 21</code></td><td>First letter can be uppercase.</td></tr><tr><td><code>name1 = "Alice"</code></td><td>Digits can be used except at the beginning.</td></tr><tr><td><code>total_marks = 400</code></td><td>Underscore can be used.</td></tr></table>
+<table><tr><th>Invalid</th><th>Reason</th></tr><tr><td><code>1name = "Alice"</code></td><td>Starts with a digit.</td></tr><tr><td><code>if = 20</code></td><td><code>if</code> is a keyword.</td></tr><tr><td><code>total-score = 400</code></td><td>Contains a hyphen.</td></tr><tr><td><code>class = 10</code></td><td><code>class</code> is a reserved keyword.</td></tr></table>
+<h3>Assigning Values to Variables</h3><table><tr><th>Assignment</th><th>Definition</th><th>Example</th><th>Output</th></tr>
+<tr><td>Basic Assignment</td><td>Values are assigned using <code>=</code>.</td><td><code>x=5<br>print(x)</code></td><td>5</td></tr>
+<tr><td>Assigning same values</td><td>The same value can be assigned to multiple variables.</td><td><code>a=b=c=100<br>print(a,b,c)</code></td><td>100 100 100</td></tr>
+<tr><td>Assigning Different Values</td><td>Multiple variables can be assigned different values.</td><td><code>a=5<br>b=10<br>print(a)<br>print(b)</code></td><td>5<br>10</td></tr>
+<tr><td>Variable Types</td><td>Python variables can hold different data types such as integer, string, float, boolean, list, tuple, dictionary and set.</td><td><code>a=5<br>b=5.0<br>c="Tom"<br>d=[1,2,3]<br>print(a,b,c,d)</code></td><td>5 5.0 Tom [1, 2, 3]</td></tr></table>
+<h3>Deleting Variables: <code>del</code> keyword</h3><pre class="code">x = 10
+del x</pre><div class="output-title">OUTPUT</div><pre class="output">No output. The variable x is removed.</pre>
+<h3>Counting Characters</h3><p>After assigning a string to a variable, its length can be found using <code>len()</code>.</p><pre class="code">a = "Python"
+l = len(a)
+print("Length of the word:", l)</pre><div class="output-title">OUTPUT</div><pre class="output">Length of the word: 6</pre></article>
+
+<article class="note"><h2>1.2 Keywords</h2><p>Keywords in Python are reserved words that are part of the programming language itself. Each keyword has a special meaning and purpose built into Python.</p><pre class="code">import keyword
+print(keyword.kwlist)</pre><div class="output-title">OUTPUT</div><pre class="output">['False', 'None', 'True', 'and', 'as', 'assert', 'async', 'await', 'break', 'class', 'continue', 'def', 'del', 'elif', 'except', 'finally', 'for', 'from', 'global', 'if', 'import', 'in', 'is', 'lambda', 'not', 'or', 'pass', 'return', 'try', 'while', 'with']</pre>
+<p><b>Note:</b> The exact keyword list can vary slightly with the Python version.</p>
+<table><tr><th>Category</th><th>Keyword</th><th>Meaning</th></tr>
+<tr><td>Value</td><td>True</td><td>Boolean value representing yes / 1.</td></tr><tr><td>Value</td><td>False</td><td>Boolean value representing no / 0.</td></tr><tr><td>Value</td><td>None</td><td>Represents absence of value / null.</td></tr>
+<tr><td>Operator</td><td>and</td><td>Logical AND; both conditions must be true.</td></tr><tr><td>Operator</td><td>or</td><td>Logical OR; at least one condition is true.</td></tr><tr><td>Operator</td><td>not</td><td>Inverts a boolean value.</td></tr><tr><td>Operator</td><td>is</td><td>Checks whether two references refer to the same object.</td></tr><tr><td>Operator</td><td>in</td><td>Checks whether a value exists in a sequence/collection.</td></tr>
+<tr><td>Control flow</td><td>if, else, elif, for, while, break, continue, pass, try, except, finally, raise, assert</td><td>Used for conditions, loops and exception/control flow.</td></tr>
+<tr><td>Function/Class</td><td>def, return, lambda, yield, class</td><td>Define functions, return values, create anonymous functions, generators and classes.</td></tr>
+<tr><td>Context</td><td>with, as</td><td>Context management and aliases.</td></tr><tr><td>Import</td><td>import, from</td><td>Load modules or selected parts of modules.</td></tr><tr><td>Scope</td><td>global, nonlocal</td><td>Refer to variables in outer/global scopes.</td></tr><tr><td>Async</td><td>async, await</td><td>Asynchronous programming.</td></tr></table></article>
+
+<article class="note"><h2>1.3 Arithmetic Operators</h2><p>An arithmetic operator is a mathematical operator used for simple arithmetic operations. It takes two operands and performs a calculation.</p>
+<table><tr><th>Operator</th><th>Description</th><th>Example (a=5,b=2)</th><th>Output</th></tr><tr><td>+</td><td>Addition</td><td>a+b</td><td>7</td></tr><tr><td>-</td><td>Subtraction</td><td>a-b</td><td>3</td></tr><tr><td>*</td><td>Multiplication</td><td>a*b</td><td>10</td></tr><tr><td>/</td><td>Division</td><td>a/b</td><td>2.5</td></tr><tr><td>//</td><td>Floor Division</td><td>a//b</td><td>2</td></tr><tr><td>%</td><td>Modulus</td><td>a%b</td><td>1</td></tr><tr><td>**</td><td>Exponentiation</td><td>a**b</td><td>25</td></tr></table>
+<pre class="code">a = 100
+b = 10
+print("Addition:", a + b)
+print("Subtraction:", a - b)
+print("Multiplication:", a * b)
+print("Division:", a / b)
+print("Floor Division:", a // b)
+print("Modulus:", a % b)
+print("Exponent:", a ** b)</pre><div class="output-title">OUTPUT</div><pre class="output">Addition: 110
+Subtraction: 90
+Multiplication: 1000
+Division: 10.0
+Floor Division: 10
+Modulus: 0
+Exponent: 10000000000</pre><div class="tip">The pasted version contained corrupted symbols and outputs. The executable operators above are the intended Python operators: <code>*</code> and <code>**</code>, and the output is corrected accordingly.</div></article>
+
+<article class="note"><h2>1.4 Relational Operators</h2><p>Relational operators, also called comparison operators, compare two values and return <code>True</code> or <code>False</code>.</p>
+<table><tr><th>Operator</th><th>Description</th><th>a=10,b=5</th><th>Output</th></tr><tr><td>==</td><td>Equal to</td><td>a==b</td><td>False</td></tr><tr><td>!=</td><td>Not equal to</td><td>a!=b</td><td>True</td></tr><tr><td>&gt;</td><td>Greater than</td><td>a&gt;b</td><td>True</td></tr><tr><td>&lt;</td><td>Less than</td><td>a&lt;b</td><td>False</td></tr><tr><td>&gt;=</td><td>Greater than or equal to</td><td>a&gt;=b</td><td>True</td></tr><tr><td>&lt;=</td><td>Less than or equal to</td><td>a&lt;=b</td><td>False</td></tr></table>
+<pre class="code">a = int(input())
+b = int(input())
+print(a > b)
+print(a < b)
+print(a == b)
+print(a != b)
+print(a >= b)
+print(a <= b)</pre><div class="output-title">OUTPUT — SAMPLE RUN</div><pre class="output">Input:
+13
+33
+
+False
+True
+False
+True
+False
+True</pre></article>
+
+<article class="note"><h2>1.5 Logical Operators</h2><p>Logical operators perform Logical AND, Logical OR and Logical NOT operations. They are used to combine multiple conditional statements.</p>
+<table><tr><th>Operator</th><th>Description</th><th>Example (a=5,b=2)</th><th>Output</th></tr><tr><td>and</td><td>True if both conditions are true</td><td>(a&gt;b) and (a==b)</td><td>False</td></tr><tr><td>or</td><td>True if at least one condition is true</td><td>(a&gt;b) or (a!=b)</td><td>True</td></tr><tr><td>not</td><td>Reverses the result</td><td>not(a==b)</td><td>True</td></tr></table>
+<pre class="code">a = True
+b = False
+print(a and b)
+print(a or b)
+print(not b)
+print(not a)</pre><div class="output-title">OUTPUT</div><pre class="output">False
+True
+True
+False</pre>
+<pre class="code">a = int(input())
+b = int(input())
+print((a > b) and (a != b))
+print((a < b) and (a == b))
+print(not(a == b))</pre><div class="output-title">OUTPUT — SAMPLE INPUT 5, 2</div><pre class="output">True
+False
+True</pre></article>
+
+<article class="note"><h2>1.6 Data Types</h2><p>Data types in Python define the type of value stored in a variable and determine the operations that can be performed on the data.</p>
+<ul><li>Numeric → Integer, Float</li><li>Sequence Type → String, Tuple, List</li><li>Dictionary</li><li>Boolean</li><li>Set</li></ul>
+<table><tr><th>Data Type</th><th>Definition</th><th>Example</th><th>Output</th></tr>
+<tr><td>Integer</td><td>Whole number, positive, negative or zero.</td><td><code>a=10; print(a); print(type(a))</code></td><td>10<br>&lt;class 'int'&gt;</td></tr>
+<tr><td>Float</td><td>Decimal number with a fractional part.</td><td><code>x=5.5; print(x); print(type(x))</code></td><td>5.5<br>&lt;class 'float'&gt;</td></tr>
+<tr><td>String</td><td>Sequence of characters in quotes.</td><td><code>a="Python"; print(a); print(type(a))</code></td><td>Python<br>&lt;class 'str'&gt;</td></tr>
+<tr><td>List</td><td>Collection of items enclosed in square brackets.</td><td><code>z=[1,2,3]; print(z); print(type(z))</code></td><td>[1, 2, 3]<br>&lt;class 'list'&gt;</td></tr>
+<tr><td>Tuple</td><td>Ordered collection that cannot be modified.</td><td><code>s=("a","b","c"); print(s); print(type(s))</code></td><td>('a','b','c')<br>&lt;class 'tuple'&gt;</td></tr>
+<tr><td>Dictionary</td><td>Collection of key-value pairs.</td><td><code>a={"x":1,"y":2}</code></td><td>{'x': 1, 'y': 2}<br>&lt;class 'dict'&gt;</td></tr>
+<tr><td>Set</td><td>Unordered collection of unique items.</td><td><code>s={"a","a","b","c"}</code></td><td>Unique elements; order can vary.</td></tr>
+<tr><td>Boolean</td><td>Logical value True or False.</td><td><code>a=True; b=False</code></td><td>True / False</td></tr></table>
+<pre class="code">a = 400
+b = 80.0
+c = "Alice"
+d = bool(a < b)
+e = ["Tamil", "English"]
+f = (40, 80)
+g = {"Student name":"Alice", "Age":18}
+h = {90,90,80}
+
+print(a,b,c,d,e,f,g,h)</pre><div class="output-title">OUTPUT</div><pre class="output">400 80.0 Alice False ['Tamil', 'English'] (40, 80) {'Student name': 'Alice', 'Age': 18} {80, 90}</pre></article>
+
+<article class="note"><h2>1.7 if-else (Conditional Statement)</h2><p>The if-else statement executes one block of code if the condition is true and another block if the condition is false.</p><h3>Syntax</h3><pre class="code">if &lt;condition&gt;:
+    statement block 1
+else:
+    statement block 2</pre>
+<h3>Example 1: Check whether a number is even or odd</h3><pre class="code">N = int(input("Enter a number:"))
+if N % 2 == 0:
+    print("Number is even")
+else:
+    print("Number is odd")</pre><div class="output-title">OUTPUT — SAMPLE INPUT 10</div><pre class="output">Enter a number: 10
+Number is even</pre>
+<h3>Example 2: Check voting eligibility</h3><pre class="code">Age = int(input())
+if Age >= 18:
+    print("Eligible")
+else:
+    print("Not eligible")</pre><div class="output-title">OUTPUT — SAMPLE INPUT 20</div><pre class="output">Eligible</pre></article>
+
+<article class="note"><h2>1.8 for loop</h2><p>A <code>for</code> loop is also known as a definite loop because the programmer can know how many values are iterated. <code>range()</code> generates a sequence of values.</p><p><b>Important:</b> Python uses <code>range(start, stop, step)</code>, where the stop value itself is excluded.</p>
+<h3>Example 1: Display 0 to 9</h3><pre class="code">for i in range(0,10,1):
+    print(i)</pre><div class="output-title">OUTPUT</div><pre class="output">0
+1
+2
+3
+4
+5
+6
+7
+8
+9</pre>
+<h3>Example 2: Display even numbers 0 to 20</h3><pre class="code">for i in range(0,21,2):
+    print(i)</pre><div class="output-title">OUTPUT</div><pre class="output">0
+2
+4
+6
+8
+10
+12
+14
+16
+18
+20</pre></article>
+
+<article class="note"><h2>1.9 while loop</h2><p>A while loop repeatedly executes its body while a Boolean condition is <code>True</code>. When the condition becomes false, execution continues after the loop. The <code>else</code> part is optional.</p>
+<h3>Example 1: Display numbers 1 to 5</h3><pre class="code">a = 1
+while a <= 5:
+    print(a)
+    a = a + 1</pre><div class="output-title">OUTPUT</div><pre class="output">1
+2
+3
+4
+5</pre>
+<h3>Example 2: Display numbers 50 to 40</h3><pre class="code">s = 50
+while s >= 40:
+    print(s)
+    s = s - 1</pre><div class="output-title">OUTPUT</div><pre class="output">50
+49
+48
+47
+46
+45
+44
+43
+42
+41
+40</pre></article>
+
+<article class="note"><h2>1.10 Functions</h2><p>A function is a reusable block of code designed to perform a particular task.</p><h3>Advantages</h3><ul><li>Code Reusability</li><li>Better program Organization</li><li>Easy Maintenance</li><li>Reduced Code Duplication</li><li>Improved Readability</li></ul><h3>Defining a function</h3><p>A function is defined using the keyword <code>def</code>.</p><pre class="code">def function_name():
+    statement</pre>
+<h3>Example</h3><pre class="code">def greet():
+    print("Welcome to python")
+
+greet()</pre><div class="output-title">OUTPUT</div><pre class="output">Welcome to python</pre><p><b>Note:</b> After defining a function, it must be called to execute.</p>
+<h3>Function Arguments</h3><p>Arguments are values passed to a function when it is called.</p><pre class="code">def square(num):
+    print(num * num)
+
+square(5)</pre><div class="output-title">OUTPUT</div><pre class="output">25</pre>
+<h3>Types of Function Arguments</h3><ul><li>Positional Arguments</li><li>Keyword Arguments</li><li>Default Arguments</li><li>Arbitrary Arguments (<code>*args</code>)</li><li>Arbitrary Keyword Arguments (<code>**kwargs</code>)</li></ul>
+<h3>Types of Functions</h3><ul><li>Built-in Function</li><li>User-defined Function</li><li>Recursive Function</li><li>Lambda Function</li></ul></article>
+
+<article class="note"><h2>1.11 Built-in Functions</h2><p>Python built-in functions are predefined functions available in the Python interpreter without importing an external module. The exact number varies by Python version, so it is better not to treat “69” as a universal fixed count.</p>
+<table><tr><th>Category</th><th>Functions</th></tr><tr><td>Type conversion</td><td>int(), float(), str(), bool(), list(), tuple(), set(), frozenset(), dict(), bytes(), bytearray(), complex(), bin(), oct(), hex(), chr(), ord(), ascii(), repr()</td></tr><tr><td>Mathematical</td><td>abs(), min(), pow(), max(), round(), divmod(), sum()</td></tr><tr><td>Input/Output</td><td>input(), print(), open()</td></tr><tr><td>Iteration/Data</td><td>len(), filter(), range(), map(), enumerate(), sorted(), reversed(), aiter(), zip(), anext(), slice(), all(), iter(), next(), any()</td></tr><tr><td>Object/Attribute</td><td>getattr(), setattr(), delattr(), hasattr(), callable(), super(), isinstance(), property(), staticmethod(), classmethod(), type(), vars(), dir(), id(), object(), globals(), locals()</td></tr><tr><td>Compilation/Execution</td><td>compile(), exec(), eval(), <code>__import__()</code></td></tr><tr><td>Memory/Special</td><td>memoryview(), format()</td></tr><tr><td>Debugging/Help</td><td>help(), breakpoint()</td></tr></table>
+<h3>Example 1</h3><pre class="code">import math
+
+n = int(input("Enter number:"))
+print(math.factorial(n))</pre><div class="output-title">OUTPUT — SAMPLE INPUT 6</div><pre class="output">Enter number: 6
+720</pre>
+<h3>Example 2</h3><pre class="code">n = int(input("Enter number:"))
+print(abs(n))</pre><div class="output-title">OUTPUT — SAMPLE INPUT -10</div><pre class="output">Enter number: -10
+10</pre>
+<h3>Example 3</h3><pre class="code">a = int(input())
+b = int(input())
+print("Largest number:", max(a,b))</pre><div class="output-title">OUTPUT — SAMPLE INPUT</div><pre class="output">12
+25
+Largest number: 25</pre></article>
+`;
+
+/* ---------------- UNIT 2 ---------------- */
+units.u2=`
+<div class="back"><button class="btn" onclick="showHome()">← Back to Home</button></div>
+<div class="unit-head"><h1>📁 Unit 2 — Built-in Data Structures</h1><p>Lists, Tuples, Sets, Dictionaries, Arrays, Strings and Regular Expressions.</p></div>
+<div class="toolbar"><input class="search" oninput="filterNotes(this)" placeholder="Search Unit 2 notes..."></div>
+
+<article class="note"><h2>2. Data Structures</h2><p>Data structures in Python are containers used to store and organize data so that it can be accessed and modified efficiently.</p><p>Python has four main built-in data structures:</p><ul><li>List</li><li>Tuple</li><li>Set</li><li>Dictionary</li></ul><p>Other useful structures/tools include Array, String and Regular Expression.</p></article>
+
+<article class="note"><h2>2.1 Lists</h2><p>Lists are built-in data structures used to store multiple values of any type. A list is constructed using square brackets separated by commas.</p><ul><li>Mutable (modifiable)</li><li>Ordered</li><li>Allow duplicate values</li><li>Index based</li></ul>
+<pre class="code">fruits = ["Apple", "Mango", "Banana"]
+print(fruits)</pre><div class="output-title">OUTPUT</div><pre class="output">['Apple', 'Mango', 'Banana']</pre>
+<h3>Accessing List Elements</h3><pre class="code">a = [10, 20, 30]
+print(a[0])
+print(a[-1])</pre><div class="output-title">OUTPUT</div><pre class="output">10
+30</pre>
+<h3>Slicing</h3><pre class="code">x = [1,2,3,4,5,6,7,8]
+print(x[0:4])
+print(x[2:6])</pre><div class="output-title">OUTPUT</div><pre class="output">[1, 2, 3, 4]
+[3, 4, 5, 6]</pre>
+<h3>List Methods</h3><table><tr><th>Method</th><th>Purpose</th><th>Example</th><th>Output</th></tr>
+<tr><td>append()</td><td>Adds an element at the end.</td><td><code>a=[1,2,3]; a.append(4); print(a)</code></td><td>[1, 2, 3, 4]</td></tr>
+<tr><td>insert()</td><td>Adds an element at a specific position.</td><td><code>a=[1,3]; a.insert(1,2); print(a)</code></td><td>[1, 2, 3]</td></tr>
+<tr><td>extend()</td><td>Adds multiple elements.</td><td><code>a=[1,2]; a.extend([3,4]); print(a)</code></td><td>[1, 2, 3, 4]</td></tr>
+<tr><td>remove()</td><td>Removes the first occurrence.</td><td><code>a=[1,2,3,4]; a.remove(2); print(a)</code></td><td>[1, 3, 4]</td></tr>
+<tr><td>clear()</td><td>Removes all items.</td><td><code>a=[1,2]; a.clear(); print(a)</code></td><td>[]</td></tr>
+<tr><td>del</td><td>Deletes an item at an index.</td><td><code>a=[1,2,3,4]; del a[1]; print(a)</code></td><td>[1, 3, 4]</td></tr>
+<tr><td>sort()</td><td>Sorts ascending.</td><td><code>a=[5,8,2,1,3,4]; a.sort(); print(a)</code></td><td>[1, 2, 3, 4, 5, 8]</td></tr>
+<tr><td>reverse()</td><td>Reverses the list.</td><td><code>a=[5,8,2,1,3,4]; a.reverse(); print(a)</code></td><td>[4, 3, 1, 2, 8, 5]</td></tr></table>
+<h3>Nested Lists</h3><p>A list inside another list is called a nested list.</p><pre class="code">matrix = [[1,2],[3,4]]
+print(matrix[1][0])</pre><div class="output-title">OUTPUT</div><pre class="output">3</pre>
+<h3>Applications</h3><ul><li>Student record management</li><li>Shopping cart system</li><li>Data storage</li><li>Data analysis</li><li>Machine learning datasets</li><li>Database</li></ul><h3>Summary</h3><ul><li>Lists store multiple values.</li><li>Lists are mutable.</li><li>Lists support indexing and slicing.</li><li>Lists are widely used in Data Science.</li></ul></article>
+
+<article class="note"><h2>2.2 Tuples</h2><ul><li>A tuple is an immutable ordered collection of elements.</li><li>Tuples are similar to lists but cannot be modified after creation.</li><li>Can hold elements of different data types.</li><li>Tuples are usually enclosed by parentheses and elements are separated by commas.</li></ul>
+<pre class="code">tup = tuple("Python")
+print(tup)</pre><div class="output-title">OUTPUT</div><pre class="output">('P', 'y', 't', 'h', 'o', 'n')</pre>
+<h3>Accessing a Tuple</h3><pre class="code">tup = tuple("Python")
+print(tup[0])
+print(tup[::-1])</pre><div class="output-title">OUTPUT</div><pre class="output">P
+('n', 'o', 'h', 't', 'y', 'P')</pre>
+<h3>Tuple Methods</h3><p><b>count()</b> returns the occurrence count.</p><pre class="code">data = ('a','b','c','d','a','e','f','g')
+print(data.count('a'))</pre><div class="output-title">OUTPUT</div><pre class="output">2</pre><p><b>index()</b> returns the position of an element.</p><pre class="code">data = (10,20,30)
+print(data.index(20))</pre><div class="output-title">OUTPUT</div><pre class="output">1</pre>
+<h3>Concatenation</h3><pre class="code">tup1 = (0,1,2,3)
+tup2 = ('Python',)
+tup3 = (4,5,6)
+tup4 = tup1 + tup2 + tup3
+print(tup4)</pre><div class="output-title">OUTPUT</div><pre class="output">(0, 1, 2, 3, 'Python', 4, 5, 6)</pre>
+<h3>Deleting a Tuple</h3><pre class="code">tup1 = (0,1,2,3)
+del tup1</pre><div class="output-title">OUTPUT</div><pre class="output">No output. The complete tuple is deleted.</pre>
+<h3>Tuple Unpacking</h3><pre class="code">tup = (1,2,3,4,5)
+a, *b, c = tup
+print(a)
+print(b)
+print(c)</pre><div class="output-title">OUTPUT</div><pre class="output">1
+[2, 3, 4]
+5</pre><h3>Applications</h3><ul><li>Fixed data storage</li><li>Database records</li><li>Coordination and mapping</li><li>Function return values</li></ul></article>
+
+<article class="note"><h2>2.3 Sets</h2><ul><li>A set is a built-in Python data type used to store unique items.</li><li>Duplicates are automatically removed.</li><li>Sets are unordered, so elements do not have a fixed position and cannot be accessed using indexing.</li></ul>
+<pre class="code">s = {"a","a","b","c"}
+print(s)
+print(type(s))</pre><div class="output-title">OUTPUT</div><pre class="output">{'a', 'b', 'c'}
+&lt;class 'set'&gt;</pre><p>Set ordering can vary between runs.</p>
+<h3>Type Casting</h3><pre class="code">s1 = set(["a","b","c"])
+s2 = set(("a","b","c"))
+print(s1)
+print(s2)</pre><div class="output-title">OUTPUT</div><pre class="output">Unique set containing a, b and c
+Unique set containing a, b and c</pre>
+<h3>Methods</h3><table><tr><th>Method</th><th>Purpose</th><th>Output</th></tr><tr><td>add()</td><td>Inserts a new element.</td><td>{1, 2, 3, 4}</td></tr><tr><td>remove()</td><td>Removes an element.</td><td>{1, 3}</td></tr><tr><td>clear()</td><td>Removes all elements.</td><td>set()</td></tr></table>
+<h3>Set Operations</h3><table><tr><th>Operation</th><th>Meaning</th><th>Example Output</th></tr><tr><td>Union</td><td>All unique elements from both sets.</td><td>{1, 2, 3, 4}</td></tr><tr><td>Intersection</td><td>Elements common to both.</td><td>{2, 3, 4}</td></tr><tr><td>Difference</td><td>Elements in first set but not second.</td><td>{1}</td></tr></table>
+<pre class="code">a = {1,2}
+b = {2,3,4}
+print(a.union(b))
+
+a = {1,2,3,4}
+b = {2,3,4,5}
+print(a.intersection(b))
+print(a.difference(b))</pre><div class="output-title">OUTPUT</div><pre class="output">{1, 2, 3, 4}
+{2, 3, 4}
+{1}</pre><p>Applications: student database, unique data collection, data filtering and inventory systems.</p></article>
+
+<article class="note"><h2>2.4 Dictionary</h2><p>A dictionary stores information in key-value pairs. Keys must be unique and hashable; values can be of many data types. Dictionaries are useful when data should be accessed by a meaningful key rather than a numeric position.</p>
+<pre class="code">data = {"Name":"Alex", "Age":20}
+print(data)</pre><div class="output-title">OUTPUT</div><pre class="output">{'Name': 'Alex', 'Age': 20}</pre>
+<h3>Creating a Dictionary</h3><pre class="code">a = {"x":1, "y":2}
+print(a)
+b = dict(name="Sam", age=20)
+print(b)</pre><div class="output-title">OUTPUT</div><pre class="output">{'x': 1, 'y': 2}
+{'name': 'Sam', 'age': 20}</pre>
+<h3>Accessing Values</h3><pre class="code">d = {"Name":"Sam", "Age":20}
+print(d["Name"])
+print(d.get("Age"))</pre><div class="output-title">OUTPUT</div><pre class="output">Sam
+20</pre>
+<h3>Dictionary Methods</h3><table><tr><th>Operation</th><th>Example</th><th>Output</th></tr><tr><td>Adding</td><td><code>d["age"]=21</code></td><td>{'name':'Sam','age':21}</td></tr><tr><td>Updating</td><td><code>d["name"]="Alex"</code></td><td>{'name':'Alex'}</td></tr><tr><td>del</td><td><code>del d["a"]</code></td><td>{'b':2}</td></tr><tr><td>pop()</td><td><code>val=d.pop("a")</code></td><td>Returns 1 and leaves {'b':2}</td></tr></table></article>
+
+<article class="note"><h2>2.5 Arrays</h2><p>An array stores multiple values of the same data type. Python arrays are available using the <code>array</code> module.</p><pre class="code">import array as arr
+a = arr.array('i', [1,2,3])
+print(a)</pre><div class="output-title">OUTPUT</div><pre class="output">array('i', [1, 2, 3])</pre>
+<table><tr><th>Typecode</th><th>C Type</th><th>Python Type</th></tr><tr><td>b</td><td>signed char</td><td>int</td></tr><tr><td>i</td><td>signed int</td><td>int</td></tr><tr><td>f</td><td>float</td><td>float</td></tr><tr><td>d</td><td>double</td><td>float</td></tr></table>
+<h3>Creating an Array</h3><pre class="code">import array as arr
+a = arr.array('i', [1,2,3])
+for i in range(0,3):
+    print(a[i], end=" ")</pre><div class="output-title">OUTPUT</div><pre class="output">1 2 3</pre>
+<h3>Accessing Elements</h3><pre class="code">import array as arr
+a = arr.array('i', [1,2,3,4])
+print(a[0])
+print(a[3])</pre><div class="output-title">OUTPUT</div><pre class="output">1
+4</pre>
+<h3>Slicing</h3><ul><li>Beginning to a range: <code>[:index]</code></li><li>From the end: <code>[:-index]</code></li><li>Specific index to end: <code>[index:]</code></li><li>Range: <code>[start:end]</code></li><li>Complete array: <code>[:]</code></li><li>Reverse: <code>[::-1]</code></li></ul>
+<h3>Applications</h3><ul><li>Numerical computations</li><li>Scientific calculations</li><li>Data analysis</li><li>Machine learning</li></ul>
+<h3>Array Operations</h3><pre class="code">import array as arr
+a = arr.array('i', [1,2,3])
+a.append(4)
+print(a)</pre><div class="output-title">OUTPUT</div><pre class="output">array('i', [1, 2, 3, 4])</pre><pre class="code">import array as arr
+a = arr.array('i', [1,2,3])
+a.insert(1,4)
+print(a)</pre><div class="output-title">OUTPUT</div><pre class="output">array('i', [1, 4, 2, 3])</pre><pre class="code">import array
+a = array.array('i', [1,2,3])
+a.remove(1)
+print(a)</pre><div class="output-title">OUTPUT</div><pre class="output">array('i', [2, 3])</pre></article>
+
+<article class="note"><h2>2.6 Strings</h2><p>Strings are sequences of characters written inside single or double quotes. They can include letters, numbers, symbols and spaces. A single character is also a string in Python.</p><pre class="code">a = "Python"
+b = 'PYTHON'
+print(a)
+print(b)</pre><div class="output-title">OUTPUT</div><pre class="output">Python
+PYTHON</pre>
+<h3>Multiline Strings</h3><pre class="code">a = """I need coffee too!!
+I need coffee too!!
+I need coffee too!!"""
+print(a)</pre><div class="output-title">OUTPUT</div><pre class="output">I need coffee too!!
+I need coffee too!!
+I need coffee too!!</pre>
+<h3>Accessing Characters</h3><pre class="code">s = "ABCDEF"
+print(s[0])
+print(s[4])</pre><div class="output-title">OUTPUT</div><pre class="output">A
+E</pre><pre class="code">s = "ABCDEF"
+print(s[-3])
+print(s[-5])</pre><div class="output-title">OUTPUT</div><pre class="output">D
+B</pre>
+<h3>Slicing</h3><pre class="code">s = "ABCDEF"
+print(s[1:4])
+print(s[:3])
+print(s[3:])</pre><div class="output-title">OUTPUT</div><pre class="output">BCD
+ABC
+DEF</pre>
+<h3>String Methods</h3><table><tr><th>Method</th><th>Purpose</th></tr><tr><td>len()</td><td>Returns total number of characters.</td></tr><tr><td>upper()</td><td>Converts to uppercase.</td></tr><tr><td>lower()</td><td>Converts to lowercase.</td></tr><tr><td>strip()</td><td>Removes leading/trailing whitespace.</td></tr><tr><td>split()</td><td>Splits a string.</td></tr><tr><td>replace()</td><td>Replaces text.</td></tr></table>
+<pre class="code">s = "Python"
+print(len(s))</pre><div class="output-title">OUTPUT</div><pre class="output">6</pre>
+<pre class="code">s = "Hello, World"
+print(s.upper())
+print(s.lower())</pre><div class="output-title">OUTPUT</div><pre class="output">HELLO, WORLD
+hello, world</pre>
+<pre class="code">s = "Python is Fun"
+print(s.strip())
+print(s.split())
+print(s.replace("Fun", "Interesting"))</pre><div class="output-title">OUTPUT</div><pre class="output">Python is Fun
+['Python', 'is', 'Fun']
+Python is Interesting</pre></article>
+
+<article class="note"><h2>2.7 Regular Expression</h2><p>Regular Expressions, commonly called regex or <code>re</code>, are sequences of characters used to search, match and manipulate text patterns.</p><pre class="code">import re
+s = "Hi there"
+match = re.search(r"there", s)
+print(match.start())</pre><div class="output-title">OUTPUT</div><pre class="output">3</pre>
+<h3>Common Functions</h3><ul><li><code>re.findall()</code> — returns all matching occurrences.</li><li><code>re.compile()</code> — compiles a regular expression into a pattern object.</li><li><code>re.escape()</code> — escapes special characters.</li><li><code>re.search()</code> — searches for the first occurrence matching a pattern.</li></ul></article>
+`;
+
+/* ---------------- UNIT 3 ---------------- */
+units.u3=`
+<div class="back"><button class="btn" onclick="showHome()">← Back to Home</button></div>
+<div class="unit-head"><h1>🔢 Unit 3 — NumPy Basics</h1><p>NumPy arrays, operations, statistics, broadcasting and Exploratory Data Analysis.</p></div>
+<div class="toolbar"><input class="search" oninput="filterNotes(this)" placeholder="Search Unit 3 notes..."></div>
+
+<article class="note"><h2>3. NumPy</h2><p>NumPy stands for <b>Numerical Python</b>. It is a Python library used for numerical computing and scientific calculations.</p><ul><li>Provides the multidimensional <code>ndarray</code>.</li><li>Useful for storing and processing numerical data.</li><li>Supports mathematical and statistical operations.</li><li>Performs operations efficiently using vectorization.</li><li>Widely used in Data Science, Machine Learning and scientific computing.</li><li>Works well with Pandas, Matplotlib and other Python libraries.</li></ul><pre class="code">import numpy as np</pre><div class="output-title">OUTPUT</div><pre class="output">No output. This statement imports NumPy and creates the alias np.</pre></article>
+
+<article class="note"><h2>3.1 Installing and Importing NumPy</h2><pre class="code">pip install numpy</pre><div class="output-title">OUTPUT</div><pre class="output">NumPy is installed in the Python environment. Installation messages depend on the environment.</pre><pre class="code">import numpy as np
+
+a = np.array([10,20,30,40])
+print(a)</pre><div class="output-title">OUTPUT</div><pre class="output">[10 20 30 40]</pre></article>
+
+<article class="note"><h2>3.2 NumPy Array</h2><p>A NumPy array is a collection of elements of the same data type arranged in one or more dimensions. The main array object is called <b>ndarray</b>.</p><h3>Features</h3><ul><li>Stores numerical data efficiently.</li><li>Supports one-dimensional and multidimensional arrays.</li><li>Supports indexing and slicing.</li><li>Supports mathematical operations.</li><li>Arrays generally contain elements of a common data type.</li><li>Provides efficient numerical operations compared with ordinary Python lists for many workloads.</li></ul><pre class="code">import numpy as np
+a = np.array([10,20,30,40])
+print(a)</pre><div class="output-title">OUTPUT</div><pre class="output">[10 20 30 40]</pre><pre class="code">import numpy as np
+a = np.array((10,20,30))
+print(a)</pre><div class="output-title">OUTPUT</div><pre class="output">[10 20 30]</pre></article>
+
+<article class="note"><h2>3.3 One-Dimensional Array</h2><pre class="code">import numpy as np
+a = np.array([10,20,30,40,50])
+print(a)</pre><div class="output-title">OUTPUT</div><pre class="output">[10 20 30 40 50]</pre></article>
+
+<article class="note"><h2>3.4 Two-Dimensional Array</h2><pre class="code">import numpy as np
+a = np.array([[1,2,3],
+              [4,5,6]])
+print(a)</pre><div class="output-title">OUTPUT</div><pre class="output">[[1 2 3]
+ [4 5 6]]</pre><p>The array has 2 rows and 3 columns.</p></article>
+
+<article class="note"><h2>3.5 Dimensions, Shape and Size</h2><h3>ndim</h3><p>Returns the number of dimensions.</p><pre class="code">a = np.array([[1,2,3],[4,5,6]])
+print(a.ndim)</pre><div class="output-title">OUTPUT</div><pre class="output">2</pre><h3>shape</h3><pre class="code">a = np.array([[1,2,3],[4,5,6]])
+print(a.shape)</pre><div class="output-title">OUTPUT</div><pre class="output">(2, 3)</pre><h3>size</h3><pre class="code">a = np.array([[1,2,3],[4,5,6]])
+print(a.size)</pre><div class="output-title">OUTPUT</div><pre class="output">6</pre><h3>dtype</h3><pre class="code">a = np.array([10,20,30])
+print(a.dtype)</pre><div class="output-title">OUTPUT</div><pre class="output">int64 (on common 64-bit environments; exact integer type can depend on the system)</pre></article>
+
+<article class="note"><h2>3.6 Creating Special NumPy Arrays</h2><h3>zeros()</h3><pre class="code">a = np.zeros(5)
+print(a)</pre><div class="output-title">OUTPUT</div><pre class="output">[0. 0. 0. 0. 0.]</pre><h3>ones()</h3><pre class="code">a = np.ones(5)
+print(a)</pre><div class="output-title">OUTPUT</div><pre class="output">[1. 1. 1. 1. 1.]</pre><h3>arange()</h3><pre class="code">a = np.arange(1,10,2)
+print(a)</pre><div class="output-title">OUTPUT</div><pre class="output">[1 3 5 7 9]</pre><h3>linspace()</h3><pre class="code">a = np.linspace(0,10,5)
+print(a)</pre><div class="output-title">OUTPUT</div><pre class="output">[ 0.   2.5  5.   7.5 10. ]</pre><h3>eye()</h3><pre class="code">a = np.eye(3)
+print(a)</pre><div class="output-title">OUTPUT</div><pre class="output">[[1. 0. 0.]
+ [0. 1. 0.]
+ [0. 0. 1.]]</pre></article>
+
+<article class="note"><h2>3.7 Accessing NumPy Array Elements</h2><pre class="code">a = np.array([10,20,30,40])
+print(a[0])
+print(a[2])</pre><div class="output-title">OUTPUT</div><pre class="output">10
+30</pre><pre class="code">a = np.array([[10,20,30],[40,50,60]])
+print(a[0,1])
+print(a[1,2])</pre><div class="output-title">OUTPUT</div><pre class="output">20
+60</pre></article>
+
+<article class="note"><h2>3.8 Slicing NumPy Arrays</h2><pre class="code">a = np.array([10,20,30,40,50])
+print(a[1:4])</pre><div class="output-title">OUTPUT</div><pre class="output">[20 30 40]</pre><pre class="code">a = np.array([10,20,30,40,50])
+print(a[:3])
+print(a[2:])
+print(a[::-1])</pre><div class="output-title">OUTPUT</div><pre class="output">[10 20 30]
+[30 40 50]
+[50 40 30 20 10]</pre></article>
+
+<article class="note"><h2>3.9 NumPy Array Operations</h2><pre class="code">a = np.array([10,20,30])
+b = np.array([1,2,3])
+
+print(a+b)
+print(a-b)
+print(a*b)
+print(a/b)</pre><div class="output-title">OUTPUT</div><pre class="output">[11 22 33]
+[ 9 18 27]
+[10 40 90]
+[10. 10. 10.]</pre><h3>Operations on Every Element</h3><pre class="code">a = np.array([1,2,3,4])
+print(a+5)
+print(a*2)</pre><div class="output-title">OUTPUT</div><pre class="output">[6 7 8 9]
+[2 4 6 8]</pre><p>This type of operation is called a <b>vectorized operation</b>.</p></article>
+
+<article class="note"><h2>3.10 Aggregation Functions</h2><table><tr><th>Function</th><th>Description</th></tr><tr><td>sum()</td><td>Total</td></tr><tr><td>mean()</td><td>Average</td></tr><tr><td>max()</td><td>Maximum</td></tr><tr><td>min()</td><td>Minimum</td></tr><tr><td>median()</td><td>Middle value</td></tr><tr><td>std()</td><td>Standard deviation</td></tr><tr><td>var()</td><td>Variance</td></tr></table><pre class="code">a = np.array([10,20,30,40,50])
+print("Sum:", np.sum(a))
+print("Mean:", np.mean(a))
+print("Maximum:", np.max(a))
+print("Minimum:", np.min(a))</pre><div class="output-title">OUTPUT</div><pre class="output">Sum: 150
+Mean: 30.0
+Maximum: 50
+Minimum: 10</pre></article>
+
+<article class="note"><h2>3.11 Mathematical Functions</h2><ul><li><code>np.sqrt()</code> — square root</li><li><code>np.power()</code> — power</li><li><code>np.abs()</code> — absolute value</li><li><code>np.round()</code> — rounds values</li><li><code>np.sin()</code> — sine</li><li><code>np.cos()</code> — cosine</li><li><code>np.log()</code> — logarithm</li></ul><pre class="code">a = np.array([4,9,16])
+print(np.sqrt(a))</pre><div class="output-title">OUTPUT</div><pre class="output">[2. 3. 4.]</pre></article>
+
+<article class="note"><h2>3.12 Reshaping an Array</h2><pre class="code">a = np.array([1,2,3,4,5,6])
+b = a.reshape(2,3)
+print(b)</pre><div class="output-title">OUTPUT</div><pre class="output">[[1 2 3]
+ [4 5 6]]</pre></article>
+
+<article class="note"><h2>3.13 Concatenating Arrays</h2><p>Concatenation means joining two or more arrays.</p><pre class="code">a = np.array([1,2,3])
+b = np.array([4,5,6])
+c = np.concatenate((a,b))
+print(c)</pre><div class="output-title">OUTPUT</div><pre class="output">[1 2 3 4 5 6]</pre><p><code>vstack()</code> joins arrays vertically and <code>hstack()</code> joins them horizontally.</p><pre class="code">a = np.array([1,2])
+b = np.array([3,4])
+print(np.hstack((a,b)))</pre><div class="output-title">OUTPUT</div><pre class="output">[1 2 3 4]</pre></article>
+
+<article class="note"><h2>3.14 Splitting Arrays</h2><pre class="code">a = np.array([1,2,3,4,5,6])
+b = np.array_split(a,3)
+print(b)</pre><div class="output-title">OUTPUT</div><pre class="output">[array([1, 2]), array([3, 4]), array([5, 6])]</pre></article>
+
+<article class="note"><h2>3.15 Broadcasting</h2><p>Broadcasting allows NumPy to perform operations between compatible shapes or between an array and a single value.</p><pre class="code">a = np.array([10,20,30])
+print(a+5)</pre><div class="output-title">OUTPUT</div><pre class="output">[15 25 35]</pre><p>The value 5 is applied to every element.</p></article>
+
+<article class="note"><h2>3.16 Random Number Generation</h2><pre class="code">a = np.random.randint(1,10,5)
+print(a)</pre><div class="output-title">OUTPUT — SAMPLE</div><pre class="output">[4 8 2 7 1]</pre><p>The output changes because the values are randomly generated.</p></article>
+
+<article class="note"><h2>3.17 Applications of NumPy</h2><ul><li>Numerical calculations</li><li>Scientific computing</li><li>Statistical calculations</li><li>Data analysis</li><li>Matrix operations</li><li>Machine Learning</li><li>Image processing</li><li>Random number generation</li><li>Working with large numerical datasets</li></ul></article>
+
+<article class="note"><h2>3.18 Exploratory Data Analysis (EDA)</h2><p>Exploratory Data Analysis is the process of examining and understanding a dataset before performing further analysis or building models.</p><p>EDA helps identify structure, data types, missing values, duplicates, distributions, relationships, outliers, patterns and trends.</p><p>Common libraries are NumPy, Pandas, Matplotlib and Seaborn.</p></article>
+<article class="note"><h2>3.19 Steps in EDA</h2><ol><li>Import required libraries</li><li>Read the dataset</li><li>Understand the dataset</li><li>Check missing values</li><li>Check duplicate values</li><li>Perform univariate analysis</li><li>Perform bivariate analysis</li><li>Perform multivariate analysis</li><li>Identify patterns and relationships</li><li>Draw conclusions</li></ol></article>
+<article class="note"><h2>3.20 Importing Libraries for EDA</h2><pre class="code">import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns</pre><div class="output-title">OUTPUT</div><pre class="output">No output. The libraries are imported and ready for use.</pre><ul><li>Pandas → data manipulation</li><li>NumPy → numerical calculations</li><li>Matplotlib → visualization</li><li>Seaborn → statistical visualization</li></ul></article>
+<article class="note"><h2>3.21 Reading a Dataset</h2><pre class="code">import pandas as pd
+df = pd.read_csv("data.csv")
+print(df.head())</pre><div class="output-title">OUTPUT</div><pre class="output">The first five rows of data.csv are displayed. Exact rows depend on the dataset.</pre></article>
+<article class="note"><h2>3.22 Understanding the Dataset</h2><h3>head()</h3><pre class="code">print(df.head())</pre><div class="output-title">OUTPUT</div><pre class="output">First five rows of the DataFrame.</pre><h3>tail()</h3><pre class="code">print(df.tail())</pre><div class="output-title">OUTPUT</div><pre class="output">Last five rows of the DataFrame.</pre><h3>shape</h3><pre class="code">print(df.shape)</pre><div class="output-title">OUTPUT</div><pre class="output">(1000, 8)</pre><p>This means 1000 rows and 8 columns.</p><h3>info()</h3><pre class="code">df.info()</pre><div class="output-title">OUTPUT</div><pre class="output">Displays rows, column names, non-null counts, data types and memory usage.</pre><h3>describe()</h3><pre class="code">print(df.describe())</pre><div class="output-title">OUTPUT</div><pre class="output">Displays count, mean, standard deviation, minimum, quartiles and maximum for numerical columns.</pre><h3>columns</h3><pre class="code">print(df.columns)</pre><div class="output-title">OUTPUT</div><pre class="output">Displays the column names of the DataFrame.</pre></article>
+<article class="note"><h2>3.23 Checking Missing Values</h2><p>Missing values are empty or unavailable values in a dataset.</p><pre class="code">print(df.isnull().sum())</pre><div class="output-title">OUTPUT — EXAMPLE</div><pre class="output">Name      0
+Age       2
+Salary    1
+dtype: int64</pre><p>Name has no missing values, Age has 2 and Salary has 1.</p></article>
+<article class="note"><h2>3.24 Checking Duplicate Values</h2><pre class="code">print(df.duplicated().sum())</pre><div class="output-title">OUTPUT</div><pre class="output">The number of duplicate rows in the dataset.</pre><pre class="code">df = df.drop_duplicates()</pre><div class="output-title">OUTPUT</div><pre class="output">No console output. Duplicate rows are removed from df.</pre></article>
+
+<article class="note visual-note"><h2>3.25 Univariate Analysis</h2><p>Univariate analysis means analyzing <b>one variable at a time</b>. It helps understand distribution, frequency, central tendency, spread and outliers.</p><p>Common charts: Bar chart, Histogram, KDE plot and Box plot.</p></article>
+<article class="note visual-note"><h2>3.26 Bar Chart</h2><pre class="code">import matplotlib.pyplot as plt
+x = ["A","B","C"]
+y = [20,35,25]
+plt.bar(x,y)
+plt.title("Category Count")
+plt.xlabel("Category")
+plt.ylabel("Count")
+plt.show()</pre><div class="output-title">OUTPUT — VISUAL</div>
+<div class="visual"><svg viewBox="0 0 700 350" aria-label="Bar chart"><line x1="80" y1="30" x2="80" y2="290" stroke="currentColor"/><line x1="80" y1="290" x2="650" y2="290" stroke="currentColor"/><rect x="150" y="160" width="100" height="130" fill="#2563eb"/><rect x="300" y="62" width="100" height="228" fill="#06b6d4"/><rect x="450" y="127" width="100" height="163" fill="#7c3aed"/><text x="190" y="315">A</text><text x="340" y="315">B</text><text x="490" y="315">C</text><text x="300" y="25" font-size="20">Category Count</text><text x="170" y="150">20</text><text x="320" y="52">35</text><text x="470" y="117">25</text></svg></div></article>
+
+<article class="note visual-note"><h2>3.27 Histogram</h2><pre class="code">import matplotlib.pyplot as plt
+marks = [45,50,55,60,65,70,75,80]
+plt.hist(marks)
+plt.title("Distribution of Marks")
+plt.xlabel("Marks")
+plt.ylabel("Frequency")
+plt.show()</pre><div class="output-title">OUTPUT — VISUAL</div><div class="visual"><svg viewBox="0 0 700 350" aria-label="Histogram"><line x1="70" y1="30" x2="70" y2="290" stroke="currentColor"/><line x1="70" y1="290" x2="650" y2="290" stroke="currentColor"/><rect x="90" y="170" width="90" height="120" fill="#2563eb"/><rect x="181" y="170" width="90" height="120" fill="#06b6d4"/><rect x="272" y="170" width="90" height="120" fill="#7c3aed"/><rect x="363" y="170" width="90" height="120" fill="#2563eb"/><rect x="454" y="170" width="90" height="120" fill="#06b6d4"/><text x="245" y="25" font-size="20">Distribution of Marks</text><text x="85" y="315">45</text><text x="545" y="315">80</text></svg></div></article>
+
+<article class="note visual-note"><h2>3.28 Box Plot</h2><pre class="code">import matplotlib.pyplot as plt
+marks = [45,50,55,60,65,70,75,100]
+plt.boxplot(marks)
+plt.title("Marks Distribution")
+plt.ylabel("Marks")
+plt.show()</pre><div class="output-title">OUTPUT — VISUAL</div><div class="visual"><svg viewBox="0 0 700 330" aria-label="Box plot"><line x1="350" y1="35" x2="350" y2="285" stroke="currentColor"/><line x1="270" y1="100" x2="430" y2="100" stroke="#2563eb" stroke-width="4"/><rect x="270" y="100" width="160" height="110" fill="#dbeafe" stroke="#2563eb" stroke-width="3"/><line x1="270" y1="160" x2="430" y2="160" stroke="#7c3aed" stroke-width="5"/><line x1="350" y1="210" x2="350" y2="260" stroke="#2563eb" stroke-width="4"/><circle cx="350" cy="55" r="7" fill="#ef4444"/><text x="270" y="310">Marks Distribution</text><text x="365" y="58">possible outlier</text></svg></div><p>Important parts: Median, Quartiles, Interquartile Range (IQR), Whiskers and possible outliers.</p></article>
+
+<article class="note"><h2>3.29 Skewness</h2><p>Skewness describes the asymmetry of a distribution.</p><ul><li>Skewness = 0 → approximately symmetrical distribution</li><li>Positive skewness → longer right tail</li><li>Negative skewness → longer left tail</li></ul><pre class="code">print(df["Age"].skew())</pre><div class="output-title">OUTPUT</div><pre class="output">A numerical skewness value is displayed. The exact value depends on the Age column.</pre></article>
+<article class="note"><h2>3.30 Bivariate Analysis</h2><p>Bivariate analysis studies <b>two variables together</b>. It helps identify relationships, dependencies and patterns.</p><p>Common charts include scatter plot, line plot, bar plot, box plot and violin plot.</p></article>
+<article class="note visual-note"><h2>3.31 Scatter Plot</h2><pre class="code">import matplotlib.pyplot as plt
+x = [1,2,3,4,5]
+y = [10,20,25,40,50]
+plt.scatter(x,y)
+plt.title("Relationship Between X and Y")
+plt.xlabel("X")
+plt.ylabel("Y")
+plt.show()</pre><div class="output-title">OUTPUT — VISUAL</div><div class="visual"><svg viewBox="0 0 700 350" aria-label="Scatter plot"><line x1="70" y1="30" x2="70" y2="290" stroke="currentColor"/><line x1="70" y1="290" x2="650" y2="290" stroke="currentColor"/><circle cx="150" cy="245" r="7" fill="#2563eb"/><circle cx="260" cy="205" r="7" fill="#2563eb"/><circle cx="370" cy="185" r="7" fill="#2563eb"/><circle cx="480" cy="120" r="7" fill="#2563eb"/><circle cx="590" cy="70" r="7" fill="#2563eb"/><text x="240" y="25" font-size="20">Relationship Between X and Y</text></svg></div></article>
+<article class="note visual-note"><h2>3.32 Line Plot</h2><pre class="code">import matplotlib.pyplot as plt
+x = [1,2,3,4,5]
+y = [10,20,15,30,40]
+plt.plot(x,y)
+plt.title("Trend")
+plt.xlabel("X")
+plt.ylabel("Y")
+plt.show()</pre><div class="output-title">OUTPUT — VISUAL</div><div class="visual"><svg viewBox="0 0 700 350" aria-label="Line plot"><line x1="70" y1="30" x2="70" y2="290" stroke="currentColor"/><line x1="70" y1="290" x2="650" y2="290" stroke="currentColor"/><polyline points="150,245 260,205 370,225 480,145 590,105" fill="none" stroke="#2563eb" stroke-width="5"/><circle cx="150" cy="245" r="6" fill="#06b6d4"/><circle cx="260" cy="205" r="6" fill="#06b6d4"/><circle cx="370" cy="225" r="6" fill="#06b6d4"/><circle cx="480" cy="145" r="6" fill="#06b6d4"/><circle cx="590" cy="105" r="6" fill="#06b6d4"/><text x="285" y="25" font-size="20">Trend</text></svg></div></article>
+<article class="note"><h2>3.33 Violin Plot</h2><pre class="code">import seaborn as sns
+import matplotlib.pyplot as plt
+sns.violinplot(x="class", y="marks", data=df)
+plt.title("Marks by Class")
+plt.show()</pre><div class="output-title">OUTPUT — VISUAL</div><div class="visual"><svg viewBox="0 0 700 350" aria-label="Illustrative violin plot"><path d="M230 65 C170 100 180 135 210 160 C180 185 175 230 230 275 C285 230 280 185 250 160 C280 135 290 100 230 65Z" fill="#dbeafe" stroke="#2563eb" stroke-width="3"/><path d="M470 55 C405 100 420 135 445 160 C410 195 415 240 470 285 C525 240 530 195 495 160 C520 135 535 100 470 55Z" fill="#cffafe" stroke="#06b6d4" stroke-width="3"/><text x="205" y="320">Class A</text><text x="445" y="320">Class B</text><text x="230" y="25" font-size="20">Marks by Class</text></svg></div><p>The exact shape depends on the supplied DataFrame.</p></article>
+<article class="note"><h2>3.34 Pair Plot</h2><pre class="code">import seaborn as sns
+sns.pairplot(df)</pre><div class="output-title">OUTPUT — VISUAL</div><div class="visual"><svg viewBox="0 0 700 380" aria-label="Illustrative pair plot"><rect x="80" y="50" width="180" height="130" fill="#eff6ff" stroke="#2563eb"/><rect x="270" y="50" width="180" height="130" fill="#ecfeff" stroke="#06b6d4"/><rect x="460" y="50" width="180" height="130" fill="#f5f3ff" stroke="#7c3aed"/><rect x="80" y="190" width="180" height="130" fill="#ecfeff" stroke="#06b6d4"/><rect x="270" y="190" width="180" height="130" fill="#f8fafc" stroke="#64748b"/><rect x="460" y="190" width="180" height="130" fill="#eff6ff" stroke="#2563eb"/><circle cx="140" cy="120" r="7" fill="#2563eb"/><circle cx="180" cy="110" r="7" fill="#2563eb"/><circle cx="330" cy="120" r="7" fill="#06b6d4"/><circle cx="380" cy="100" r="7" fill="#06b6d4"/><circle cx="520" cy="240" r="7" fill="#7c3aed"/><circle cx="570" cy="270" r="7" fill="#7c3aed"/><text x="285" y="30" font-size="20">Pair Plot — illustrative layout</text></svg></div><p>A pair plot generally contains distributions on the diagonal and scatter plots for variable pairs. Exact plots depend on the DataFrame.</p></article>
+<article class="note"><h2>3.35 Multivariate Analysis</h2><p>Multivariate analysis involves analyzing <b>three or more variables together</b>. It helps understand complex relationships. A commonly used visualization is a correlation heatmap.</p></article>
+<article class="note"><h2>3.36 Correlation</h2><p>Correlation measures the strength and direction of a linear relationship between two numerical variables. Values generally range from <code>-1</code> to <code>+1</code>.</p><table><tr><th>Correlation</th><th>Meaning</th></tr><tr><td>+1</td><td>Perfect positive relationship</td></tr><tr><td>Close to +1</td><td>Strong positive relationship</td></tr><tr><td>0</td><td>No linear relationship</td></tr><tr><td>Close to -1</td><td>Strong negative relationship</td></tr><tr><td>-1</td><td>Perfect negative relationship</td></tr></table></article>
+<article class="note"><h2>3.37 Correlation Heatmap</h2><pre class="code">import seaborn as sns
+import matplotlib.pyplot as plt
+
+plt.figure(figsize=(8,6))
+sns.heatmap(df.corr(numeric_only=True), annot=True, fmt=".2f")
+plt.title("Correlation Heatmap")
+plt.show()</pre><div class="output-title">OUTPUT — VISUAL</div><div class="visual"><svg viewBox="0 0 700 420" aria-label="Illustrative correlation heatmap"><text x="255" y="28" font-size="20">Correlation Heatmap</text><g transform="translate(180,55)"><rect x="0" y="0" width="80" height="65" fill="#2563eb"/><rect x="80" y="0" width="80" height="65" fill="#93c5fd"/><rect x="160" y="0" width="80" height="65" fill="#dbeafe"/><rect x="240" y="0" width="80" height="65" fill="#bfdbfe"/><rect x="0" y="65" width="80" height="65" fill="#93c5fd"/><rect x="80" y="65" width="80" height="65" fill="#2563eb"/><rect x="160" y="65" width="80" height="65" fill="#fee2e2"/><rect x="240" y="65" width="80" height="65" fill="#fecaca"/><rect x="0" y="130" width="80" height="65" fill="#dbeafe"/><rect x="80" y="130" width="80" height="65" fill="#fee2e2"/><rect x="160" y="130" width="80" height="65" fill="#2563eb"/><rect x="240" y="130" width="80" height="65" fill="#fed7aa"/><rect x="0" y="195" width="80" height="65" fill="#bfdbfe"/><rect x="80" y="195" width="80" height="65" fill="#fecaca"/><rect x="160" y="195" width="80" height="65" fill="#fed7aa"/><rect x="240" y="195" width="80" height="65" fill="#2563eb"/><text x="30" y="40" fill="white">1.00</text><text x="110" y="40">.55</text><text x="190" y="40">.12</text><text x="270" y="40">.30</text><text x="30" y="105">.55</text><text x="110" y="105" fill="white">1.00</text><text x="190" y="105">-.40</text><text x="270" y="105">-.65</text><text x="30" y="170">.12</text><text x="110" y="170">-.40</text><text x="190" y="170" fill="white">1.00</text><text x="270" y="170">.70</text><text x="30" y="235">.30</text><text x="110" y="235">-.65</text><text x="190" y="235">.70</text><text x="270" y="235" fill="white">1.00</text></g></svg></div><p><code>annot=True</code> displays correlation values and <code>fmt=".2f"</code> displays two decimal places. The visual above is an illustrative heatmap because the actual values depend on <code>df</code>.</p></article>
+<article class="note"><h2>3.38 Applications of EDA</h2><ul><li>Understanding datasets</li><li>Detecting missing values</li><li>Detecting duplicate records</li><li>Identifying outliers</li><li>Finding relationships</li><li>Understanding distributions</li><li>Preparing data for Machine Learning</li><li>Supporting business decisions</li><li>Discovering patterns and trends</li></ul><div class="summary"><h3>Summary of Unit III</h3><ul><li>NumPy is used for numerical computing.</li><li>NumPy provides multidimensional arrays.</li><li>Arrays support indexing, slicing and mathematical operations.</li><li>NumPy provides aggregation and statistical functions.</li><li>Broadcasting allows operations between compatible arrays.</li><li>EDA is used to understand a dataset.</li><li><code>head()</code>, <code>tail()</code>, <code>shape</code>, <code>info()</code> and <code>describe()</code> are useful for data inspection.</li><li>Missing values can be checked using <code>isnull()</code>.</li><li>Duplicate values can be checked using <code>duplicated()</code>.</li><li>Univariate analysis studies one variable.</li><li>Bivariate analysis studies two variables.</li><li>Multivariate analysis studies three or more variables.</li><li>Matplotlib and Seaborn are commonly used for visualization.</li></ul></div></article>
+`;
+
+/* ---------------- UNIT 4 ---------------- */
+units.u4=`
+<div class="back"><button class="btn" onclick="showHome()">← Back to Home</button></div>
+<div class="unit-head"><h1>🐼 Unit 4 — Data Manipulation with Pandas</h1><p>Pandas Series, DataFrames, selection, manipulation, missing values, grouping, combining, date/time, text and exporting data.</p></div>
+<div class="toolbar"><input class="search" oninput="filterNotes(this)" placeholder="Search Unit 4 notes..."></div>
+
+<article class="note"><h2>4. Pandas</h2><p>Pandas is an open-source Python library used for <b>data manipulation and data analysis</b>. It provides convenient data structures for working with structured data.</p><p>The two main Pandas data structures are:</p><ul><li>Series</li><li>DataFrame</li></ul><p>Pandas provides functions for reading, cleaning, selecting, transforming, grouping and combining data.</p><pre class="code">import pandas as pd</pre><div class="output-title">OUTPUT</div><pre class="output">No output. Pandas is imported with the alias pd.</pre></article>
+<article class="note"><h2>4.1 Features of Pandas</h2><ul><li>Easy data manipulation</li><li>Handles rows and columns</li><li>Supports missing data</li><li>Supports CSV and Excel files</li><li>Provides data filtering and selection</li><li>Supports grouping and aggregation</li><li>Supports merging and joining</li><li>Supports date and time data</li><li>Works well with NumPy and visualization libraries</li></ul></article>
+<article class="note"><h2>4.2 Pandas Series</h2><p>A Series is a one-dimensional labelled data structure. A Series can contain integer, float, string, Boolean or other Python objects.</p><pre class="code">import pandas as pd
+a = pd.Series([10,20,30,40])
+print(a)</pre><div class="output-title">OUTPUT</div><pre class="output">0    10
+1    20
+2    30
+3    40
+dtype: int64</pre><p>The left side represents the index and the right side represents the values.</p></article>
+<article class="note"><h2>4.3 Creating a Series with Index</h2><pre class="code">import pandas as pd
+a = pd.Series([80,90,75], index=["Tamil","English","Maths"])
+print(a)</pre><div class="output-title">OUTPUT</div><pre class="output">Tamil      80
+English    90
+Maths      75
+dtype: int64</pre></article>
+<article class="note"><h2>4.4 Accessing Series Elements</h2><pre class="code">import pandas as pd
+a = pd.Series([10,20,30])
+print(a[0])</pre><div class="output-title">OUTPUT</div><pre class="output">10</pre><pre class="code">import pandas as pd
+a = pd.Series([80,90], index=["Maths","Python"])
+print(a["Python"])</pre><div class="output-title">OUTPUT</div><pre class="output">90</pre></article>
+
+<article class="note"><h2>4.5 Pandas DataFrame</h2><p>A DataFrame is a two-dimensional labelled data structure containing rows and columns. It is similar to a table in a database or spreadsheet.</p><pre class="code">import pandas as pd
+data = {"Name":["Alex","Sam","John"], "Age":[20,21,19]}
+df = pd.DataFrame(data)
+print(df)</pre><div class="output-title">OUTPUT</div><pre class="output">   Name  Age
+0  Alex   20
+1   Sam   21
+2  John   19</pre></article>
+<article class="note"><h2>4.6 Creating DataFrame from List</h2><pre class="code">import pandas as pd
+data = [["Alex",20],["Sam",21],["John",19]]
+df = pd.DataFrame(data, columns=["Name","Age"])
+print(df)</pre><div class="output-title">OUTPUT</div><pre class="output">   Name  Age
+0  Alex   20
+1   Sam   21
+2  John   19</pre></article>
+<article class="note"><h2>4.7 Reading CSV File</h2><pre class="code">import pandas as pd
+df = pd.read_csv("students.csv")
+print(df.head())</pre><div class="output-title">OUTPUT</div><pre class="output">The first five rows of students.csv are displayed. Exact rows depend on the file.</pre></article>
+<article class="note"><h2>4.8 Reading Excel File</h2><pre class="code">import pandas as pd
+df = pd.read_excel("students.xlsx")
+print(df.head())</pre><div class="output-title">OUTPUT</div><pre class="output">The first five rows of students.xlsx are displayed. Exact rows depend on the file.</pre></article>
+<article class="note"><h2>4.9 Viewing Data</h2><h3>head()</h3><pre class="code">df.head()</pre><div class="output-title">OUTPUT</div><pre class="output">Displays the first five rows.</pre><h3>tail()</h3><pre class="code">df.tail()</pre><div class="output-title">OUTPUT</div><pre class="output">Displays the last five rows.</pre><pre class="code">df.head(10)</pre><div class="output-title">OUTPUT</div><pre class="output">Displays the first ten rows.</pre></article>
+<article class="note"><h2>4.10 shape</h2><pre class="code">print(df.shape)</pre><div class="output-title">OUTPUT</div><pre class="output">(100, 5)</pre><p>This means the DataFrame contains 100 rows and 5 columns.</p></article>
+<article class="note"><h2>4.11 info()</h2><pre class="code">df.info()</pre><div class="output-title">OUTPUT</div><pre class="output">Displays column names, non-null counts, data types and memory usage.</pre></article>
+<article class="note"><h2>4.12 describe()</h2><pre class="code">print(df.describe())</pre><div class="output-title">OUTPUT</div><pre class="output">Displays count, mean, standard deviation, minimum, quartiles and maximum for numerical columns.</pre></article>
+<article class="note"><h2>4.13 Selecting Columns</h2><pre class="code">print(df["Name"])</pre><div class="output-title">OUTPUT</div><pre class="output">The Name column is displayed.</pre><pre class="code">print(df[["Name","Age"]])</pre><div class="output-title">OUTPUT</div><pre class="output">The Name and Age columns are displayed.</pre></article>
+<article class="note"><h2>4.14 Selecting Rows using loc</h2><p><code>loc[]</code> is used for label-based selection.</p><pre class="code">print(df.loc[0])</pre><div class="output-title">OUTPUT</div><pre class="output">The row whose label is 0 is displayed.</pre><pre class="code">print(df.loc[0,"Name"])</pre><div class="output-title">OUTPUT</div><pre class="output">The Name value from row label 0.</pre></article>
+<article class="note"><h2>4.15 Selecting Rows using iloc</h2><p><code>iloc[]</code> is used for integer-position based selection.</p><pre class="code">print(df.iloc[0])
+print(df.iloc[0,1])</pre><div class="output-title">OUTPUT</div><pre class="output">First row of the DataFrame
+Second-column value from the first row</pre><p>0 represents the first row and 1 represents the second column.</p></article>
+<article class="note"><h2>4.16 Difference Between loc and iloc</h2><table><tr><th>loc</th><th>iloc</th></tr><tr><td>Label-based selection</td><td>Position-based selection</td></tr><tr><td>Uses row/column labels</td><td>Uses integer positions</td></tr><tr><td><code>df.loc[0]</code></td><td><code>df.iloc[0]</code></td></tr><tr><td>Useful when labels are known</td><td>Useful when positions are known</td></tr></table></article>
+<article class="note"><h2>4.17 Boolean Indexing</h2><p>Boolean indexing filters rows based on a condition.</p><pre class="code">print(df[df["Age"] > 20])</pre><div class="output-title">OUTPUT</div><pre class="output">Only rows where Age is greater than 20.</pre><pre class="code">print(df[(df["Age"] > 18) & (df["Marks"] > 70)])</pre><div class="output-title">OUTPUT</div><pre class="output">Only rows satisfying both conditions.</pre></article>
+<article class="note"><h2>4.18 Adding a New Column</h2><pre class="code">df["Result"] = ["Pass","Pass","Fail"]
+print(df)</pre><div class="output-title">OUTPUT</div><pre class="output">The DataFrame now contains a Result column.</pre></article>
+<article class="note"><h2>4.19 Updating a Column</h2><pre class="code">df["Age"] = df["Age"] + 1
+print(df)</pre><div class="output-title">OUTPUT</div><pre class="output">Every Age value is increased by 1.</pre></article>
+<article class="note"><h2>4.20 Deleting Columns</h2><pre class="code">df = df.drop("Age", axis=1)
+print(df)</pre><div class="output-title">OUTPUT</div><pre class="output">The Age column is removed.</pre><p><code>axis=1</code> indicates a column.</p></article>
+<article class="note"><h2>4.21 Deleting Rows</h2><pre class="code">df = df.drop(0)
+print(df)</pre><div class="output-title">OUTPUT</div><pre class="output">The row with index 0 is removed.</pre></article>
+<article class="note"><h2>4.22 Sorting Data</h2><pre class="code">df = df.sort_values("Age")
+print(df)</pre><div class="output-title">OUTPUT</div><pre class="output">Rows sorted by Age in ascending order.</pre><pre class="code">df = df.sort_values("Age", ascending=False)</pre><div class="output-title">OUTPUT</div><pre class="output">Rows sorted by Age in descending order.</pre></article>
+<article class="note"><h2>4.23 Missing Values</h2><pre class="code">print(df.isnull().sum())</pre><div class="output-title">OUTPUT</div><pre class="output">Number of missing values in each column.</pre><pre class="code">df = df.dropna()</pre><div class="output-title">OUTPUT</div><pre class="output">Rows containing missing values are removed.</pre><pre class="code">df["Age"] = df["Age"].fillna(0)</pre><div class="output-title">OUTPUT</div><pre class="output">Missing Age values are replaced with 0.</pre></article>
+<article class="note"><h2>4.24 value_counts()</h2><pre class="code">print(df["Department"].value_counts())</pre><div class="output-title">OUTPUT</div><pre class="output">Data Science    20
+Computer        15
+Maths           10</pre><p>It is useful for categorical data.</p></article>
+<article class="note"><h2>4.25 unique() and nunique()</h2><pre class="code">print(df["Department"].unique())</pre><div class="output-title">OUTPUT</div><pre class="output">Unique department values.</pre><pre class="code">print(df["Department"].nunique())</pre><div class="output-title">OUTPUT</div><pre class="output">Number of unique department values.</pre></article>
+<article class="note"><h2>4.26 GroupBy</h2><p><code>groupby()</code> groups data according to one or more columns and is useful for aggregate calculations.</p><pre class="code">import pandas as pd
+data = {"Department":["A","A","B","B"],"Marks":[80,90,70,85]}
+df = pd.DataFrame(data)
+print(df.groupby("Department")["Marks"].mean())</pre><div class="output-title">OUTPUT</div><pre class="output">Department
+A    85.0
+B    77.5
+Name: Marks, dtype: float64</pre></article>
+<article class="note"><h2>4.27 Aggregation Functions</h2><table><tr><th>Function</th><th>Meaning</th></tr><tr><td>sum()</td><td>Total</td></tr><tr><td>mean()</td><td>Average</td></tr><tr><td>count()</td><td>Number of values</td></tr><tr><td>min()</td><td>Minimum</td></tr><tr><td>max()</td><td>Maximum</td></tr><tr><td>median()</td><td>Middle value</td></tr></table><pre class="code">print(df.groupby("Department")["Marks"].mean())</pre><div class="output-title">OUTPUT</div><pre class="output">A    85.0
+B    77.5</pre></article>
+<article class="note"><h2>4.28 agg() Function</h2><p><code>agg()</code> allows multiple aggregation functions to be applied.</p><pre class="code">print(df.groupby("Department")["Marks"].agg(["mean","max","min"]))</pre><div class="output-title">OUTPUT</div><pre class="output">The output contains mean, maximum and minimum marks for each department.</pre></article>
+<article class="note"><h2>4.29 Applying Functions</h2><pre class="code">df["Marks"] = df["Marks"].apply(lambda x: x + 5)
+print(df)</pre><div class="output-title">OUTPUT</div><pre class="output">Every mark is increased by 5.</pre></article>
+<article class="note"><h2>4.30 Combining DataFrames</h2><p>Pandas provides different ways to combine data: Concatenation, Merge and Join.</p></article>
+<article class="note"><h2>4.31 Concatenation</h2><pre class="code">import pandas as pd
+df1 = pd.DataFrame({"Name":["Alex","Sam"]})
+df2 = pd.DataFrame({"Name":["John","Mary"]})
+df = pd.concat([df1,df2])
+print(df)</pre><div class="output-title">OUTPUT</div><pre class="output">   Name
+0  Alex
+1   Sam
+0  John
+1  Mary</pre></article>
+<article class="note"><h2>4.32 Merge</h2><pre class="code">import pandas as pd
+students = pd.DataFrame({"ID":[1,2],"Name":["Alex","Sam"]})
+marks = pd.DataFrame({"ID":[1,2],"Marks":[80,90]})
+result = pd.merge(students,marks,on="ID")
+print(result)</pre><div class="output-title">OUTPUT</div><pre class="output">   ID  Name  Marks
+0   1  Alex     80
+1   2   Sam     90</pre></article>
+<article class="note"><h2>4.33 Types of Merge</h2><ul><li>Inner merge</li><li>Left merge</li><li>Right merge</li><li>Outer merge</li></ul><pre class="code">pd.merge(df1, df2, on="ID", how="inner")</pre><div class="output-title">OUTPUT</div><pre class="output">Rows whose ID occurs in both DataFrames are returned.</pre></article>
+<article class="note"><h2>4.34 Working with Date and Time</h2><pre class="code">import pandas as pd
+df["Date"] = pd.to_datetime(df["Date"])
+print(df["Date"])</pre><div class="output-title">OUTPUT</div><pre class="output">The Date column is converted to datetime values.</pre><pre class="code">dates = pd.date_range("2026-01-01", periods=5)
+print(dates)</pre><div class="output-title">OUTPUT</div><pre class="output">DatetimeIndex(['2026-01-01','2026-01-02','2026-01-03','2026-01-04','2026-01-05'], dtype='datetime64[ns]', freq='D')</pre></article>
+<article class="note"><h2>4.35 Working with Text Data</h2><p>Pandas provides <code>.str</code> methods for text manipulation.</p><pre class="code">df["Name"] = df["Name"].str.lower()
+df["Name"] = df["Name"].str.upper()
+df["Name"] = df["Name"].str.strip()
+df["Name"] = df["Name"].str.replace("Alex","Sam")
+print(df["Name"])</pre><div class="output-title">OUTPUT</div><pre class="output">The Name column is transformed according to each string operation.</pre></article>
+<article class="note"><h2>4.36 Exporting Data</h2><pre class="code">df.to_csv("output.csv", index=False)</pre><div class="output-title">OUTPUT</div><pre class="output">No console output. The DataFrame is saved as output.csv.</pre><pre class="code">df.to_excel("output.xlsx", index=False)</pre><div class="output-title">OUTPUT</div><pre class="output">No console output. The DataFrame is saved as output.xlsx.</pre></article>
+<article class="note"><h2>4.37 Applications of Pandas</h2><ul><li>Data cleaning</li><li>Data manipulation</li><li>Data analysis</li><li>Reading datasets</li><li>Preparing Machine Learning data</li><li>Statistical analysis</li><li>Time-series analysis</li><li>Data aggregation</li><li>Data transformation</li><li>Working with CSV and Excel files</li></ul><div class="summary"><h3>Summary of Unit IV</h3><ul><li>Pandas is used for data manipulation and analysis.</li><li>Series is one-dimensional and labelled.</li><li>DataFrame is two-dimensional and labelled.</li><li><code>read_csv()</code> reads CSV files.</li><li><code>head()</code> and <code>tail()</code> display data.</li><li><code>info()</code> provides DataFrame information.</li><li><code>describe()</code> provides statistical summaries.</li><li><code>loc[]</code> performs label-based selection.</li><li><code>iloc[]</code> performs position-based selection.</li><li>Boolean indexing filters data.</li><li><code>dropna()</code> removes missing values.</li><li><code>fillna()</code> fills missing values.</li><li><code>groupby()</code> groups data.</li><li><code>agg()</code> performs multiple aggregation operations.</li><li><code>concat()</code> combines DataFrames.</li><li><code>merge()</code> combines DataFrames based on common columns.</li><li>Pandas supports date, time and text operations.</li></ul></div></article>
+`;
+
+/* ---------------- UNIT 5 ---------------- */
+units.u5=`
+<div class="back"><button class="btn" onclick="showHome()">← Back to Home</button></div>
+<div class="unit-head"><h1>📈 Unit 5 — Data Visualization with Matplotlib</h1><p>Matplotlib and Seaborn: plots, customization, statistical visualization and comparison.</p></div>
+<div class="toolbar"><input class="search" oninput="filterNotes(this)" placeholder="Search Unit 5 notes..."></div>
+
+<article class="note"><h2>5. Matplotlib</h2><p>Matplotlib is an open-source Python library used for creating data visualizations.</p><ul><li>Line plots</li><li>Bar charts</li><li>Histograms</li><li>Scatter plots</li><li>Pie charts</li><li>3D plots</li></ul><p>Matplotlib works well with NumPy arrays and Pandas DataFrames and provides control over titles, labels, legends, axes and other plot elements.</p><pre class="code">import matplotlib.pyplot as plt</pre><div class="output-title">OUTPUT</div><pre class="output">No output. Matplotlib is imported as plt.</pre></article>
+<article class="note"><h2>5.1 Features of Matplotlib</h2><ul><li>Creates different types of graphs.</li><li>Supports static and interactive visualizations.</li><li>Allows customization of plots.</li><li>Supports labels and titles.</li><li>Supports legends.</li><li>Supports subplots.</li><li>Can save plots in different formats.</li><li>Works with NumPy and Pandas.</li></ul></article>
+
+<article class="note visual-note"><h2>5.2 Basic Plot</h2><pre class="code">import matplotlib.pyplot as plt
+x = [1,2,3,4,5]
+y = [10,20,30,40,50]
+plt.plot(x,y)
+plt.show()</pre><div class="output-title">OUTPUT — VISUAL</div><div class="visual"><svg viewBox="0 0 700 340"><line x1="70" y1="30" x2="70" y2="285" stroke="currentColor"/><line x1="70" y1="285" x2="650" y2="285" stroke="currentColor"/><polyline points="130,250 250,195 370,140 490,85 610,45" fill="none" stroke="#2563eb" stroke-width="5"/><text x="285" y="25" font-size="20">Basic Line Graph</text></svg></div></article>
+<article class="note visual-note"><h2>5.3 Adding Title</h2><pre class="code">x = [1,2,3]
+y = [10,20,30]
+plt.plot(x,y)
+plt.title("Student Marks")
+plt.show()</pre><div class="output-title">OUTPUT — VISUAL</div><div class="visual"><svg viewBox="0 0 700 340"><text x="275" y="30" font-size="22">Student Marks</text><line x1="70" y1="285" x2="650" y2="285" stroke="currentColor"/><polyline points="140,240 350,165 560,90" fill="none" stroke="#06b6d4" stroke-width="5"/></svg></div></article>
+<article class="note visual-note"><h2>5.4 Adding X-Axis and Y-Axis Labels</h2><pre class="code">x = [1,2,3]
+y = [50,70,90]
+plt.plot(x,y)
+plt.xlabel("Students")
+plt.ylabel("Marks")
+plt.show()</pre><div class="output-title">OUTPUT — VISUAL</div><div class="visual"><svg viewBox="0 0 700 340"><line x1="70" y1="285" x2="650" y2="285" stroke="currentColor"/><line x1="70" y1="40" x2="70" y2="285" stroke="currentColor"/><polyline points="160,240 350,155 540,70" fill="none" stroke="#2563eb" stroke-width="5"/><text x="320" y="325">Students</text><text x="18" y="175" transform="rotate(-90 18 175)">Marks</text></svg></div></article>
+<article class="note visual-note"><h2>5.5 Line Plot</h2><p>A line plot connects points using lines. It is useful for trends, time-series data, changes over time and comparing continuous values.</p><pre class="code">months = ["Jan","Feb","Mar","Apr"]
+sales = [100,150,130,180]
+plt.plot(months,sales)
+plt.title("Monthly Sales")
+plt.xlabel("Month")
+plt.ylabel("Sales")
+plt.show()</pre><div class="output-title">OUTPUT — VISUAL</div><div class="visual"><svg viewBox="0 0 700 350"><line x1="70" y1="285" x2="650" y2="285" stroke="currentColor"/><polyline points="130,220 290,135 450,175 610,75" fill="none" stroke="#2563eb" stroke-width="5"/><circle cx="130" cy="220" r="6"/><circle cx="290" cy="135" r="6"/><circle cx="450" cy="175" r="6"/><circle cx="610" cy="75" r="6"/><text x="275" y="28" font-size="20">Monthly Sales</text><text x="115" y="315">Jan</text><text x="275" y="315">Feb</text><text x="435" y="315">Mar</text><text x="595" y="315">Apr</text></svg></div></article>
+<article class="note visual-note"><h2>5.6 Line Plot with Marker</h2><pre class="code">x = [1,2,3,4]
+y = [10,20,15,30]
+plt.plot(x,y,marker="o")
+plt.title("Data Values")
+plt.show()</pre><div class="output-title">OUTPUT — VISUAL</div><div class="visual"><svg viewBox="0 0 700 330"><polyline points="120,240 280,160 440,200 600,80" fill="none" stroke="#2563eb" stroke-width="5"/><circle cx="120" cy="240" r="8" fill="#06b6d4"/><circle cx="280" cy="160" r="8" fill="#06b6d4"/><circle cx="440" cy="200" r="8" fill="#06b6d4"/><circle cx="600" cy="80" r="8" fill="#06b6d4"/><text x="290" y="30" font-size="20">Data Values</text></svg></div></article>
+<article class="note visual-note"><h2>5.7 Bar Chart</h2><pre class="code">subjects = ["Maths","Python","English"]
+marks = [90,95,80]
+plt.bar(subjects,marks)
+plt.title("Subject Marks")
+plt.xlabel("Subject")
+plt.ylabel("Marks")
+plt.show()</pre><div class="output-title">OUTPUT — VISUAL</div><div class="visual"><svg viewBox="0 0 700 350"><line x1="70" y1="290" x2="650" y2="290" stroke="currentColor"/><rect x="130" y="80" width="110" height="210" fill="#2563eb"/><rect x="300" y="68" width="110" height="222" fill="#06b6d4"/><rect x="470" y="114" width="110" height="176" fill="#7c3aed"/><text x="125" y="315">Maths</text><text x="292" y="315">Python</text><text x="465" y="315">English</text><text x="260" y="28" font-size="20">Subject Marks</text></svg></div></article>
+<article class="note visual-note"><h2>5.8 Horizontal Bar Chart</h2><pre class="code">subjects = ["Maths","Python","English"]
+marks = [90,95,80]
+plt.barh(subjects,marks)
+plt.title("Subject Marks")
+plt.show()</pre><div class="output-title">OUTPUT — VISUAL</div><div class="visual"><svg viewBox="0 0 700 330"><rect x="150" y="60" width="420" height="50" fill="#2563eb"/><rect x="150" y="135" width="440" height="50" fill="#06b6d4"/><rect x="150" y="210" width="370" height="50" fill="#7c3aed"/><text x="75" y="92">Maths</text><text x="75" y="167">Python</text><text x="75" y="242">English</text><text x="275" y="30" font-size="20">Subject Marks</text></svg></div></article>
+<article class="note visual-note"><h2>5.9 Scatter Plot</h2><pre class="code">hours = [1,2,3,4,5]
+marks = [40,50,60,75,90]
+plt.scatter(hours,marks)
+plt.title("Study Hours and Marks")
+plt.xlabel("Study Hours")
+plt.ylabel("Marks")
+plt.show()</pre><div class="output-title">OUTPUT — VISUAL</div><div class="visual"><svg viewBox="0 0 700 350"><line x1="70" y1="290" x2="650" y2="290" stroke="currentColor"/><line x1="70" y1="30" x2="70" y2="290" stroke="currentColor"/><circle cx="150" cy="250" r="7" fill="#2563eb"/><circle cx="260" cy="220" r="7" fill="#2563eb"/><circle cx="370" cy="185" r="7" fill="#2563eb"/><circle cx="480" cy="120" r="7" fill="#2563eb"/><circle cx="590" cy="60" r="7" fill="#2563eb"/><text x="240" y="25" font-size="20">Study Hours and Marks</text></svg></div></article>
+<article class="note visual-note"><h2>5.10 Histogram</h2><pre class="code">marks = [40,45,50,55,60,65,70,75,80]
+plt.hist(marks)
+plt.title("Marks Distribution")
+plt.xlabel("Marks")
+plt.ylabel("Frequency")
+plt.show()</pre><div class="output-title">OUTPUT — VISUAL</div><div class="visual"><svg viewBox="0 0 700 350"><line x1="70" y1="290" x2="650" y2="290" stroke="currentColor"/><rect x="100" y="170" width="90" height="120" fill="#2563eb"/><rect x="192" y="145" width="90" height="145" fill="#06b6d4"/><rect x="284" y="145" width="90" height="145" fill="#7c3aed"/><rect x="376" y="145" width="90" height="145" fill="#2563eb"/><rect x="468" y="170" width="90" height="120" fill="#06b6d4"/><text x="275" y="28" font-size="20">Marks Distribution</text></svg></div></article>
+<article class="note visual-note"><h2>5.11 Pie Chart</h2><pre class="code">subjects = ["Maths","Python","English"]
+marks = [40,35,25]
+plt.pie(marks, labels=subjects)
+plt.title("Marks Distribution")
+plt.show()</pre><div class="output-title">OUTPUT — VISUAL</div><div class="visual"><svg viewBox="0 0 700 350"><path d="M330 175 L330 65 A110 110 0 0 1 435 210 Z" fill="#2563eb"/><path d="M330 175 L435 210 A110 110 0 0 1 245 260 Z" fill="#06b6d4"/><path d="M330 175 L245 260 A110 110 0 0 1 330 65 Z" fill="#7c3aed"/><text x="275" y="30" font-size="20">Marks Distribution</text><text x="450" y="110">Maths 40%</text><text x="450" y="160">Python 35%</text><text x="450" y="210">English 25%</text></svg></div></article>
+<article class="note visual-note"><h2>5.12 Adding Legend</h2><pre class="code">x = [1,2,3]
+y = [10,20,30]
+plt.plot(x,y,label="Sales")
+plt.legend()
+plt.show()</pre><div class="output-title">OUTPUT — VISUAL</div><div class="visual"><svg viewBox="0 0 700 330"><polyline points="120,250 340,170 560,80" fill="none" stroke="#2563eb" stroke-width="5"/><rect x="500" y="35" width="125" height="42" fill="#fff" stroke="#64748b"/><line x1="510" y1="56" x2="540" y2="56" stroke="#2563eb" stroke-width="4"/><text x="548" y="61">Sales</text></svg></div></article>
+<article class="note visual-note"><h2>5.13 Grid</h2><pre class="code">x = [1,2,3]
+y = [10,20,30]
+plt.plot(x,y)
+plt.grid()
+plt.show()</pre><div class="output-title">OUTPUT — VISUAL</div><div class="visual"><svg viewBox="0 0 700 330"><g stroke="#cbd5e1" stroke-width="1"><line x1="100" y1="60" x2="100" y2="280"/><line x1="200" y1="60" x2="200" y2="280"/><line x1="300" y1="60" x2="300" y2="280"/><line x1="400" y1="60" x2="400" y2="280"/><line x1="500" y1="60" x2="500" y2="280"/><line x1="600" y1="60" x2="600" y2="280"/><line x1="80" y1="80" x2="630" y2="80"/><line x1="80" y1="140" x2="630" y2="140"/><line x1="80" y1="200" x2="630" y2="200"/><line x1="80" y1="260" x2="630" y2="260"/></g><polyline points="120,240 340,160 560,80" fill="none" stroke="#2563eb" stroke-width="5"/></svg></div></article>
+<article class="note visual-note"><h2>5.14 Figure Size</h2><pre class="code">plt.figure(figsize=(8,5))
+plt.plot([1,2,3],[10,20,30])
+plt.show()</pre><div class="output-title">OUTPUT — VISUAL</div><div class="visual"><svg viewBox="0 0 800 500"><rect x="45" y="35" width="710" height="430" fill="none" stroke="#94a3b8" stroke-width="3"/><polyline points="120,390 390,250 660,100" fill="none" stroke="#2563eb" stroke-width="6"/><text x="310" y="25">Figure sized approximately 8 × 5</text></svg></div></article>
+<article class="note visual-note"><h2>5.15 Subplots</h2><pre class="code">plt.subplot(1,2,1)
+plt.plot([1,2,3],[10,20,30])
+plt.title("Line Plot")
+
+plt.subplot(1,2,2)
+plt.bar(["A","B","C"],[10,20,15])
+plt.title("Bar Plot")
+
+plt.show()</pre><div class="output-title">OUTPUT — VISUAL</div><div class="visual"><svg viewBox="0 0 800 350"><rect x="40" y="50" width="340" height="250" fill="#eff6ff" stroke="#2563eb"/><polyline points="80,250 200,180 330,100" fill="none" stroke="#2563eb" stroke-width="5"/><text x="155" y="35" font-size="18">Line Plot</text><rect x="420" y="50" width="340" height="250" fill="#ecfeff" stroke="#06b6d4"/><rect x="465" y="205" width="60" height="45" fill="#2563eb"/><rect x="555" y="160" width="60" height="90" fill="#06b6d4"/><rect x="645" y="182" width="60" height="68" fill="#7c3aed"/><text x="540" y="35" font-size="18">Bar Plot</text></svg></div><p>Here 1 = rows, 2 = columns, and 1/2 = position of each plot.</p></article>
+<article class="note"><h2>5.16 Saving a Plot</h2><pre class="code">plt.plot([1,2,3],[10,20,30])
+plt.savefig("graph.png")
+plt.show()</pre><div class="output-title">OUTPUT</div><pre class="output">A line graph is displayed and a file named graph.png is saved.</pre></article>
+<article class="note"><h2>5.17 Common Matplotlib Functions</h2><table><tr><th>Function</th><th>Purpose</th></tr><tr><td>plot()</td><td>Creates line plot</td></tr><tr><td>bar()</td><td>Creates bar chart</td></tr><tr><td>barh()</td><td>Creates horizontal bar chart</td></tr><tr><td>scatter()</td><td>Creates scatter plot</td></tr><tr><td>hist()</td><td>Creates histogram</td></tr><tr><td>pie()</td><td>Creates pie chart</td></tr><tr><td>title()</td><td>Adds title</td></tr><tr><td>xlabel()</td><td>Adds x-axis label</td></tr><tr><td>ylabel()</td><td>Adds y-axis label</td></tr><tr><td>legend()</td><td>Displays legend</td></tr><tr><td>grid()</td><td>Displays grid</td></tr><tr><td>show()</td><td>Displays graph</td></tr><tr><td>savefig()</td><td>Saves graph</td></tr></table></article>
+
+<article class="note"><h2>5.18 Seaborn</h2><p>Seaborn is a Python library used for <b>statistical data visualization</b>. It is built on Matplotlib and provides high-level functions for creating attractive and informative statistical graphs.</p><pre class="code">import seaborn as sns</pre><div class="output-title">OUTPUT</div><pre class="output">No output. Seaborn is imported as sns.</pre></article>
+<article class="note"><h2>5.19 Features of Seaborn</h2><ul><li>Built on Matplotlib</li><li>Designed for statistical visualization</li><li>Works well with Pandas DataFrames</li><li>Provides attractive default styles</li><li>Requires less code for many statistical plots</li><li>Supports categorical plots</li><li>Supports distribution plots</li><li>Supports relational plots</li><li>Supports regression plots</li><li>Supports heatmaps</li><li>Supports pair plots</li></ul></article>
+<article class="note visual-note"><h2>5.20 Basic Seaborn Plot</h2><pre class="code">import seaborn as sns
+import matplotlib.pyplot as plt
+data = sns.load_dataset("tips")
+sns.scatterplot(x="total_bill", y="tip", data=data)
+plt.show()</pre><div class="output-title">OUTPUT — VISUAL</div><div class="visual"><svg viewBox="0 0 700 350"><line x1="70" y1="290" x2="650" y2="290" stroke="currentColor"/><line x1="70" y1="40" x2="70" y2="290" stroke="currentColor"/><circle cx="130" cy="240" r="5" fill="#2563eb"/><circle cx="180" cy="220" r="5" fill="#2563eb"/><circle cx="230" cy="245" r="5" fill="#2563eb"/><circle cx="280" cy="180" r="5" fill="#2563eb"/><circle cx="350" cy="200" r="5" fill="#2563eb"/><circle cx="420" cy="120" r="5" fill="#2563eb"/><circle cx="500" cy="150" r="5" fill="#2563eb"/><circle cx="580" cy="80" r="5" fill="#2563eb"/><text x="280" y="25" font-size="20">Total Bill vs Tip</text></svg></div><p>The visual is an illustrative representation of the relationship; exact points come from Seaborn's tips dataset.</p></article>
+<article class="note visual-note"><h2>5.21 Seaborn Scatter Plot</h2><pre class="code">data = sns.load_dataset("tips")
+sns.scatterplot(x="total_bill", y="tip", data=data)
+plt.title("Total Bill vs Tip")
+plt.show()</pre><div class="output-title">OUTPUT — VISUAL</div><div class="visual"><svg viewBox="0 0 700 350"><line x1="70" y1="290" x2="650" y2="290" stroke="currentColor"/><line x1="70" y1="40" x2="70" y2="290" stroke="currentColor"/><circle cx="130" cy="240" r="5"/><circle cx="190" cy="215" r="5"/><circle cx="270" cy="230" r="5"/><circle cx="350" cy="170" r="5"/><circle cx="430" cy="150" r="5"/><circle cx="520" cy="100" r="5"/><circle cx="600" cy="75" r="5"/><text x="260" y="25" font-size="20">Total Bill vs Tip</text></svg></div></article>
+<article class="note visual-note"><h2>5.22 Seaborn Line Plot</h2><pre class="code">data = sns.load_dataset("flights")
+sns.lineplot(x="year", y="passengers", data=data)
+plt.title("Passengers Over Years")
+plt.show()</pre><div class="output-title">OUTPUT — VISUAL</div><div class="visual"><svg viewBox="0 0 700 350"><polyline points="80,250 150,235 220,245 290,210 360,185 430,165 500,125 570,90 640,55" fill="none" stroke="#2563eb" stroke-width="5"/><text x="245" y="25" font-size="20">Passengers Over Years</text></svg></div></article>
+<article class="note visual-note"><h2>5.23 Seaborn Bar Plot</h2><pre class="code">data = sns.load_dataset("tips")
+sns.barplot(x="day", y="total_bill", data=data)
+plt.title("Average Bill by Day")
+plt.show()</pre><div class="output-title">OUTPUT — VISUAL</div><div class="visual"><svg viewBox="0 0 700 350"><rect x="100" y="120" width="90" height="170" fill="#2563eb"/><rect x="240" y="95" width="90" height="195" fill="#06b6d4"/><rect x="380" y="75" width="90" height="215" fill="#7c3aed"/><rect x="520" y="105" width="90" height="185" fill="#2563eb"/><text x="250" y="25" font-size="20">Average Bill by Day</text><text x="125" y="315">Thur</text><text x="265" y="315">Fri</text><text x="405" y="315">Sat</text><text x="545" y="315">Sun</text></svg></div></article>
+<article class="note visual-note"><h2>5.24 Count Plot</h2><pre class="code">data = sns.load_dataset("tips")
+sns.countplot(x="day", data=data)
+plt.title("Number of Records by Day")
+plt.show()</pre><div class="output-title">OUTPUT — VISUAL</div><div class="visual"><svg viewBox="0 0 700 350"><rect x="100" y="170" width="90" height="120" fill="#2563eb"/><rect x="240" y="205" width="90" height="85" fill="#06b6d4"/><rect x="380" y="70" width="90" height="220" fill="#7c3aed"/><rect x="520" y="115" width="90" height="175" fill="#2563eb"/><text x="210" y="25" font-size="20">Number of Records by Day</text><text x="125" y="315">Thur</text><text x="265" y="315">Fri</text><text x="405" y="315">Sat</text><text x="545" y="315">Sun</text></svg></div></article>
+<article class="note visual-note"><h2>5.25 Box Plot</h2><pre class="code">data = sns.load_dataset("tips")
+sns.boxplot(x="day", y="total_bill", data=data)
+plt.title("Bill Distribution by Day")
+plt.show()</pre><div class="output-title">OUTPUT — VISUAL</div><div class="visual"><svg viewBox="0 0 700 350"><g stroke="#2563eb" stroke-width="3" fill="#dbeafe"><rect x="100" y="125" width="80" height="95"/><line x1="140" y1="90" x2="140" y2="255"/><line x1="115" y1="175" x2="165" y2="175"/><rect x="250" y="110" width="80" height="100"/><line x1="290" y1="75" x2="290" y2="250"/><line x1="265" y1="160" x2="315" y2="160"/><rect x="400" y="105" width="80" height="115"/><line x1="440" y1="65" x2="440" y2="260"/><line x1="415" y1="165" x2="465" y2="165"/><rect x="550" y="115" width="80" height="100"/><line x1="590" y1="80" x2="590" y2="255"/><line x1="565" y1="165" x2="615" y2="165"/></g><text x="210" y="25" font-size="20">Bill Distribution by Day</text></svg></div><p>Important parts: median, quartiles, IQR, whiskers and possible outliers.</p></article>
+<article class="note visual-note"><h2>5.26 Violin Plot</h2><pre class="code">data = sns.load_dataset("tips")
+sns.violinplot(x="day", y="total_bill", data=data)
+plt.title("Bill Distribution")
+plt.show()</pre><div class="output-title">OUTPUT — VISUAL</div><div class="visual"><svg viewBox="0 0 700 350"><path d="M130 70 C75 120 95 160 120 180 C85 210 95 250 130 285 C165 250 175 210 140 180 C165 160 185 120 130 70Z" fill="#dbeafe" stroke="#2563eb" stroke-width="3"/><path d="M300 65 C245 115 265 155 290 180 C255 210 265 255 300 290 C335 255 345 210 310 180 C335 155 355 115 300 65Z" fill="#cffafe" stroke="#06b6d4" stroke-width="3"/><path d="M470 55 C410 110 435 155 460 180 C425 215 440 260 470 295 C500 260 515 215 480 180 C505 155 530 110 470 55Z" fill="#ede9fe" stroke="#7c3aed" stroke-width="3"/><path d="M600 75 C555 125 565 155 590 180 C560 210 565 250 600 280 C635 250 640 210 610 180 C635 155 645 125 600 75Z" fill="#dbeafe" stroke="#2563eb" stroke-width="3"/><text x="270" y="25" font-size="20">Bill Distribution</text></svg></div></article>
+<article class="note visual-note"><h2>5.27 Strip Plot</h2><pre class="code">data = sns.load_dataset("tips")
+sns.stripplot(x="day", y="total_bill", data=data)
+plt.show()</pre><div class="output-title">OUTPUT — VISUAL</div><div class="visual"><svg viewBox="0 0 700 330"><g fill="#2563eb"><circle cx="120" cy="220" r="5"/><circle cx="125" cy="180" r="5"/><circle cx="118" cy="145" r="5"/><circle cx="260" cy="210" r="5"/><circle cx="265" cy="160" r="5"/><circle cx="255" cy="120" r="5"/><circle cx="400" cy="235" r="5"/><circle cx="405" cy="190" r="5"/><circle cx="395" cy="130" r="5"/><circle cx="540" cy="220" r="5"/><circle cx="545" cy="165" r="5"/><circle cx="535" cy="105" r="5"/></g><text x="290" y="25" font-size="20">Individual Observations</text></svg></div></article>
+<article class="note visual-note"><h2>5.28 Swarm Plot</h2><pre class="code">data = sns.load_dataset("tips")
+sns.swarmplot(x="day", y="total_bill", data=data)
+plt.show()</pre><div class="output-title">OUTPUT — VISUAL</div><div class="visual"><svg viewBox="0 0 700 330"><g fill="#06b6d4"><circle cx="120" cy="220" r="5"/><circle cx="112" cy="180" r="5"/><circle cx="128" cy="145" r="5"/><circle cx="260" cy="210" r="5"/><circle cx="250" cy="165" r="5"/><circle cx="270" cy="125" r="5"/><circle cx="400" cy="235" r="5"/><circle cx="390" cy="190" r="5"/><circle cx="410" cy="145" r="5"/><circle cx="540" cy="220" r="5"/><circle cx="530" cy="175" r="5"/><circle cx="550" cy="120" r="5"/></g><text x="265" y="25" font-size="20">Swarm Plot</text></svg></div></article>
+<article class="note visual-note"><h2>5.29 Histogram using Seaborn</h2><pre class="code">data = sns.load_dataset("tips")
+sns.histplot(data["total_bill"])
+plt.title("Distribution of Total Bill")
+plt.show()</pre><div class="output-title">OUTPUT — VISUAL</div><div class="visual"><svg viewBox="0 0 700 350"><rect x="90" y="180" width="60" height="110" fill="#2563eb"/><rect x="150" y="140" width="60" height="150" fill="#06b6d4"/><rect x="210" y="100" width="60" height="190" fill="#7c3aed"/><rect x="270" y="70" width="60" height="220" fill="#2563eb"/><rect x="330" y="95" width="60" height="195" fill="#06b6d4"/><rect x="390" y="135" width="60" height="155" fill="#7c3aed"/><rect x="450" y="185" width="60" height="105" fill="#2563eb"/><rect x="510" y="220" width="60" height="70" fill="#06b6d4"/><text x="250" y="25" font-size="20">Distribution of Total Bill</text></svg></div></article>
+<article class="note visual-note"><h2>5.30 KDE Plot</h2><p>KDE stands for <b>Kernel Density Estimation</b>. A KDE plot represents the probability density of numerical data.</p><pre class="code">data = sns.load_dataset("tips")
+sns.kdeplot(data["total_bill"])
+plt.title("KDE Plot")
+plt.show()</pre><div class="output-title">OUTPUT — VISUAL</div><div class="visual"><svg viewBox="0 0 700 330"><path d="M70 275 C120 270 130 240 170 220 C210 195 230 120 280 105 C330 90 340 145 390 165 C440 185 450 225 500 235 C550 245 570 260 640 275" fill="none" stroke="#2563eb" stroke-width="6"/><text x="310" y="30" font-size="20">KDE Plot</text></svg></div></article>
+<article class="note visual-note"><h2>5.31 Pair Plot</h2><pre class="code">data = sns.load_dataset("iris")
+sns.pairplot(data)</pre><div class="output-title">OUTPUT — VISUAL</div><div class="visual"><svg viewBox="0 0 700 420"><g stroke="#94a3b8"><rect x="50" y="45" width="140" height="100" fill="#eff6ff"/><rect x="200" y="45" width="140" height="100" fill="#ecfeff"/><rect x="350" y="45" width="140" height="100" fill="#f5f3ff"/><rect x="500" y="45" width="140" height="100" fill="#eff6ff"/><rect x="50" y="155" width="140" height="100" fill="#ecfeff"/><rect x="200" y="155" width="140" height="100" fill="#f8fafc"/><rect x="350" y="155" width="140" height="100" fill="#ecfeff"/><rect x="500" y="155" width="140" height="100" fill="#f5f3ff"/><rect x="50" y="265" width="140" height="100" fill="#f5f3ff"/><rect x="200" y="265" width="140" height="100" fill="#ecfeff"/><rect x="350" y="265" width="140" height="100" fill="#f8fafc"/><rect x="500" y="265" width="140" height="100" fill="#ecfeff"/></g><text x="260" y="25" font-size="20">Iris Pair Plot — illustrative layout</text></svg></div><p>The exact grid depends on the columns in the iris dataset.</p></article>
+<article class="note visual-note"><h2>5.32 Joint Plot</h2><pre class="code">data = sns.load_dataset("tips")
+sns.jointplot(x="total_bill", y="tip", data=data)</pre><div class="output-title">OUTPUT — VISUAL</div><div class="visual"><svg viewBox="0 0 700 390"><rect x="100" y="70" width="450" height="250" fill="#f8fafc" stroke="#94a3b8"/><path d="M120 285 C200 270 260 230 330 220 C400 205 470 150 530 120" fill="none" stroke="#2563eb" stroke-width="4"/><g fill="#06b6d4"><circle cx="160" cy="260" r="5"/><circle cx="230" cy="245" r="5"/><circle cx="300" cy="230" r="5"/><circle cx="370" cy="205" r="5"/><circle cx="450" cy="165" r="5"/></g><text x="265" y="35" font-size="20">Joint Plot</text><text x="275" y="360">total_bill</text><text x="35" y="210" transform="rotate(-90 35 210)">tip</text></svg></div></article>
+<article class="note visual-note"><h2>5.33 Heatmap</h2><pre class="code">data = sns.load_dataset("iris")
+corr = data.select_dtypes("number").corr()
+sns.heatmap(corr, annot=True)
+plt.title("Correlation Heatmap")
+plt.show()</pre><div class="output-title">OUTPUT — VISUAL</div><div class="visual"><svg viewBox="0 0 700 400"><text x="250" y="28" font-size="20">Correlation Heatmap</text><g transform="translate(200,55)"><rect width="90" height="70" fill="#2563eb"/><rect x="90" width="90" height="70" fill="#93c5fd"/><rect x="180" width="90" height="70" fill="#dbeafe"/><rect x="270" width="90" height="70" fill="#bfdbfe"/><rect y="70" width="90" height="70" fill="#93c5fd"/><rect x="90" y="70" width="90" height="70" fill="#2563eb"/><rect x="180" y="70" width="90" height="70" fill="#fee2e2"/><rect x="270" y="70" width="90" height="70" fill="#fecaca"/><rect y="140" width="90" height="70" fill="#dbeafe"/><rect x="90" y="140" width="90" height="70" fill="#fee2e2"/><rect x="180" y="140" width="90" height="70" fill="#2563eb"/><rect x="270" y="140" width="90" height="70" fill="#fed7aa"/><rect y="210" width="90" height="70" fill="#bfdbfe"/><rect x="90" y="210" width="90" height="70" fill="#fecaca"/><rect x="180" y="210" width="90" height="70" fill="#fed7aa"/><rect x="270" y="210" width="90" height="70" fill="#2563eb"/></g><text x="220" y="105" fill="white">1.00</text><text x="310" y="105">.87</text><text x="400" y="105">.82</text><text x="490" y="105">.80</text><text x="220" y="175">.87</text><text x="310" y="175" fill="white">1.00</text><text x="400" y="175">.96</text><text x="490" y="175">.90</text><text x="220" y="245">.82</text><text x="310" y="245">.96</text><text x="400" y="245" fill="white">1.00</text><text x="490" y="245">.96</text><text x="220" y="315">.80</text><text x="310" y="315">.90</text><text x="400" y="315">.96</text><text x="490" y="315" fill="white">1.00</text></svg></div><p><code>annot=True</code> displays numerical values inside the heatmap.</p></article>
+<article class="note visual-note"><h2>5.34 Correlation Heatmap</h2><pre class="code">corr = df.corr(numeric_only=True)
+sns.heatmap(corr, annot=True, fmt=".2f")
+plt.title("Correlation Matrix")
+plt.show()</pre><div class="output-title">OUTPUT — VISUAL</div><div class="visual"><svg viewBox="0 0 700 380"><text x="270" y="28" font-size="20">Correlation Matrix</text><g transform="translate(220,55)"><rect width="90" height="65" fill="#2563eb"/><rect x="90" width="90" height="65" fill="#93c5fd"/><rect x="180" width="90" height="65" fill="#dbeafe"/><rect y="65" width="90" height="65" fill="#93c5fd"/><rect x="90" y="65" width="90" height="65" fill="#2563eb"/><rect x="180" y="65" width="90" height="65" fill="#fecaca"/><rect y="130" width="90" height="65" fill="#dbeafe"/><rect x="90" y="130" width="90" height="65" fill="#fecaca"/><rect x="180" y="130" width="90" height="65" fill="#2563eb"/><text x="25" y="40" fill="white">1.00</text><text x="115" y="40">.55</text><text x="205" y="40">.12</text><text x="25" y="105">.55</text><text x="115" y="105" fill="white">1.00</text><text x="205" y="105">-.40</text><text x="25" y="170">.12</text><text x="115" y="170">-.40</text><text x="205" y="170" fill="white">1.00</text></g></svg></div><p>Positive values indicate variables tending to move in the same direction; negative values indicate opposite movement; values near zero indicate weak linear relationship.</p></article>
+<article class="note visual-note"><h2>5.35 Regression Plot</h2><pre class="code">data = sns.load_dataset("tips")
+sns.regplot(x="total_bill", y="tip", data=data)
+plt.title("Regression Plot")
+plt.show()</pre><div class="output-title">OUTPUT — VISUAL</div><div class="visual"><svg viewBox="0 0 700 350"><line x1="80" y1="290" x2="640" y2="60" stroke="#2563eb" stroke-width="5"/><g fill="#06b6d4"><circle cx="130" cy="250" r="5"/><circle cx="200" cy="245" r="5"/><circle cx="260" cy="220" r="5"/><circle cx="330" cy="205" r="5"/><circle cx="400" cy="175" r="5"/><circle cx="470" cy="145" r="5"/><circle cx="550" cy="115" r="5"/><circle cx="600" cy="95" r="5"/></g><text x="285" y="28" font-size="20">Regression Plot</text></svg></div><p>It displays a scatter plot with a fitted regression line to visualize a trend.</p></article>
+<article class="note"><h2>5.36 Seaborn Themes</h2><p>Seaborn provides styles for improving plot appearance.</p><pre class="code">sns.set_style("darkgrid")</pre><div class="output-title">OUTPUT</div><pre class="output">No console output. Subsequent Seaborn plots use the selected style.</pre><p>Common styles: <code>darkgrid</code>, <code>whitegrid</code>, <code>dark</code>, <code>white</code>, <code>ticks</code>.</p></article>
+<article class="note"><h2>5.37 Color Palettes</h2><pre class="code">sns.set_palette("pastel")</pre><div class="output-title">OUTPUT</div><pre class="output">No console output. Subsequent Seaborn plots use the selected palette.</pre></article>
+<article class="note"><h2>5.38 Matplotlib vs Seaborn</h2><table><tr><th>Matplotlib</th><th>Seaborn</th></tr><tr><td>General-purpose visualization library</td><td>Statistical visualization library</td></tr><tr><td>Provides detailed control</td><td>Provides high-level functions</td></tr><tr><td>Can require more code for some statistical plots</td><td>Often requires less code</td></tr><tr><td>Works directly with many Python data structures</td><td>Works especially well with Pandas DataFrames</td></tr><tr><td>Provides basic and advanced plotting</td><td>Provides statistical and attractive plots</td></tr><tr><td>Seaborn is built on Matplotlib</td><td>Built on Matplotlib</td></tr></table></article>
+<article class="note"><h2>5.39 Common Seaborn Functions</h2><table><tr><th>Function</th><th>Purpose</th></tr><tr><td>scatterplot()</td><td>Relationship between numerical variables</td></tr><tr><td>lineplot()</td><td>Trend or continuous data</td></tr><tr><td>barplot()</td><td>Statistical value by category</td></tr><tr><td>countplot()</td><td>Count of categorical observations</td></tr><tr><td>boxplot()</td><td>Distribution and outliers</td></tr><tr><td>violinplot()</td><td>Distribution and density</td></tr><tr><td>stripplot()</td><td>Individual observations</td></tr><tr><td>swarmplot()</td><td>Individual observations with reduced overlap</td></tr><tr><td>histplot()</td><td>Distribution</td></tr><tr><td>kdeplot()</td><td>Density estimation</td></tr><tr><td>pairplot()</td><td>Pairwise relationships</td></tr><tr><td>jointplot()</td><td>Relationship with distributions</td></tr><tr><td>heatmap()</td><td>Matrix/correlation visualization</td></tr><tr><td>regplot()</td><td>Regression relationship</td></tr></table></article>
+<article class="note"><h2>5.40 Applications of Matplotlib and Seaborn</h2><ul><li>Data visualization</li><li>Exploratory Data Analysis</li><li>Statistical analysis</li><li>Comparing categories</li><li>Finding relationships</li><li>Identifying trends</li><li>Detecting outliers</li><li>Presenting analytical results</li><li>Creating charts for reports</li><li>Data Science and Machine Learning</li></ul><div class="summary"><h3>Summary of Unit V</h3><ul><li>Matplotlib is a Python library for creating visualizations.</li><li><code>plot()</code> creates line plots.</li><li><code>bar()</code> creates bar charts.</li><li><code>scatter()</code> creates scatter plots.</li><li><code>hist()</code> creates histograms.</li><li><code>pie()</code> creates pie charts.</li><li><code>title()</code>, <code>xlabel()</code> and <code>ylabel()</code> add descriptive information.</li><li><code>legend()</code> displays labels for plotted data.</li><li><code>grid()</code> displays grid lines.</li><li><code>subplot()</code> allows multiple plots in one figure.</li><li><code>savefig()</code> saves a visualization.</li><li>Seaborn is built on Matplotlib.</li><li>Seaborn is mainly used for statistical visualization.</li><li>Seaborn provides functions such as <code>barplot()</code>, <code>countplot()</code>, <code>boxplot()</code>, <code>violinplot()</code>, <code>histplot()</code>, <code>pairplot()</code> and <code>heatmap()</code>.</li><li>Matplotlib provides detailed control over visualization elements.</li><li>Seaborn provides convenient high-level statistical visualizations.</li></ul></div></article>
+`;
+
+function showHome(){
+  document.getElementById("dashboard").style.display="block";
+  document.getElementById("unitView").style.display="none";
+  window.scrollTo({top:0,behavior:"smooth"});
+}
+function showUnit(id){
+  document.getElementById("dashboard").style.display="none";
+  const view=document.getElementById("unitView");
+  view.innerHTML=units[id]||"<p>Unit not found.</p>";
+  view.style.display="block";
+  window.scrollTo({top:0,behavior:"smooth"});
+  history.replaceState(null,"","#"+id);
+}
+function filterNotes(input){
+  const q=input.value.toLowerCase();
+  input.closest("#unitView").querySelectorAll(".note").forEach(n=>{
+    n.style.display=n.innerText.toLowerCase().includes(q)?"block":"none";
+  });
+}
+function toggleDark(){document.body.classList.toggle("dark");localStorage.setItem("pythonHubDark",document.body.classList.contains("dark"))}
+if(localStorage.getItem("pythonHubDark")==="true")document.body.classList.add("dark");
+window.addEventListener("load",()=>{const id=location.hash.slice(1); if(units[id])showUnit(id)});
+</script>
+</body>
+</html>
